@@ -2,6 +2,7 @@ package wappsto.rest;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
+import wappsto.rest.model.User;
 
 public class AdminSession {
     private static AdminSession instance;
@@ -22,5 +23,8 @@ public class AdminSession {
 
     public UserSession register(String username, String password) {
         return new UserSession();
+    }
+
+    public User fetch(String username) {
     }
 }
