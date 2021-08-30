@@ -1,31 +1,39 @@
 package wappsto.rest;
+import org.glassfish.jersey.client.ClientConfig;
+import wappsto.rest.model.Credentials;
+import wappsto.rest.model.SessionResponse;
 import wappsto.rest.model.User;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.Response;
 
 public class AdminSession {
-    private static AdminSession instance;
     private String sessionId;
+    private Client client;
+    private WebTarget api;
 
-    public static AdminSession instance() {
-        if (instance == null) {
-            instance = new AdminSession();
-        }
-        return instance;
+
+    public AdminSession(Credentials credentials) {
+        client = ClientBuilder.newClient(new ClientConfig());
+        api = client.target("https://qa.wappsto.com/services/2.1/");
+
+        Response response = api.path("session")
+            .request("application/json")
+            .post(Entity.json(credentials));
+        sessionId = response
+            .readEntity(SessionResponse.class).sessionId.id;
     }
 
-    private AdminSession() {
-        Client client = ClientBuilder.newClient();
+    public UserSession register(Credentials credentials) {
+        Response response = api.path("register")
+            .request("application/json")
+            .header("X-Session", sessionId)
+            .post(Entity.json(credentials));
 
-
+        return new UserSession(response
+            .readEntity(SessionResponse.class).sessionId.id);
     }
 
-    public UserSession register(String username, String password) {
-        return new UserSession();
-    }
+    public void delete(String username) {
 
-    public User fetch(String username) {
-        return new User();
     }
 }
