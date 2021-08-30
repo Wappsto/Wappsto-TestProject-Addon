@@ -2,8 +2,6 @@ package wappsto.rest;
 
 import wappsto.rest.model.Credentials;
 
-import java.util.Random;
-
 public class SessionBuilder {
     private AdminSession admin;
 

@@ -23,7 +23,7 @@ public class UserSession {
 
         Response response = api.path("user")
             .request("application/json")
-            .header("X-Session", id)
+            .header("x-session", id)
             .get();
 
         if (response.getStatus() != 200) {
