@@ -1,10 +1,8 @@
 import org.junit.After;
 import org.junit.jupiter.api.*;
-import wappsto.rest.exceptions.NotFound;
-import wappsto.rest.model.AdminCredentials;
-import wappsto.rest.model.Credentials;
+import wappsto.rest.exceptions.*;
+import wappsto.rest.model.*;
 import wappsto.rest.session.AdminSession;
-import wappsto.rest.exceptions.Forbidden;
 
 import static org.junit.jupiter.api.Assertions.*;
 

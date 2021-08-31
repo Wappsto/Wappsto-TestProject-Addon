@@ -1,9 +1,7 @@
 import org.junit.jupiter.api.*;
 import wappsto.rest.exceptions.Forbidden;
 import wappsto.rest.model.*;
-import wappsto.rest.session.AdminSession;
-import wappsto.rest.session.SessionBuilder;
-import wappsto.rest.session.UserSession;
+import wappsto.rest.session.*;
 
 import java.io.IOException;
 

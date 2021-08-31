@@ -1,12 +1,9 @@
 package wappsto.rest.session;
 
 import org.glassfish.jersey.client.ClientConfig;
-import wappsto.rest.model.Credentials;
-import wappsto.rest.model.SessionResponse;
-import wappsto.rest.model.User;
-
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
+import wappsto.rest.model.*;
 
 public class UserSession {
     private String id;

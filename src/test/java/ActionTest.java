@@ -1,9 +1,7 @@
 import actions.LoggedInUser;
 import io.testproject.java.enums.AutomatedBrowserType;
 import io.testproject.java.sdk.v2.Runner;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import wappsto.rest.exceptions.Forbidden;
 import wappsto.rest.model.AdminCredentials;
 import wappsto.rest.session.AdminSession;
