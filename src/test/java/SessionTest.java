@@ -1,9 +1,9 @@
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import wappsto.rest.*;
-import wappsto.rest.model.AdminCredentials;
-import wappsto.rest.model.Credentials;
+import org.junit.jupiter.api.*;
+import wappsto.rest.exceptions.Forbidden;
+import wappsto.rest.model.*;
+import wappsto.rest.session.AdminSession;
+import wappsto.rest.session.SessionBuilder;
+import wappsto.rest.session.UserSession;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class SessionTest {
     static Credentials credentials;
 
     @BeforeAll
-    public static void setup() throws IOException {
+    public static void setup() throws IOException, Forbidden {
         testConfig = new TestConfig();
         admin = new AdminSession(
             new AdminCredentials(

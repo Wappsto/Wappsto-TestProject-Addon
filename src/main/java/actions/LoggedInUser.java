@@ -8,8 +8,12 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
-import wappsto.rest.*;
+import wappsto.rest.exceptions.Forbidden;
+import wappsto.rest.model.AdminCredentials;
 import wappsto.rest.model.Credentials;
+import wappsto.rest.session.AdminSession;
+import wappsto.rest.session.SessionBuilder;
+import wappsto.rest.session.UserSession;
 
 @Action(name = "Create a new logged in user")
 public class LoggedInUser implements WebAction {
@@ -26,8 +30,11 @@ public class LoggedInUser implements WebAction {
     @Parameter(description = "Admin password")
     public String adminPassword;
 
-    @Parameter(description = "Generated username", direction = ParameterDirection.OUTPUT)
+    @Parameter(description = "Username")
     public String username;
+
+    @Parameter(description = "Password")
+    public String password;
 
     @Override
     public ExecutionResult execute(
@@ -35,10 +42,25 @@ public class LoggedInUser implements WebAction {
     ) throws FailureException {
 
         WebDriver driver = helper.getDriver();
-        UserSession session = new SessionBuilder(
-            new AdminSession(new Credentials(adminUsername, adminPassword))
-        ).create();
+        UserSession session = null;
+        try {
+            AdminCredentials adminCredentials = new AdminCredentials(
+                adminUsername,
+                adminPassword);
+            Credentials userCredentials = new Credentials(
+                username,
+                password
+            );
+            AdminSession adminSession = new AdminSession(adminCredentials);
+            session = new SessionBuilder(adminSession)
+                .withCredentials(userCredentials)
+                .create();
 
+        } catch (Forbidden e) {
+            e.printStackTrace();
+        }
+
+        driver.get("https://qa.wappsto.com");
         driver.manage().addCookie(new Cookie("sessionID", session.getId()));
 
         return ExecutionResult.PASSED;

@@ -1,4 +1,4 @@
-package wappsto.rest;
+package wappsto.rest.session;
 
 import wappsto.rest.model.Credentials;
 
@@ -20,7 +20,8 @@ public class SessionBuilder {
     }
 
     public UserSession create() {
-        return admin.register(credentials);
+        admin.register(credentials);
+        return new UserSession(credentials);
     }
 
 }

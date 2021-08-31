@@ -1,5 +1,6 @@
-package wappsto.rest;
+package wappsto.rest.session;
 import org.glassfish.jersey.client.ClientConfig;
+import wappsto.rest.exceptions.Forbidden;
 import wappsto.rest.model.*;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
@@ -10,7 +11,7 @@ public class AdminSession {
     private WebTarget api;
 
 
-    public AdminSession(Credentials credentials) {
+    public AdminSession(AdminCredentials credentials) throws Forbidden {
         client = ClientBuilder.newClient(new ClientConfig());
         api = client.target("https://qa.wappsto.com/services/2.1/");
 
@@ -21,20 +22,11 @@ public class AdminSession {
             .readEntity(SessionResponse.class).sessionId.id;
     }
 
-    public UserSession register(Credentials credentials) {
+    public void register(Credentials credentials) {
         api.path("register")
             .request("application/json")
             .header("x-session", sessionId)
             .post(Entity.json(credentials));
-
-        Response response = api.path("user")
-            .path(credentials.username)
-            .request()
-            .header("x-session", sessionId)
-            .get();
-
-        return new UserSession(response
-            .readEntity(SessionResponse.class).sessionId.id);
     }
 
     public void delete(String username) {
@@ -54,5 +46,9 @@ public class AdminSession {
         return response
             .readEntity(User.class);
 
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 }

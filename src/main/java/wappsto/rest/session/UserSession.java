@@ -1,6 +1,8 @@
-package wappsto.rest;
+package wappsto.rest.session;
 
 import org.glassfish.jersey.client.ClientConfig;
+import wappsto.rest.model.Credentials;
+import wappsto.rest.model.SessionResponse;
 import wappsto.rest.model.User;
 
 import javax.ws.rs.client.*;
@@ -11,17 +13,19 @@ public class UserSession {
     private Client client;
     private WebTarget api;
 
-    public UserSession(String id) {
-        this.id = id;
-
+    public UserSession(Credentials credentials) {
         client = ClientBuilder.newClient(new ClientConfig());
         api = client.target("https://qa.wappsto.com/services/2.1/");
 
+        id = api.path("session")
+            .request("application/json")
+            .post(Entity.json(credentials))
+            .readEntity(SessionResponse.class).sessionId.id;
     }
 
     public User fetchUser() throws Exception{
 
-        Response response = api.path("user")
+        Response response = api.path("user/me")
             .request("application/json")
             .header("x-session", id)
             .get();
