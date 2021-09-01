@@ -12,8 +12,8 @@ import javax.ws.rs.core.Response;
 public class AdminSession extends Session{
 
 
-    public AdminSession(AdminCredentials credentials) throws Exception {
-        super();
+    public AdminSession(AdminCredentials credentials, String serviceUrl) throws Exception {
+        super(serviceUrl);
         Response response = new Request(service)
             .atEndPoint(API.SESSION)
             .withBody(credentials)

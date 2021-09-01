@@ -8,8 +8,8 @@ public abstract class Session {
     protected Client client;
     protected WebTarget service;
 
-    public Session() {
+    public Session(String serviceUrl) {
         client = ClientBuilder.newClient(new ClientConfig());
-        service = client.target("https://qa.wappsto.com/services/2.1/");
+        service = client.target(serviceUrl);
     }
 }

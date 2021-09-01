@@ -11,19 +11,14 @@ import wappsto.rest.model.*;
 import wappsto.rest.session.*;
 
 @Action(name = "Create a new logged in user")
-public class LoggedInUser implements WebAction {
+public class LogInWithNewUser extends ActionWithAdminSession implements WebAction {
+
 
     @Parameter(
-        description = "Application API URL",
-        defaultValue = "https://qa.wappsto.com/services/2.1/"
+        description = "Application URL",
+        defaultValue = "https://qa.wappsto.com/"
     )
     public String appUrl;
-
-    @Parameter(description = "Admin username")
-    public String adminUsername;
-
-    @Parameter(description = "Admin password")
-    public String adminPassword;
 
     @Parameter(description = "Username")
     public String username;
@@ -46,8 +41,8 @@ public class LoggedInUser implements WebAction {
                 username,
                 password
             );
-            AdminSession adminSession = new AdminSession(adminCredentials);
-            session = new UserSessionBuilder(adminSession)
+            AdminSession adminSession = new AdminSession(adminCredentials, serviceUrl);
+            session = new UserSessionBuilder(adminSession, serviceUrl)
                 .withCredentials(userCredentials)
                 .create();
 
@@ -56,7 +51,7 @@ public class LoggedInUser implements WebAction {
             return ExecutionResult.FAILED;
         }
 
-        driver.get("https://qa.wappsto.com");
+        driver.get(appUrl);
         driver.manage().addCookie(new Cookie("sessionID", session.getId()));
 
         return ExecutionResult.PASSED;

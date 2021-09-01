@@ -28,7 +28,8 @@ public class AdminSessionTest {
         @Test
         public void with_invalid_credentials() {
             assertThrows(Forbidden.class, () -> new AdminSession(
-                new AdminCredentials(null, null)
+                new AdminCredentials(null, null),
+                testConfig.API_ROOT
             ));
         }
     }
@@ -71,7 +72,8 @@ public class AdminSessionTest {
             new AdminCredentials(
                 testConfig.ADMIN_USERNAME,
                 testConfig.ADMIN_PASSWORD
-            )
+            ),
+            testConfig.API_ROOT
         );
         return session;
     }

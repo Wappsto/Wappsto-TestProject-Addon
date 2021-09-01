@@ -12,8 +12,8 @@ import wappsto.rest.request.Request;
 
 public class UserSession  extends  Session{
 
-    public UserSession(Credentials credentials) throws Exception {
-        super();
+    public UserSession(Credentials credentials, String serviceUrl) throws Exception {
+        super(serviceUrl);
 
         id = new Request(service)
             .atEndPoint(API.SESSION)

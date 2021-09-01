@@ -11,16 +11,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SessionTest {
     static TestConfig testConfig;
     static AdminSession admin;
-
     static Credentials credentials;
+    static String serviceUrl;
 
     @BeforeAll
     public static void setup() throws Exception {
         testConfig = new TestConfig();
+        serviceUrl = testConfig.API_ROOT;
         admin = new AdminSession(
             new AdminCredentials(
                 testConfig.ADMIN_USERNAME,
-                testConfig.ADMIN_PASSWORD)
+                testConfig.ADMIN_PASSWORD),
+            serviceUrl
         );
 
         String username = "test-4242424242@seluxit.com";
@@ -36,7 +38,7 @@ public class SessionTest {
 
     @Test
     public void creates_new_user() throws Exception {
-        UserSession session = new UserSessionBuilder(admin)
+        UserSession session = new UserSessionBuilder(admin, serviceUrl)
             .withCredentials(credentials)
             .create();
 
