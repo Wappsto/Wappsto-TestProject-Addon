@@ -15,7 +15,7 @@ public class SessionTest {
     static Credentials credentials;
 
     @BeforeAll
-    public static void setup() throws IOException, Forbidden {
+    public static void setup() throws Exception {
         testConfig = new TestConfig();
         admin = new AdminSession(
             new AdminCredentials(
@@ -27,7 +27,11 @@ public class SessionTest {
         String password = "123";
         credentials = new Credentials(username, password);
 
-        admin.delete(username);
+        try {
+            admin.delete(username);
+        } catch (Exception ignored) {
+
+        }
     }
 
     @Test
@@ -41,6 +45,9 @@ public class SessionTest {
 
     @AfterEach
     public void tearDown() {
-        admin.delete(credentials.username);
+        try {
+            admin.delete(credentials.username);
+        } catch (Exception ignored) {
+        }
     }
 }

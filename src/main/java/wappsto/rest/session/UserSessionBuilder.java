@@ -19,7 +19,7 @@ public class UserSessionBuilder {
         return new UserSessionBuilder(admin, credentials);
     }
 
-    public UserSession create() {
+    public UserSession create() throws Exception {
         admin.register(credentials);
         return new UserSession(credentials);
     }

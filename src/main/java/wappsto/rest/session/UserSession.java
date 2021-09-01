@@ -1,33 +1,32 @@
 package wappsto.rest.session;
 
-import org.glassfish.jersey.client.ClientConfig;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
+
+import wappsto.rest.exceptions.Forbidden;
+import wappsto.rest.exceptions.MissingField;
+import wappsto.rest.exceptions.NotFound;
 import wappsto.rest.model.*;
+import wappsto.rest.request.API;
+import wappsto.rest.request.Request;
 
 public class UserSession  extends  Session{
 
-    public UserSession(Credentials credentials) {
+    public UserSession(Credentials credentials) throws Exception {
         super();
 
-        id = api.path("session")
-            .request("application/json")
-            .post(Entity.json(credentials))
+        id = new Request(service)
+            .atEndPoint(API.SESSION)
+            .withBody(credentials)
+            .post()
             .readEntity(SessionResponse.class).sessionId.id;
     }
 
     public User fetchUser() throws Exception{
-
-        Response response = api.path("user/me")
-            .request("application/json")
-            .header("x-session", id)
-            .get();
-
-        if (response.getStatus() != 200) {
-            throw new Exception(response.getStatusInfo().getReasonPhrase());
-        }
-
-        return response
+        return new Request(service)
+            .atEndPoint(API.USER)
+            .withSession(id)
+            .get("me")
             .readEntity(User.class);
     }
 

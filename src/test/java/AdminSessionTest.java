@@ -14,7 +14,7 @@ public class AdminSessionTest {
     private static AdminSession session;
 
     @BeforeAll
-    public static void setup() throws IOException, Forbidden {
+    public static void setup() throws Exception {
         testConfig = new TestConfig();
         credentials = new Credentials(
             "test123123@sexulit.com",
@@ -34,13 +34,13 @@ public class AdminSessionTest {
     }
 
     @Test
-    public void creates_a_new_session() throws Forbidden {
+    public void creates_a_new_session() throws Exception {
         AdminSession session = createNewAdminSession();
         assertNotNull(session.getId());
     }
 
     @Test
-    public void registers_new_user() throws Forbidden {
+    public void registers_new_user() throws Exception {
         session.register(credentials);
         assertEquals(
             credentials.username,
@@ -48,7 +48,7 @@ public class AdminSessionTest {
     }
 
     @Test
-    public void deletes_existing_user() throws Forbidden {
+    public void deletes_existing_user() throws Exception {
         session.register(credentials);
         session.delete(credentials.username);
 
@@ -59,10 +59,14 @@ public class AdminSessionTest {
 
     @AfterEach
     public void tearDown() {
-        session.delete(credentials.username);
+        try {
+            session.delete(credentials.username);
+        } catch (Exception ignored) {
+
+        }
     }
 
-    private static AdminSession createNewAdminSession() throws Forbidden {
+    private static AdminSession createNewAdminSession() throws Exception {
         AdminSession session = new AdminSession(
             new AdminCredentials(
                 testConfig.ADMIN_USERNAME,

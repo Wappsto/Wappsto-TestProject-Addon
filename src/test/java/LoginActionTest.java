@@ -16,7 +16,7 @@ public class LoginActionTest {
     private static AdminSession admin;
 
     @BeforeAll
-    public static void setup() throws InstantiationException, IOException, Forbidden {
+    public static void setup() throws Exception {
         testConfig = new TestConfig();
         admin = new AdminSession(
             new AdminCredentials(
@@ -44,7 +44,7 @@ public class LoginActionTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws Exception {
         admin.delete(username);
     }
 }

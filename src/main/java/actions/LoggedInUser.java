@@ -51,8 +51,9 @@ public class LoggedInUser implements WebAction {
                 .withCredentials(userCredentials)
                 .create();
 
-        } catch (Forbidden e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            return ExecutionResult.FAILED;
         }
 
         driver.get("https://qa.wappsto.com");

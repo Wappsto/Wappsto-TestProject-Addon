@@ -6,10 +6,10 @@ import javax.ws.rs.client.*;
 public abstract class Session {
     protected String id;
     protected Client client;
-    protected WebTarget api;
+    protected WebTarget service;
 
     public Session() {
         client = ClientBuilder.newClient(new ClientConfig());
-        api = client.target("https://qa.wappsto.com/services/2.1/");
+        service = client.target("https://qa.wappsto.com/services/2.1/");
     }
 }
