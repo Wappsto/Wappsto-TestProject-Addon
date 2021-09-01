@@ -8,7 +8,7 @@ import wappsto.rest.session.AdminSession;
 
 import java.io.IOException;
 
-public class ActionTest {
+public class LoginActionTest {
     private static Runner runner;
     private static TestConfig testConfig;
     private String username;
@@ -31,7 +31,7 @@ public class ActionTest {
     }
 
     @Test
-    public void runAction() throws Exception {
+    public void logs_in_new_user() throws Exception {
         LoggedInUser action = new LoggedInUser();
         action.adminPassword = testConfig.ADMIN_PASSWORD;
         action.adminUsername = testConfig.ADMIN_USERNAME;

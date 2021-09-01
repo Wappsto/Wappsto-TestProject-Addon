@@ -2,21 +2,21 @@ package wappsto.rest.session;
 
 import wappsto.rest.model.Credentials;
 
-public class SessionBuilder {
+public class UserSessionBuilder {
     private AdminSession admin;
 
     private Credentials credentials;
-    public SessionBuilder(AdminSession admin) {
+    public UserSessionBuilder(AdminSession admin) {
         this.admin = admin;
     }
 
-    public SessionBuilder(AdminSession admin, Credentials credentials) {
+    public UserSessionBuilder(AdminSession admin, Credentials credentials) {
         this.admin = admin;
         this.credentials = credentials;
     }
 
-    public SessionBuilder withCredentials(Credentials credentials) {
-        return new SessionBuilder(admin, credentials);
+    public UserSessionBuilder withCredentials(Credentials credentials) {
+        return new UserSessionBuilder(admin, credentials);
     }
 
     public UserSession create() {

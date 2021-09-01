@@ -1,4 +1,3 @@
-import org.junit.After;
 import org.junit.jupiter.api.*;
 import wappsto.rest.exceptions.*;
 import wappsto.rest.model.*;
@@ -37,7 +36,7 @@ public class AdminSessionTest {
     @Test
     public void creates_a_new_session() throws Forbidden {
         AdminSession session = createNewAdminSession();
-        assertNotNull(session.getSessionId());
+        assertNotNull(session.getId());
     }
 
     @Test

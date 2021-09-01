@@ -5,14 +5,10 @@ import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
 import wappsto.rest.model.*;
 
-public class UserSession {
-    private String id;
-    private Client client;
-    private WebTarget api;
+public class UserSession  extends  Session{
 
     public UserSession(Credentials credentials) {
-        client = ClientBuilder.newClient(new ClientConfig());
-        api = client.target("https://qa.wappsto.com/services/2.1/");
+        super();
 
         id = api.path("session")
             .request("application/json")

@@ -27,14 +27,12 @@ public class SessionTest {
         String password = "123";
         credentials = new Credentials(username, password);
 
-        if (admin.fetchUser(username) != null) {
-            admin.delete(username);
-        }
+        admin.delete(username);
     }
 
     @Test
     public void creates_new_user() throws Exception {
-        UserSession session = new SessionBuilder(admin)
+        UserSession session = new UserSessionBuilder(admin)
             .withCredentials(credentials)
             .create();
 

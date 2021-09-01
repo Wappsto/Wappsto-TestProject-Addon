@@ -47,7 +47,7 @@ public class LoggedInUser implements WebAction {
                 password
             );
             AdminSession adminSession = new AdminSession(adminCredentials);
-            session = new SessionBuilder(adminSession)
+            session = new UserSessionBuilder(adminSession)
                 .withCredentials(userCredentials)
                 .create();
 
