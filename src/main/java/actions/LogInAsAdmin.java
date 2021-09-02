@@ -1,5 +1,6 @@
 package actions;
 
+import io.testproject.java.annotations.v2.Action;
 import io.testproject.java.annotations.v2.Parameter;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
@@ -10,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import wappsto.rest.model.AdminCredentials;
 import wappsto.rest.session.AdminSession;
 
+@Action(name = "Log in as admin")
 public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
 
     @Parameter(description = "Admin Panel URL")
