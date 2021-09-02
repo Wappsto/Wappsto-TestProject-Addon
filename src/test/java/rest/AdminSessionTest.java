@@ -1,11 +1,13 @@
+package rest;
+
 import org.junit.jupiter.api.*;
-import test.Config;
+import util.Config;
 import wappsto.rest.exceptions.*;
 import wappsto.rest.model.*;
 import wappsto.rest.session.AdminSession;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static test.Utils.*;
+import static util.Utils.*;
 
 public class AdminSessionTest {
     private static Config testConfig;

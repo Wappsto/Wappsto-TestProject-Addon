@@ -31,26 +31,35 @@ public class LogInWithNewUser
     ) throws FailureException {
 
         WebDriver driver = helper.getDriver();
+
+        AdminCredentials adminCredentials = new AdminCredentials(
+            adminUsername,
+            adminPassword);
+        Credentials userCredentials = new Credentials(
+            username,
+            password
+        );
+
+        AdminSession admin;
         UserSession session;
         try {
-            AdminCredentials adminCredentials = new AdminCredentials(
-                adminUsername,
-                adminPassword);
-            Credentials userCredentials = new Credentials(
-                username,
-                password
-            );
-            AdminSession adminSession = new AdminSession(
+            admin = new AdminSession(
                 adminCredentials,
                 serviceUrl);
-            session = new UserSessionBuilder(adminSession, serviceUrl)
+        }
+        catch (Exception e) {
+            throw new FailureException("Failed to create admin session: " + e.getMessage());
+        }
+
+        try {
+            session = new UserSessionBuilder(admin, serviceUrl)
                 .withCredentials(userCredentials)
                 .create();
-
         } catch (Exception e) {
-            e.printStackTrace();
-            return ExecutionResult.FAILED;
+            throw new FailureException("Failed to register user: " + e.getMessage());
         }
+
+
 
         driver.get(appUrl);
         driver.manage().addCookie(new Cookie(

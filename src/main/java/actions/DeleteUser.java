@@ -29,8 +29,7 @@ public class DeleteUser extends ActionWithAdminSession implements WebAction {
             );
             admin.delete(username);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ExecutionResult.FAILED;
+            throw new FailureException("Failed to delete: " + e.getMessage());
         }
         return ExecutionResult.PASSED;
     }

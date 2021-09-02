@@ -1,14 +1,11 @@
-package test;
+package util;
 
 import io.testproject.java.enums.AutomatedBrowserType;
 import io.testproject.java.sdk.v2.Runner;
-import io.testproject.java.sdk.v2.internal.DriverHelper;
 import org.openqa.selenium.WebDriver;
 import wappsto.rest.model.AdminCredentials;
 import wappsto.rest.model.Credentials;
 import wappsto.rest.session.AdminSession;
-
-import java.io.IOException;
 
 
 public class Utils {

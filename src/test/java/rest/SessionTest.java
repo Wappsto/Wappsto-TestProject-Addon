@@ -1,7 +1,9 @@
+package rest;
+
 import org.junit.jupiter.api.*;
-import test.Config;
+import util.Config;
 import wappsto.rest.session.*;
-import static test.Utils.*;
+import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
