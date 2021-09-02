@@ -1,11 +1,5 @@
 package wappsto.rest.session;
 
-import javax.ws.rs.client.*;
-import javax.ws.rs.core.Response;
-
-import wappsto.rest.exceptions.Forbidden;
-import wappsto.rest.exceptions.MissingField;
-import wappsto.rest.exceptions.NotFound;
 import wappsto.rest.model.*;
 import wappsto.rest.request.API;
 import wappsto.rest.request.Request;

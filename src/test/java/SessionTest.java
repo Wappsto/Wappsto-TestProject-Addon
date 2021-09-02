@@ -1,36 +1,22 @@
 import org.junit.jupiter.api.*;
-import wappsto.rest.exceptions.Forbidden;
-import wappsto.rest.model.*;
+import test.Config;
 import wappsto.rest.session.*;
-
-import java.io.IOException;
-
+import static test.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class SessionTest {
-    static TestConfig testConfig;
-    static AdminSession admin;
-    static Credentials credentials;
-    static String serviceUrl;
+    private static Config testConfig;
+    private static String serviceUrl;
 
     @BeforeAll
     public static void setup() throws Exception {
-        testConfig = new TestConfig();
+        testConfig = new Config();
         serviceUrl = testConfig.API_ROOT;
-        admin = new AdminSession(
-            new AdminCredentials(
-                testConfig.ADMIN_USERNAME,
-                testConfig.ADMIN_PASSWORD),
-            serviceUrl
-        );
 
-        String username = "test-4242424242@seluxit.com";
-        String password = "123";
-        credentials = new Credentials(username, password);
 
         try {
-            admin.delete(username);
+            admin().delete(defaultUser().username);
         } catch (Exception ignored) {
 
         }
@@ -38,17 +24,17 @@ public class SessionTest {
 
     @Test
     public void creates_new_user() throws Exception {
-        UserSession session = new UserSessionBuilder(admin, serviceUrl)
-            .withCredentials(credentials)
+        UserSession session = new UserSessionBuilder(admin(), serviceUrl)
+            .withCredentials(defaultUser())
             .create();
 
-        assertEquals(credentials.username, session.fetchUser().username);
+        assertEquals(defaultUser().username, session.fetchUser().username);
     }
 
     @AfterEach
     public void tearDown() {
         try {
-            admin.delete(credentials.username);
+            admin().delete(defaultUser().username);
         } catch (Exception ignored) {
         }
     }

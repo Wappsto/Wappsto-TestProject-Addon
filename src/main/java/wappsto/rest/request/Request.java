@@ -1,8 +1,7 @@
 package wappsto.rest.request;
 
-import wappsto.rest.exceptions.Forbidden;
+import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.exceptions.MissingField;
-import wappsto.rest.exceptions.NotFound;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -21,7 +20,12 @@ public class Request {
         this.service = service;
     }
 
-    public Request(WebTarget service, String session, API endPoint, Object body) {
+    public Request(
+        WebTarget service,
+        String session,
+        API endPoint,
+        Object body
+    ) {
         this(service);
         this.session = session;
         this.endPoint = endPoint;
@@ -52,7 +56,7 @@ public class Request {
         return handleResponse(response);
     }
 
-    public Response get(String path) throws Forbidden, NotFound {
+    public Response get(String path) throws Exception {
         Response response = service
             .path(endPoint.toString())
             .path(path)
@@ -73,16 +77,16 @@ public class Request {
         return handleResponse(response);
     }
 
-    private Response handleResponse(Response response) throws Forbidden, NotFound {
+    private Response handleResponse(Response response) throws Exception {
         switch (HttpResponse.from(response.getStatus())) {
             case OK:
             case CREATED:
                 return response;
+            case BAD_REQUEST:
             case FORBIDDEN:
             case UNAUTHORIZED:
-                throw new Forbidden(response.getStatusInfo().getReasonPhrase());
             case NOT_FOUND:
-                throw new NotFound(response.getStatusInfo().getReasonPhrase());
+                throw new HttpException(response.getStatusInfo().getReasonPhrase());
             default:
                 throw new IllegalStateException("Unexpected value");
         }

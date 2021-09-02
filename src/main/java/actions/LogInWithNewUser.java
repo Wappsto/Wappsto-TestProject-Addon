@@ -6,14 +6,13 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
-import wappsto.rest.exceptions.Forbidden;
 import wappsto.rest.model.*;
 import wappsto.rest.session.*;
 
 @Action(name = "Create a new logged in user")
-public class LogInWithNewUser extends ActionWithAdminSession implements WebAction {
-
-
+public class LogInWithNewUser
+    extends ActionWithAdminSession implements WebAction
+{
     @Parameter(
         description = "Application URL",
         defaultValue = "https://qa.wappsto.com/"
@@ -32,7 +31,7 @@ public class LogInWithNewUser extends ActionWithAdminSession implements WebActio
     ) throws FailureException {
 
         WebDriver driver = helper.getDriver();
-        UserSession session = null;
+        UserSession session;
         try {
             AdminCredentials adminCredentials = new AdminCredentials(
                 adminUsername,
@@ -41,7 +40,9 @@ public class LogInWithNewUser extends ActionWithAdminSession implements WebActio
                 username,
                 password
             );
-            AdminSession adminSession = new AdminSession(adminCredentials, serviceUrl);
+            AdminSession adminSession = new AdminSession(
+                adminCredentials,
+                serviceUrl);
             session = new UserSessionBuilder(adminSession, serviceUrl)
                 .withCredentials(userCredentials)
                 .create();
@@ -52,7 +53,9 @@ public class LogInWithNewUser extends ActionWithAdminSession implements WebActio
         }
 
         driver.get(appUrl);
-        driver.manage().addCookie(new Cookie("sessionID", session.getId()));
+        driver.manage().addCookie(new Cookie(
+            "sessionID", session.getId()
+        ));
 
         return ExecutionResult.PASSED;
     }

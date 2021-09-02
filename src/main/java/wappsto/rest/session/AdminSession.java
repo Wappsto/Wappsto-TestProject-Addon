@@ -1,18 +1,17 @@
 package wappsto.rest.session;
-import wappsto.rest.exceptions.Forbidden;
-import wappsto.rest.exceptions.MissingField;
-import wappsto.rest.exceptions.NotFound;
+import wappsto.rest.exceptions.*;
 import wappsto.rest.model.*;
-import wappsto.rest.request.API;
-import wappsto.rest.request.Request;
-
-import javax.ws.rs.client.*;
+import wappsto.rest.request.*;
 import javax.ws.rs.core.Response;
 
 public class AdminSession extends Session{
 
 
-    public AdminSession(AdminCredentials credentials, String serviceUrl) throws Exception {
+    public AdminSession(
+        AdminCredentials credentials,
+        String serviceUrl
+    ) throws Exception {
+
         super(serviceUrl);
         Response response = new Request(service)
             .atEndPoint(API.SESSION)
@@ -38,8 +37,7 @@ public class AdminSession extends Session{
             .delete(username);
     }
 
-    public User fetchUser(String username) throws Forbidden, NotFound {
-
+    public User fetchUser(String username) throws Exception {
         Response response = new Request(service)
             .withSession(id)
             .atEndPoint(API.USER)
