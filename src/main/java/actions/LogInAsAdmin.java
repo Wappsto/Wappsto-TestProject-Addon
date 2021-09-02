@@ -7,7 +7,10 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.html5.LocalStorage;
+import org.openqa.selenium.html5.WebStorage;
 import wappsto.rest.model.AdminCredentials;
 import wappsto.rest.session.AdminSession;
 
@@ -37,11 +40,17 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
 
         WebDriver driver = helper.getDriver();
         driver.navigate().to(adminPanel);
-        driver.manage().addCookie(
-            new Cookie("sessionID", sessionId));
+
+        storeSession(sessionId, (JavascriptExecutor) driver);
 
         return ExecutionResult.PASSED;
+    }
 
-
+    private void storeSession(String sessionId, JavascriptExecutor driver) {
+        JavascriptExecutor js = driver;
+        js.executeScript(
+            String.format(
+                "window.localStorage.setItem('%s', '%s')", "sessionID",
+                sessionId));
     }
 }
