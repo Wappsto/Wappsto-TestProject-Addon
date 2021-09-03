@@ -45,26 +45,30 @@ public class AdminSessionTest {
     public class fails_to_register_new_user {
         @Test
         public void with_missing_credentials () {
-            assertThrows(HttpException.class, () -> {
-                admin().register(
-                    new Credentials(
-                        null,
-                        null
-                    )
-                );
-            });
+            Credentials credentials = new Credentials(
+                null,
+                null
+            );
+
+            assertThrows(
+                HttpException.class,
+                () -> admin().register(credentials),
+                "Bad Request"
+            );
         }
 
         @Test
         public void with_malformed_username() {
-            assertThrows(HttpException.class, () -> {
-                admin().register(
-                    new Credentials(
-                        "123",
-                        "123"
-                    )
-                );
-            });
+            Credentials credentials = new Credentials(
+                "123",
+                "123"
+            );
+
+            assertThrows(
+                HttpException.class,
+                () -> admin().register(credentials),
+                "Bad Request"
+            );
         }
     }
 
@@ -73,10 +77,9 @@ public class AdminSessionTest {
         admin().register(defaultUser());
         admin().delete(defaultUser().username);
 
-        assertThrows(HttpException.class,
-            () -> {
-                admin().fetchUser(defaultUser().username);
-            },
+        assertThrows(
+            HttpException.class,
+            () -> admin().fetchUser(defaultUser().username),
             "Not Found"
         );
 
@@ -87,7 +90,6 @@ public class AdminSessionTest {
         try {
             admin().delete(defaultUser().username);
         } catch (Exception ignored) {
-
         }
     }
 }
