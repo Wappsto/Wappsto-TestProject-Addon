@@ -34,7 +34,8 @@ public class LogInWithNewUser
 
         AdminCredentials adminCredentials = new AdminCredentials(
             adminUsername,
-            adminPassword);
+            adminPassword
+        );
         Credentials userCredentials = new Credentials(
             username,
             password
@@ -48,7 +49,9 @@ public class LogInWithNewUser
                 serviceUrl);
         }
         catch (Exception e) {
-            throw new FailureException("Failed to create admin session: " + e.getMessage());
+            throw new FailureException(
+                "Failed to create admin session: " + e.getMessage()
+            );
         }
 
         try {
@@ -56,7 +59,9 @@ public class LogInWithNewUser
                 .withCredentials(userCredentials)
                 .create();
         } catch (Exception e) {
-            throw new FailureException("Failed to register user: " + e.getMessage());
+            throw new FailureException(
+                "Failed to register user: " + e.getMessage()
+            );
         }
 
         browser.get(appUrl);

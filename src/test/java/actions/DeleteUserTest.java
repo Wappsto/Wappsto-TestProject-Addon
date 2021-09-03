@@ -49,9 +49,11 @@ public class DeleteUserTest {
 
         runner().run(action);
 
-        assertThrows(HttpException.class, () -> {
-            admin().fetchUser(defaultUser().username);
-        });
+        assertThrows(HttpException.class,
+            () -> {
+                admin().fetchUser(defaultUser().username);
+            },
+            "Not Found");
     }
 
     @Nested

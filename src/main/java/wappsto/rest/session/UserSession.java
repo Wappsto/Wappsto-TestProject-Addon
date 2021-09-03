@@ -9,7 +9,7 @@ public class UserSession  extends  Session{
     public UserSession(Credentials credentials, String serviceUrl) throws Exception {
         super(serviceUrl);
 
-        id = new Request(service)
+        id = new Request.Builder(service)
             .atEndPoint(API.SESSION)
             .withBody(credentials)
             .post()
@@ -17,7 +17,7 @@ public class UserSession  extends  Session{
     }
 
     public User fetchUser() throws Exception{
-        return new Request(service)
+        return new Request.Builder(service)
             .atEndPoint(API.USER)
             .withSession(id)
             .get("me")

@@ -13,7 +13,7 @@ public class AdminSession extends Session{
     ) throws Exception {
 
         super(serviceUrl);
-        Response response = new Request(service)
+        Response response = new Request.Builder(service)
             .atEndPoint(API.SESSION)
             .withBody(credentials)
             .post();
@@ -23,7 +23,7 @@ public class AdminSession extends Session{
     }
 
     public void register(Credentials credentials) throws Exception {
-        new Request(service)
+        new Request.Builder(service)
             .withSession(id)
             .withBody(credentials)
             .atEndPoint(API.REGISTER)
@@ -31,14 +31,14 @@ public class AdminSession extends Session{
     }
 
     public void delete(String username) throws Exception {
-        new Request(service)
+        new Request.Builder(service)
             .withSession(id)
             .atEndPoint(API.REGISTER)
             .delete(username);
     }
 
     public User fetchUser(String username) throws Exception {
-        Response response = new Request(service)
+        Response response = new Request.Builder(service)
             .withSession(id)
             .atEndPoint(API.USER)
             .get(username);

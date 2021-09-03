@@ -14,10 +14,15 @@ public class Request {
     private String session;
     private API endPoint;
     private Object body;
-    private Object entity;
 
     public Request(WebTarget service) {
         this.service = service;
+    }
+
+    public Request(WebTarget service, String session, API endPoint) {
+        this(service);
+        this.session = session;
+        this.endPoint = endPoint;
     }
 
     public Request(
@@ -26,32 +31,18 @@ public class Request {
         API endPoint,
         Object body
     ) {
-        this(service);
-        this.session = session;
-        this.endPoint = endPoint;
+        this(service, session, endPoint);
         this.body = body;
     }
 
-    public Request withSession(String session) {
-        return new Request(service, session, endPoint, body);
-    }
-
-    public Request withBody(Object body) {
-        return new Request(service, session, endPoint, body);
-    }
-
-    public Request atEndPoint(API endPoint) {
-        return new Request(service, session, endPoint, body);
-    }
-
-
     public Response post() throws Exception {
-        if (body == null) {
-            throw new MissingField("body");
+        Response response;
+        try{
+             response= invoke()
+                .post(Entity.json(body));
+        } catch (Exception e) {
+            throw new HttpException(e.getMessage());
         }
-
-        Response response = invoke()
-            .post(Entity.json(body));
 
         return handleResponse(response);
     }
@@ -100,5 +91,60 @@ public class Request {
             invocation = invocation.header(SESSION_HEADER, session);
         }
         return invocation;
+    }
+
+    public static class Builder {
+        private WebTarget service;
+        private String session;
+        private API endPoint;
+        private Object body;
+
+        public Builder(WebTarget service) {
+            this.service = service;
+        }
+
+        public Builder withSession(String session) {
+            this.session = session;
+            return this;
+        }
+
+        public Builder withBody(Object body) {
+            this.body = body;
+            return this;
+        }
+
+        public Builder atEndPoint(API endPoint) {
+            this.endPoint = endPoint;
+            return this;
+        }
+
+        public Response get(String path) throws Exception {
+            return new Request(
+                service,
+                session,
+                endPoint
+            ).get(path);
+        }
+
+        public Response post() throws Exception {
+            if (body == null) {
+                throw new MissingField("Body in a post request cannot be null");
+            }
+
+            return new Request(
+                service,
+                session,
+                endPoint,
+                body
+            ).post();
+        }
+
+        public Response delete(String path) throws Exception {
+            return new Request(
+                service,
+                session,
+                endPoint
+            ) .delete(path);
+        }
     }
 }

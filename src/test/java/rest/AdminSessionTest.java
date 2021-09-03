@@ -20,11 +20,24 @@ public class AdminSessionTest {
     @Nested
     public class fails_to_create {
         @Test
-        public void with_invalid_credentials() {
+        public void with_invalid_admin_credentials() {
             assertThrows(HttpException.class, () -> new AdminSession(
                 new AdminCredentials(null, null),
                 testConfig.API_ROOT
             ));
+        }
+
+        @Test
+        public void with_invalid_service_url() {
+            assertThrows(HttpException.class, () -> {
+                new AdminSession(
+                    new AdminCredentials(
+                        testConfig.ADMIN_USERNAME,
+                        testConfig.ADMIN_PASSWORD
+                    ),
+                    "https://localhost/invalid/url/"
+                );
+            });
         }
     }
 
