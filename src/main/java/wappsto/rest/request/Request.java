@@ -1,19 +1,16 @@
 package wappsto.rest.request;
 
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.exceptions.MissingField;
-
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-public class Request {
+public abstract class Request {
     public static final String SESSION_HEADER = "x-session";
-    private WebTarget service;
-    private String session;
-    private API endPoint;
-    private Object body;
+    protected WebTarget service;
+    protected String session;
+    protected API endPoint;
+    protected Object body;
 
     public Request(WebTarget service) {
         this.service = service;
@@ -35,40 +32,7 @@ public class Request {
         this.body = body;
     }
 
-    public Response post() throws Exception {
-        Response response;
-        try{
-             response= invoke()
-                .post(Entity.json(body));
-        } catch (Exception e) {
-            throw new HttpException(e.getMessage());
-        }
-
-        return handleResponse(response);
-    }
-
-    public Response get(String path) throws Exception {
-        Response response = service
-            .path(endPoint.toString())
-            .path(path)
-            .request()
-            .header(SESSION_HEADER, session)
-            .get();
-
-        return handleResponse(response);
-    }
-
-    public Response delete(String path) throws Exception {
-        Response response = service
-            .path(endPoint.toString())
-            .path(path)
-            .request()
-            .header(SESSION_HEADER, session)
-            .delete();
-        return handleResponse(response);
-    }
-
-    private Response handleResponse(Response response) throws Exception {
+    protected Response handleResponse(Response response) throws Exception {
         switch (HttpResponse.from(response.getStatus())) {
             case OK:
             case CREATED:
@@ -83,7 +47,7 @@ public class Request {
         }
     }
 
-    private Invocation.Builder invoke() {
+    protected Invocation.Builder invoke() {
         Invocation.Builder invocation = service.path(endPoint.toString())
             .request("application/json");
 
@@ -119,32 +83,28 @@ public class Request {
         }
 
         public Response get(String path) throws Exception {
-            return new Request(
+            return new GetRequest(
                 service,
                 session,
                 endPoint
-            ).get(path);
+            ).send(path);
         }
 
         public Response post() throws Exception {
-            if (body == null) {
-                throw new MissingField("Body in a post request cannot be null");
-            }
-
-            return new Request(
+            return new PostRequest(
                 service,
                 session,
                 endPoint,
                 body
-            ).post();
+            ).send();
         }
 
         public Response delete(String path) throws Exception {
-            return new Request(
+            return new DeleteRequest(
                 service,
                 session,
                 endPoint
-            ) .delete(path);
+            ) .send(path);
         }
     }
 }
