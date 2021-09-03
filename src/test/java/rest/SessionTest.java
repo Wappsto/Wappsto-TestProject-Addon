@@ -26,7 +26,7 @@ public class SessionTest {
 
     @Test
     public void creates_new_user() throws Exception {
-        UserSession session = new UserSessionBuilder(admin(), serviceUrl)
+        UserSession session = new UserSession.Builder(admin(), serviceUrl)
             .withCredentials(defaultUser())
             .create();
 

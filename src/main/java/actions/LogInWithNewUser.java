@@ -56,7 +56,7 @@ public class LogInWithNewUser
         }
 
         try {
-            session = new UserSessionBuilder(admin, serviceUrl)
+            session = new UserSession.Builder(admin, serviceUrl)
                 .withCredentials(userCredentials)
                 .create();
         } catch (Exception e) {
