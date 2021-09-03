@@ -8,6 +8,7 @@ import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
 import wappsto.rest.model.*;
 import wappsto.rest.session.*;
+import static actions.Utils.*;
 
 @Action(name = "Create a new logged in user")
 public class LogInWithNewUser
@@ -65,13 +66,7 @@ public class LogInWithNewUser
         }
 
         browser.get(appUrl);
-        logIn(browser, session);
+        logIn(browser, session.getId());
         return ExecutionResult.PASSED;
-    }
-
-    private void logIn(WebDriver browser, UserSession session) {
-        browser.manage().addCookie(new Cookie(
-            "sessionID", session.getId()
-        ));
     }
 }

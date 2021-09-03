@@ -12,6 +12,8 @@ import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.model.Credentials;
 import wappsto.rest.session.UserSession;
 
+import static actions.Utils.*;
+
 @Action(name = "Log in an existing user")
 public class LogInExistingUser implements WebAction {
     @Parameter(description = "Username")
@@ -40,7 +42,7 @@ public class LogInExistingUser implements WebAction {
             throw new FailureException("Error logging in: " + e.getMessage());
         }
         browser.navigate().to(appUrl);
-        logIn(browser, session);
+        logIn(browser, session.getId());
         return ExecutionResult.PASSED;
     }
 
@@ -54,11 +56,5 @@ public class LogInExistingUser implements WebAction {
             serviceUrl
         );
         return session;
-    }
-
-    private void logIn(WebDriver browser, UserSession session) {
-        browser.manage().addCookie(
-            new Cookie("sessionID", session.getId())
-        );
     }
 }
