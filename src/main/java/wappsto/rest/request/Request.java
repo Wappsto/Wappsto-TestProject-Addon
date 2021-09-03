@@ -8,31 +8,24 @@ import javax.ws.rs.core.Response;
 public abstract class Request {
     public static final String SESSION_HEADER = "x-session";
     protected WebTarget service;
-    protected String session;
-    protected API endPoint;
     protected Object body;
 
     public Request(WebTarget service) {
         this.service = service;
     }
 
-    public Request(WebTarget service, String session, API endPoint) {
-        this(service);
-        this.session = session;
-        this.endPoint = endPoint;
-    }
-
     public Request(
         WebTarget service,
-        String session,
-        API endPoint,
         Object body
     ) {
-        this(service, session, endPoint);
+        this(service);
         this.body = body;
     }
 
-    protected Response handleResponse(Response response) throws Exception {
+    public abstract Response send() throws Exception;
+    public abstract Response send(String session) throws Exception;
+
+    protected Response handle(Response response) throws Exception {
         switch (HttpResponse.from(response.getStatus())) {
             case OK:
             case CREATED:
@@ -47,29 +40,12 @@ public abstract class Request {
         }
     }
 
-    protected Invocation.Builder invoke() {
-        Invocation.Builder invocation = service.path(endPoint.toString())
-            .request("application/json");
-
-        if (session != null) {
-            invocation = invocation.header(SESSION_HEADER, session);
-        }
-        return invocation;
-    }
-
     public static class Builder {
         private WebTarget service;
-        private String session;
-        private API endPoint;
         private Object body;
 
         public Builder(WebTarget service) {
             this.service = service;
-        }
-
-        public Builder withSession(String session) {
-            this.session = session;
-            return this;
         }
 
         public Builder withBody(Object body) {
@@ -77,34 +53,47 @@ public abstract class Request {
             return this;
         }
 
-        public Builder atEndPoint(API endPoint) {
-            this.endPoint = endPoint;
+        public Builder addPath(String path) {
+            this.service = service.path(path);
             return this;
         }
 
-        public Response get(String path) throws Exception {
+        public Response get() throws Exception {
             return new GetRequest(
-                service,
-                session,
-                endPoint
-            ).send(path);
+                service
+            ).send();
+        }
+
+        public Response get(String session) throws Exception {
+            return new GetRequest(
+                service
+            ).send(session);
         }
 
         public Response post() throws Exception {
             return new PostRequest(
                 service,
-                session,
-                endPoint,
                 body
             ).send();
         }
 
-        public Response delete(String path) throws Exception {
-            return new DeleteRequest(
+        public Response post(String session) throws Exception {
+            return new PostRequest(
                 service,
-                session,
-                endPoint
-            ) .send(path);
+                body
+            ).send(session);
+        }
+
+        public Response delete() throws Exception {
+            return new DeleteRequest(
+                service
+            ).send();
+        }
+
+        public Response delete(String session) throws Exception {
+            return new DeleteRequest(
+                service
+            ).send(session);
         }
     }
 }

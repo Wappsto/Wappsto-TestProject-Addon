@@ -26,19 +26,6 @@ public class AdminSessionTest {
                 testConfig.API_ROOT
             ));
         }
-
-        @Test
-        public void with_invalid_service_url() {
-            assertThrows(HttpException.class, () -> {
-                new AdminSession(
-                    new AdminCredentials(
-                        testConfig.ADMIN_USERNAME,
-                        testConfig.ADMIN_PASSWORD
-                    ),
-                    "https://localhost/invalid/url/"
-                );
-            });
-        }
     }
 
     @Test

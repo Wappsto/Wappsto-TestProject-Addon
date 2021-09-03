@@ -4,21 +4,25 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 public class DeleteRequest extends Request {
-    public DeleteRequest(WebTarget service, String session, API endPoint) {
+    public DeleteRequest(WebTarget service) {
         super(
-            service,
-            session,
-            endPoint
+            service
         );
     }
 
-    public Response send(String path) throws Exception {
+    public Response send() throws Exception {
         Response response = service
-            .path(endPoint.toString())
-            .path(path)
+            .request()
+            .delete();
+        return handle(response);
+    }
+
+    public Response send(String session) throws Exception {
+        Response response = service
             .request()
             .header(SESSION_HEADER, session)
             .delete();
-        return handleResponse(response);
+
+        return handle(response);
     }
 }

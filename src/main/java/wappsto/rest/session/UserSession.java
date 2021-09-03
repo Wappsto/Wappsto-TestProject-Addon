@@ -10,7 +10,7 @@ public class UserSession  extends  Session{
         super(serviceUrl);
 
         id = new Request.Builder(service)
-            .atEndPoint(API.SESSION)
+            .addPath(API.SESSION.toString())
             .withBody(credentials)
             .post()
             .readEntity(SessionResponse.class).sessionId.id;
@@ -18,9 +18,9 @@ public class UserSession  extends  Session{
 
     public User fetchUser() throws Exception{
         return new Request.Builder(service)
-            .atEndPoint(API.USER)
-            .withSession(id)
-            .get("me")
+            .addPath(API.USER.toString())
+            .addPath("me")
+            .get(id)
             .readEntity(User.class);
     }
 

@@ -10,25 +10,28 @@ import javax.ws.rs.core.Response;
 public class PostRequest extends Request{
     public PostRequest(
         WebTarget service,
-        String session,
-        API endPoint,
         Object body
     ){
-        super(service, session, endPoint, body);
+        super(service, body);
     }
 
     public Response send() throws Exception {
         if (body == null) {
             throw new MissingField("Body in a post request cannot be null");
         }
-        Response response;
-        try{
-            response= invoke()
-                .post(Entity.json(body));
-        } catch (Exception e) {
-            throw new HttpException(e.getMessage());
-        }
+        Response response = service
+            .request()
+            .post(Entity.json(body));
 
-        return handleResponse(response);
+        return handle(response);
+    }
+
+    public Response send(String session) throws Exception {
+        Response response = service
+            .request("application/json")
+            .header(SESSION_HEADER, session)
+            .post(Entity.json(body));
+
+        return handle(response);
     }
 }
