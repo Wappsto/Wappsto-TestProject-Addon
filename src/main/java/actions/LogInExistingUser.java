@@ -31,24 +31,34 @@ public class LogInExistingUser implements WebAction {
     public ExecutionResult execute(
         WebAddonHelper helper
     ) throws FailureException {
-        WebDriver driver = helper.getDriver();
+        WebDriver browser = helper.getDriver();
 
         UserSession session;
         try {
-            session = new UserSession(
-                new Credentials(
-                    username,
-                    password
-                ),
-                serviceUrl
-            );
+            session = createNewUserSession();
         } catch (Exception e) {
             throw new FailureException("Error logging in: " + e.getMessage());
         }
-        driver.navigate().to(appUrl);
-        driver.manage().addCookie(
+        browser.navigate().to(appUrl);
+        logIn(browser, session);
+        return ExecutionResult.PASSED;
+    }
+
+    private UserSession createNewUserSession() throws Exception {
+        UserSession session;
+        session = new UserSession(
+            new Credentials(
+                username,
+                password
+            ),
+            serviceUrl
+        );
+        return session;
+    }
+
+    private void logIn(WebDriver browser, UserSession session) {
+        browser.manage().addCookie(
             new Cookie("sessionID", session.getId())
         );
-        return ExecutionResult.PASSED;
     }
 }

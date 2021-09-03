@@ -1,6 +1,11 @@
 package actions;
 
+import io.testproject.java.sdk.v2.internal.Driver;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
 import java.io.IOException;
@@ -8,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class LogInExistingUserTest {
     private static Config testConfig;
@@ -33,6 +39,24 @@ public class LogInExistingUserTest {
             defaultUser().password);
 
         runner().run(action);
+
+        assert loggedIn(runner().getDriver()) : "Browser not logged in";
+    }
+
+    private boolean loggedIn(WebDriver browser) {
+        browser.navigate().refresh();
+        try {
+            new WebDriverWait(browser, 5)
+                .until(visibilityOf(browser.
+                    findElement(By.xpath(String.format(
+                        "//span[text()='%s']",
+                        defaultUser().username))
+                    )
+                ));
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Nested

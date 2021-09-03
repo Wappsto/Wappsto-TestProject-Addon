@@ -30,7 +30,7 @@ public class LogInWithNewUser
         WebAddonHelper helper
     ) throws FailureException {
 
-        WebDriver driver = helper.getDriver();
+        WebDriver browser = helper.getDriver();
 
         AdminCredentials adminCredentials = new AdminCredentials(
             adminUsername,
@@ -59,13 +59,14 @@ public class LogInWithNewUser
             throw new FailureException("Failed to register user: " + e.getMessage());
         }
 
+        browser.get(appUrl);
+        logIn(browser, session);
+        return ExecutionResult.PASSED;
+    }
 
-
-        driver.get(appUrl);
-        driver.manage().addCookie(new Cookie(
+    private void logIn(WebDriver browser, UserSession session) {
+        browser.manage().addCookie(new Cookie(
             "sessionID", session.getId()
         ));
-
-        return ExecutionResult.PASSED;
     }
 }

@@ -27,23 +27,27 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
 
         String sessionId;
         try {
-            sessionId = new AdminSession(
-                new AdminCredentials(
-                    adminUsername,
-                    adminPassword
-                ),
-                serviceUrl
-            ).getId();
+            sessionId = createNewAdminSession();
         } catch (Exception e) {
             throw new FailureException("Admin login failed: " + e.getMessage());
         }
 
-        WebDriver driver = helper.getDriver();
-        driver.navigate().to(adminPanel);
+        WebDriver browser = helper.getDriver();
+        browser.navigate().to(adminPanel);
 
-        storeSession(sessionId, (JavascriptExecutor) driver);
+        storeSession(sessionId, (JavascriptExecutor) browser);
 
         return ExecutionResult.PASSED;
+    }
+
+    private String createNewAdminSession() throws Exception {
+        return new AdminSession(
+            new AdminCredentials(
+                adminUsername,
+                adminPassword
+            ),
+            serviceUrl
+        ).getId();
     }
 
     private void storeSession(String sessionId, JavascriptExecutor driver) {
