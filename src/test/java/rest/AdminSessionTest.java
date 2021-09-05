@@ -36,9 +36,11 @@ public class AdminSessionTest {
     @Test
     public void registers_new_user() throws Exception {
         admin().register(defaultUser());
-        assertEquals(
-            defaultUser().username,
-            admin().fetchUser(defaultUser().username).username);
+
+        String expected = defaultUser().username;
+        String actual =  admin().fetchUser(defaultUser().username).username;
+
+        assertEquals(expected, actual)
     }
 
     @Nested

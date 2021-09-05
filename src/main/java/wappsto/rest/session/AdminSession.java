@@ -14,7 +14,7 @@ public class AdminSession extends Session{
 
         super(serviceUrl);
         Response response = new Request.Builder(service)
-            .addPath(API.SESSION.toString())
+            .addPath(API.SESSION)
             .withBody(credentials)
             .post();
 
@@ -25,20 +25,20 @@ public class AdminSession extends Session{
     public void register(Credentials credentials) throws Exception {
         new Request.Builder(service)
             .withBody(credentials)
-            .addPath(API.REGISTER.toString())
+            .addPath(API.REGISTER)
             .post(id);
     }
 
     public void delete(String username) throws Exception {
         new Request.Builder(service)
-            .addPath(API.REGISTER.toString())
+            .addPath(API.REGISTER)
             .addPath(username)
             .delete(id);
     }
 
     public User fetchUser(String username) throws Exception {
         Response response = new Request.Builder(service)
-            .addPath(API.USER.toString())
+            .addPath(API.USER)
             .addPath(username)
             .get(id);
         return response

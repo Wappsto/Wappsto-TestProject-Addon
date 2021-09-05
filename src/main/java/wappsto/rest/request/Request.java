@@ -57,6 +57,11 @@ public abstract class Request {
             return this;
         }
 
+        public Builder addPath(API path) {
+            this.service = addPath(path.toString());
+            return this;
+        }
+
         public Response get() throws Exception {
             return new GetRequest(
                 service
