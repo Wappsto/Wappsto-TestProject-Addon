@@ -14,10 +14,10 @@ public class Config {
     public Config() throws IOException {
         Properties props = new Properties();
 
-        props.load(
-            getClass().
-                getClassLoader().
-                getResourceAsStream("test-secret.config"));
+        props.load(getClass()
+            .getClassLoader()
+            .getResourceAsStream("test-secret.config")
+        );
         ADMIN_USERNAME = props.getProperty("username");
         ADMIN_PASSWORD = props.getProperty("password");
         ADMIN_PANEL = props.getProperty("admin_panel");
