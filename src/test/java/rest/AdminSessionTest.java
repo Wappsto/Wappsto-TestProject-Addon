@@ -40,7 +40,7 @@ public class AdminSessionTest {
         String expected = defaultUser().username;
         String actual =  admin().fetchUser(defaultUser().username).username;
 
-        assertEquals(expected, actual)
+        assertEquals(expected, actual);
     }
 
     @Nested
