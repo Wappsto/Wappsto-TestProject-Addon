@@ -52,13 +52,13 @@ public abstract class Request {
             return this;
         }
 
-        public Builder addPath(String path) {
+        public Builder atEndPoint(String path) {
             this.service = service.path(path);
             return this;
         }
 
-        public Builder addPath(API path) {
-            return addPath(path.toString());
+        public Builder atEndPoint(API path) {
+            return atEndPoint(path.toString());
         }
 
         public Response get() throws Exception {

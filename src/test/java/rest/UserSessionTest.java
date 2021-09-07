@@ -41,6 +41,15 @@ public class UserSessionTest {
         );
     }
 
+    @Test
+    public void installs_wapp() throws Exception {
+        UserSession session = createNewUserSession();
+
+        session.install(Wapp.HISTORICAL_DATA);
+        assert session.fetchWapps().size() == 1
+            : "Incorrect number of wapps found";
+    }
+
     private UserSession createNewUserSession() throws Exception {
         UserSession session = new UserSession.Builder(admin(), serviceUrl)
             .withCredentials(defaultUser())

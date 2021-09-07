@@ -1,5 +1,4 @@
 package wappsto.rest.session;
-import wappsto.rest.exceptions.*;
 import wappsto.rest.model.*;
 import wappsto.rest.request.*;
 import javax.ws.rs.core.Response;
@@ -14,7 +13,7 @@ public class AdminSession extends Session{
 
         super(serviceUrl);
         Response response = new Request.Builder(service)
-            .addPath(API.SESSION)
+            .atEndPoint(API.SESSION)
             .withBody(credentials)
             .post();
 
@@ -25,21 +24,21 @@ public class AdminSession extends Session{
     public void register(Credentials credentials) throws Exception {
         new Request.Builder(service)
             .withBody(credentials)
-            .addPath(API.REGISTER)
+            .atEndPoint(API.REGISTER)
             .post(id);
     }
 
     public void delete(String username) throws Exception {
         new Request.Builder(service)
-            .addPath(API.REGISTER)
-            .addPath(username)
+            .atEndPoint(API.REGISTER)
+            .atEndPoint(username)
             .delete(id);
     }
 
     public User fetchUser(String username) throws Exception {
         Response response = new Request.Builder(service)
-            .addPath(API.USER)
-            .addPath(username)
+            .atEndPoint(API.USER)
+            .atEndPoint(username)
             .get(id);
         return response
             .readEntity(User.class);

@@ -18,5 +18,12 @@ public enum API {
         public String toString() {
             return "session";
         }
+    },
+
+    INSTALLATION {
+        @Override
+        public String toString() {
+            return "installation";
+        }
     }
 }
