@@ -15,7 +15,7 @@ public enum Wapp {
 
     public static Wapp from(String name) {
         for (Wapp wapp : values()) {
-            if (wapp.name == name) {
+            if (wapp.name.equals(name)) {
                 return wapp;
             }
         }

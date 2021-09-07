@@ -24,8 +24,11 @@ public class InstallWapp implements WebAction {
         WebDriver browser = helper.getDriver();
         String sessionId = browser
             .manage()
-            .getCookieNamed("sessionId")
+            .getCookieNamed("sessionID")
             .getValue();
+        if (sessionId == null) {
+            throw new FailureException("Failed to obtain session cookie");
+        }
 
         UserSession session;
         try {
@@ -35,7 +38,11 @@ public class InstallWapp implements WebAction {
             );
             session.install(nameOfWapp);
         } catch (Exception e) {
-            throw new FailureException(e.getMessage());
+            throw new FailureException(
+                "Failed to install wapp named: "
+                    + nameOfWapp + ". "
+                    + e.getMessage()
+            );
         }
 
         return ExecutionResult.PASSED;
