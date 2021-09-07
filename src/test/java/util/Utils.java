@@ -2,6 +2,7 @@ package util;
 
 import io.testproject.java.enums.AutomatedBrowserType;
 import io.testproject.java.sdk.v2.Runner;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import wappsto.rest.model.*;
 import wappsto.rest.session.AdminSession;
@@ -45,5 +46,16 @@ public class Utils {
     public static void resetRunner() throws Exception {
         WebDriver driver = runner().getDriver();
         driver.manage().deleteAllCookies();
+    }
+
+    public static void logInBrowser(
+        String sessionId,
+        String appUrl
+    ) throws Exception {
+        WebDriver browser = runner().getDriver();
+        browser.navigate().to(appUrl);
+        browser.manage().addCookie(
+            new Cookie("sessionID", sessionId)
+        );
     }
 }

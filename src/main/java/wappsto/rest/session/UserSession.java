@@ -65,6 +65,14 @@ public class UserSession  extends  Session{
         return response.readEntity(WappsResponse.class).id;
     }
 
+    public void claimNetwork(String id) throws Exception {
+        new Request.Builder(service)
+            .atEndPoint(API.NETWORK)
+            .atEndPoint(id)
+            .withBody("{}")
+            .post(this.id);
+    }
+
     public static class Builder {
         private AdminSession admin;
         private String serviceUrl;

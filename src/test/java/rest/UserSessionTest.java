@@ -2,6 +2,8 @@ package rest;
 
 import org.junit.jupiter.api.*;
 import util.Config;
+import wappsto.rest.exceptions.HttpException;
+import wappsto.rest.model.Credentials;
 import wappsto.rest.session.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,6 +73,46 @@ public class UserSessionTest {
             () -> session.install(""),
             "Wapp not found"
         );
+    }
+
+    @Nested
+    public class fails_to_claim {
+        @Test
+        public void invalid_network() throws Exception {
+            UserSession session = createNewUserSession();
+
+            assertThrows(
+                HttpException.class,
+                () -> session.claimNetwork("bad id"),
+                "Bad request"
+            );
+        }
+
+        @Test
+        public void when_not_authorized() throws Exception {
+            UserSession session = createNewUserSession();
+
+            assertThrows(
+                HttpException.class,
+                () -> session.claimNetwork(testConfig.NETWORK),
+                "Unauthorized"
+            );
+        }
+    }
+
+    @Test
+    public void claims_network() throws Exception {
+        Credentials credentials = new Credentials(
+            testConfig.DEVELOPER_USERNAME,
+            testConfig.DEVELOPER_PASSWORD
+        );
+
+        UserSession session = new UserSession(
+            credentials,
+            serviceUrl
+        );
+
+        assertDoesNotThrow(() -> session.claimNetwork(testConfig.NETWORK));
     }
 
     private UserSession createNewUserSession() throws Exception {

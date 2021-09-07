@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 public class PostRequest extends Request{
     public PostRequest(
         WebTarget service,
-        Object body
+        Entity body
     ){
         super(service, body);
     }
@@ -19,7 +19,7 @@ public class PostRequest extends Request{
         }
         Response response = service
             .request()
-            .post(Entity.json(body));
+            .post(body);
 
         return handle(response);
     }
@@ -28,7 +28,7 @@ public class PostRequest extends Request{
         Response response = service
             .request("application/json")
             .header(SESSION_HEADER, session)
-            .post(Entity.json(body));
+            .post(body);
 
         return handle(response);
     }

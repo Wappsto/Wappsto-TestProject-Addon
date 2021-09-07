@@ -20,6 +20,13 @@ public enum API {
         }
     },
 
+    NETWORK {
+        @Override
+        public String toString() {
+            return "network";
+        }
+    },
+
     INSTALLATION {
         @Override
         public String toString() {

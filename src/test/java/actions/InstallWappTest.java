@@ -35,7 +35,7 @@ public class InstallWappTest {
                 ""
             );
 
-            logInBrowser(sessionId);
+            logInBrowser(sessionId, testConfig.APP_URL);
 
             assertThrows(ExecutionException.class, () -> {
                 runner().run(action);
@@ -69,20 +69,12 @@ public class InstallWappTest {
             ).withCredentials(defaultUser())
                 .create();
 
-            logInBrowser(session.getId());
+            logInBrowser(session.getId(), testConfig.APP_URL);
             runner().run(action);
 
             assert session.fetchWapps().size() == 1
                 : "Incorrect number of wapps";
         }
-    }
-
-    private void logInBrowser(String sessionId) throws Exception {
-        WebDriver browser = runner().getDriver();
-        browser.navigate().to(testConfig.APP_URL);
-        browser.manage().addCookie(
-            new Cookie("sessionID", sessionId)
-        );
     }
 
     private UserSession createNewSession() throws Exception {

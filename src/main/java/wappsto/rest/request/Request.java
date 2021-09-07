@@ -1,13 +1,15 @@
 package wappsto.rest.request;
 
 import wappsto.rest.exceptions.HttpException;
+
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 public abstract class Request {
     public static final String SESSION_HEADER = "x-session";
     protected WebTarget service;
-    protected Object body;
+    protected Entity body;
 
     public Request(WebTarget service) {
         this.service = service;
@@ -15,7 +17,7 @@ public abstract class Request {
 
     public Request(
         WebTarget service,
-        Object body
+        Entity body
     ) {
         this(service);
         this.body = body;
@@ -41,14 +43,14 @@ public abstract class Request {
 
     public static class Builder {
         private WebTarget service;
-        private Object body;
+        private Entity body;
 
         public Builder(WebTarget service) {
             this.service = service;
         }
 
         public Builder withBody(Object body) {
-            this.body = body;
+            this.body = Entity.json(body);
             return this;
         }
 
