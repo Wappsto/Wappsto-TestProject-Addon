@@ -23,6 +23,11 @@ public class LogInAdminTest {
         testConfig = new Config();
     }
 
+    @BeforeEach
+    public void reset() throws Exception {
+        resetRunner();
+    }
+
     @Test
     public void logs_in_as_admin() throws Exception {
         LogInAsAdmin action = createAction(
@@ -36,19 +41,6 @@ public class LogInAdminTest {
         WebDriver browser = runner().getDriver();
         assert loggedIn(browser) : "Browser not logged in";
 
-    }
-
-    private boolean loggedIn(WebDriver browser) {
-        browser.navigate().refresh();
-        try {
-            new WebDriverWait(browser, 5)
-                .until(visibilityOf(browser
-                    .findElement(By.xpath("//span[@aria-label='logout']")))
-                );
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 
     @Nested
@@ -96,8 +88,16 @@ public class LogInAdminTest {
         return action;
     }
 
-    @BeforeEach
-    public void reset() throws Exception {
-        resetRunner();
+    private boolean loggedIn(WebDriver browser) {
+        browser.navigate().refresh();
+        try {
+            new WebDriverWait(browser, 5)
+                .until(visibilityOf(browser
+                    .findElement(By.xpath("//span[@aria-label='logout']")))
+                );
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }
