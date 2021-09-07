@@ -81,7 +81,7 @@ public class InstallWappTest {
         WebDriver browser = runner().getDriver();
         browser.navigate().to(testConfig.APP_URL);
         browser.manage().addCookie(
-            new Cookie("sessionId", sessionId)
+            new Cookie("sessionID", sessionId)
         );
     }
 
