@@ -1,14 +1,11 @@
 package actions;
 
-import io.testproject.java.sdk.v2.internal.Driver;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import static util.Utils.*;

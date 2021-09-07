@@ -6,16 +6,13 @@ import org.openqa.selenium.Cookie;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.session.UserSession;
-
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static util.Utils.*;
 
 public class InstallWappTest {
     private static Config testConfig;
-    private String wappName = "Historical data";
 
     @BeforeAll
     public static void setup() throws Exception {

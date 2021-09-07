@@ -1,9 +1,8 @@
 package wappsto.rest.session;
 
 import wappsto.rest.model.*;
-import wappsto.rest.request.API;
+import wappsto.rest.request.*;
 import wappsto.rest.model.InstallationRequest;
-import wappsto.rest.request.Request;
 
 import javax.ws.rs.core.Response;
 import java.util.Collection;

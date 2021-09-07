@@ -3,8 +3,7 @@ package util;
 import io.testproject.java.enums.AutomatedBrowserType;
 import io.testproject.java.sdk.v2.Runner;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.model.AdminCredentials;
-import wappsto.rest.model.Credentials;
+import wappsto.rest.model.*;
 import wappsto.rest.session.AdminSession;
 
 

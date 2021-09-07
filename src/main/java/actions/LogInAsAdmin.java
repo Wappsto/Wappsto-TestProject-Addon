@@ -1,16 +1,11 @@
 package actions;
 
-import io.testproject.java.annotations.v2.Action;
-import io.testproject.java.annotations.v2.Parameter;
+import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.html5.LocalStorage;
-import org.openqa.selenium.html5.WebStorage;
+import org.openqa.selenium.*;
 import wappsto.rest.model.AdminCredentials;
 import wappsto.rest.session.AdminSession;
 

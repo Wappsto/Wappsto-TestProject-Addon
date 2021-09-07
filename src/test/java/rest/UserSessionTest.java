@@ -2,7 +2,6 @@ package rest;
 
 import org.junit.jupiter.api.*;
 import util.Config;
-import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.session.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;

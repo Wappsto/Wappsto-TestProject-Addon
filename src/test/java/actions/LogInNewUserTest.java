@@ -1,12 +1,10 @@
 package actions;
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
-
 import java.util.concurrent.ExecutionException;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;

@@ -1,7 +1,5 @@
 package wappsto.rest.session;
 
-import wappsto.rest.request.HttpResponse;
-
 public enum Wapp {
     HISTORICAL_DATA("Historical data","a56aeb91-06ac-4e64-9b24-16f8a7a90ec2");
 
