@@ -56,7 +56,7 @@ public class UserSessionTest {
         public void from_name() throws Exception {
             UserSession session = createNewUserSession();
 
-            session.install("Historical data");
+            session.install("Historical Data");
             assert session.fetchWapps().size() == 1
                 : "Incorrect number of wapps found";
         }

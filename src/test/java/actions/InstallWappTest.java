@@ -46,7 +46,7 @@ public class InstallWappTest {
         public void when_browser_is_not_logged_in() {
             InstallWapp action = createNewAction(
                 testConfig.API_ROOT,
-                "Historical data"
+                "Historical Data"
             );
 
             assertThrows(ExecutionException.class, () -> {
@@ -61,7 +61,7 @@ public class InstallWappTest {
         public void installs_wapp_by_name() throws Exception {
             InstallWapp action = createNewAction(
                 testConfig.API_ROOT,
-                "Historical data"
+                "Historical Data"
             );
             UserSession session = new UserSession.Builder(
                 admin(),
