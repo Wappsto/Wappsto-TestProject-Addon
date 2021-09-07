@@ -2,6 +2,7 @@ package rest;
 
 import org.junit.jupiter.api.*;
 import util.Config;
+import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.session.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,13 +42,36 @@ public class UserSessionTest {
         );
     }
 
+    @Nested
+    public class installs_wapp {
+        @Test
+        public void from_enum() throws Exception {
+            UserSession session = createNewUserSession();
+
+            session.install(Wapp.HISTORICAL_DATA);
+            assert session.fetchWapps().size() == 1
+                : "Incorrect number of wapps found";
+        }
+
+        @Test
+        public void from_name() throws Exception {
+            UserSession session = createNewUserSession();
+
+            session.install("Historical data");
+            assert session.fetchWapps().size() == 1
+                : "Incorrect number of wapps found";
+        }
+    }
+
     @Test
-    public void installs_wapp() throws Exception {
+    public void fails_to_install_wapp_from_invalid_name() throws Exception {
         UserSession session = createNewUserSession();
 
-        session.install(Wapp.HISTORICAL_DATA);
-        assert session.fetchWapps().size() == 1
-            : "Incorrect number of wapps found";
+        assertThrows(
+            IllegalStateException.class,
+            () -> session.install(""),
+            "Wapp not found"
+        );
     }
 
     private UserSession createNewUserSession() throws Exception {

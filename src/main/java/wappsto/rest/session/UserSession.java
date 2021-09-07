@@ -23,6 +23,14 @@ public class UserSession  extends  Session{
             .readEntity(SessionResponse.class).sessionId.id;
     }
 
+    public UserSession(String id, String serviceUrl) throws Exception {
+        super(serviceUrl);
+        this.id = id;
+
+        //Ensure the session token is valid
+        fetchUser();
+    }
+
     public User fetchUser() throws Exception{
         return new Request.Builder(service)
             .atEndPoint(API.USER)
@@ -44,6 +52,10 @@ public class UserSession  extends  Session{
             .atEndPoint(API.INSTALLATION)
             .withBody(install)
             .post(id);
+    }
+
+    public void install(String nameOfWapp) throws Exception {
+        install(Wapp.from(nameOfWapp));
     }
 
     public Collection<String> fetchWapps() throws Exception {

@@ -19,7 +19,11 @@ public class LogInExistingUserTest {
     private static Config testConfig;
 
     @BeforeAll
-    public static void setup() throws IOException {
+    public static void setup() throws Exception {
+        try {
+            admin().delete(defaultUser().username);
+        } catch (HttpException ignored) {
+        }
         testConfig = new Config();
     }
 
