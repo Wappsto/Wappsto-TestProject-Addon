@@ -58,22 +58,26 @@ public class InstallWappTest {
         }
     }
 
-    @Test
-    public void installs_wapp_by_name() throws Exception {
-        InstallWapp action = createNewAction(
-            testConfig.API_ROOT,
-            "Historical data"
-        );
-        UserSession session = new UserSession.Builder(
-            admin(),
-            testConfig.API_ROOT
-        ).withCredentials(defaultUser())
-            .create();
-        logInBrowser(session.getId());
-        runner().run(action);
+    @Nested
+    public class when_browser_is_logged_in {
+        @Test
+        public void installs_wapp_by_name() throws Exception {
+            InstallWapp action = createNewAction(
+                testConfig.API_ROOT,
+                "Historical data"
+            );
+            UserSession session = new UserSession.Builder(
+                admin(),
+                testConfig.API_ROOT
+            ).withCredentials(defaultUser())
+                .create();
 
-        assert session.fetchWapps().size() == 1
-            : "Incorrect number of wapps";
+            logInBrowser(session.getId());
+            runner().run(action);
+
+            assert session.fetchWapps().size() == 1
+                : "Incorrect number of wapps";
+        }
     }
 
     private void logInBrowser(String sessionId) throws Exception {

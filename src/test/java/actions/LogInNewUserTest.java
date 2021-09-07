@@ -44,7 +44,8 @@ public class LogInNewUserTest {
             testConfig.APP_URL);
 
         runner().run(action);
-        assert loggedIn(runner().getDriver()) : "Browser not logged in";
+        WebDriver browser = runner().getDriver();
+        assert loggedIn(browser) : "Browser not logged in";
     }
 
     private boolean loggedIn(WebDriver browser) {
