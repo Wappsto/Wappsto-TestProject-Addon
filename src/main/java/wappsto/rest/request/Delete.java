@@ -5,9 +5,7 @@ import javax.ws.rs.core.Response;
 
 public class Delete extends Request {
     public Delete(WebTarget service) {
-        super(
-            service
-        );
+        super(service);
     }
 
     public Response send() throws Exception {

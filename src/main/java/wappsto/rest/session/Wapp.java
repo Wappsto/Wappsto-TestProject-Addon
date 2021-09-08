@@ -12,6 +12,10 @@ public enum Wapp {
     IOT_RAPID_PROTOTYPING(
         "IoT Rapid Prototyping",
         "1e54f21e-8514-465a-9f79-5c346155e58a"
+    ),
+    DATA_FORWARDER(
+        "Data forwarder",
+        "db5fa34e-0f7f-4eb6-bc45-f05376b02fce"
     );
 
     private final String name;

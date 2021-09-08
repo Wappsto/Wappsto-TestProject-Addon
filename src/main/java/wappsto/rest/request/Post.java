@@ -6,10 +6,8 @@ import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
 
 public class Post extends Request{
-    public Post(
-        WebTarget service,
-        Entity body
-    ){
+
+    public Post(WebTarget service, Entity body){
         super(service, body);
     }
 
