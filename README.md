@@ -3,7 +3,7 @@ Addon for TestProject. This addon provides actions that support UI testing of th
 
 # Set up development environment
 * Ensure that Apache Maven is installed in your environment
-* Navigate to `external-dep`
+* Navigate to `external-dep/`
 * Run `add-dependency-to-maven.sh`
 
 Alternatively:
