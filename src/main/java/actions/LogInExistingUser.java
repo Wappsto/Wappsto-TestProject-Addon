@@ -39,7 +39,7 @@ public class LogInExistingUser implements WebAction {
             throw new FailureException("Error logging in: " + e.getMessage());
         }
         browser.navigate().to(appUrl);
-        logIn(browser, session.getId());
+        logIn(browser, session.id);
         return ExecutionResult.PASSED;
     }
 

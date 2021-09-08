@@ -30,7 +30,7 @@ public class UserSessionTest {
     public void creates_new_user_session() throws Exception {
         User session = createNewUserSession();
 
-        assertNotNull(session.getId());
+        assertNotNull(session.id);
     }
 
     @Test

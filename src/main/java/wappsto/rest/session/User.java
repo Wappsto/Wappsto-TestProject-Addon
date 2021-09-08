@@ -18,8 +18,7 @@ public class User extends  Session{
     }
 
     public User(String id, String serviceUrl) throws Exception {
-        super(serviceUrl);
-        this.id = id;
+        super(id, serviceUrl);
         //Ensure the session token is valid
         fetchUser();
     }
@@ -30,10 +29,6 @@ public class User extends  Session{
             .atEndPoint("me")
             .get(id)
             .readEntity(wappsto.rest.session.model.User.class);
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void install(Wapp wapp) throws Exception {

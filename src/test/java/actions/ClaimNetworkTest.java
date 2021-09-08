@@ -41,7 +41,7 @@ public class ClaimNetworkTest {
             testConfig.API_ROOT
         );
 
-        logInBrowser(session.getId(), testConfig.APP_URL);
+        logInBrowser(session.id, testConfig.APP_URL);
 
         ClaimNetwork action = createAction(
             testConfig.NETWORK,
@@ -79,7 +79,7 @@ public class ClaimNetworkTest {
             ).withCredentials(defaultUser())
                 .create();
 
-            logInBrowser(session.getId(), testConfig.APP_URL);
+            logInBrowser(session.id, testConfig.APP_URL);
 
             assertThrows(
                 ExecutionException.class,

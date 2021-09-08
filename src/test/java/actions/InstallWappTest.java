@@ -26,8 +26,7 @@ public class InstallWappTest {
     public class fails_to_install {
         @Test
         public void invalid_wapp_name() throws Exception {
-            String sessionId = createNewSession()
-                .getId();
+            String sessionId = createNewSession().id;
             InstallWapp action = createNewAction(
                 testConfig.API_ROOT,
                 ""
@@ -67,7 +66,7 @@ public class InstallWappTest {
             ).withCredentials(defaultUser())
                 .create();
 
-            logInBrowser(session.getId(), testConfig.APP_URL);
+            logInBrowser(session.id, testConfig.APP_URL);
             runner().run(action);
 
             assert session.fetchWapps().size() == 1

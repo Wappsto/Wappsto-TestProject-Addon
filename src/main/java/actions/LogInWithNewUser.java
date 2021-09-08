@@ -68,7 +68,7 @@ public class LogInWithNewUser
         }
 
         browser.get(appUrl);
-        logIn(browser, session.getId());
+        logIn(browser, session.id);
         return ExecutionResult.PASSED;
     }
 }
