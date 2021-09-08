@@ -6,7 +6,9 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.session.UserSession;
+import wappsto.rest.session.User;
+
+import static actions.Utils.getSessionFrom;
 
 @Action(name = "Install wapp")
 public class InstallWapp implements WebAction {
@@ -22,17 +24,11 @@ public class InstallWapp implements WebAction {
         WebAddonHelper helper
     ) throws FailureException {
         WebDriver browser = helper.getDriver();
-        String sessionId = browser
-            .manage()
-            .getCookieNamed("sessionID")
-            .getValue();
-        if (sessionId == null) {
-            throw new FailureException("Failed to obtain session cookie");
-        }
+        String sessionId = getSessionFrom(browser);
 
-        UserSession session;
+        User session;
         try {
-            session = new UserSession(
+            session = new User(
                 sessionId,
                 serviceUrl
             );

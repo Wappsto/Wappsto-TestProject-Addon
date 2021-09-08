@@ -1,11 +1,10 @@
 package actions;
 
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.WebDriver;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.model.Credentials;
-import wappsto.rest.session.UserSession;
+import wappsto.rest.session.model.Credentials;
+import wappsto.rest.session.User;
 
 import java.util.concurrent.ExecutionException;
 
@@ -37,7 +36,7 @@ public class ClaimNetworkTest {
             testConfig.DEVELOPER_PASSWORD
         );
 
-        UserSession session = new UserSession(
+        User session = new User(
             credentials,
             testConfig.API_ROOT
         );
@@ -74,7 +73,7 @@ public class ClaimNetworkTest {
                 testConfig.API_ROOT
             );
 
-            UserSession session = new UserSession.Builder(
+            User session = new User.Builder(
                 admin(),
                 testConfig.API_ROOT
             ).withCredentials(defaultUser())

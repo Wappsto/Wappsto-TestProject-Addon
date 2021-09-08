@@ -1,4 +1,4 @@
-package wappsto.rest.model;
+package wappsto.rest.session.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Credentials {

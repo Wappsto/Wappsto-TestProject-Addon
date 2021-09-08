@@ -3,39 +3,33 @@ package wappsto.rest.session;
 import wappsto.rest.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.model.InstallationRequest;
+import wappsto.rest.session.model.Credentials;
 
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 
-public class UserSession  extends  Session{
+public class User extends  Session{
 
-    public UserSession(
+    public User(
         Credentials credentials,
         String serviceUrl
     ) throws Exception {
-        super(serviceUrl);
-
-        id = new Request.Builder(service)
-            .atEndPoint(API.SESSION)
-            .withBody(credentials)
-            .post()
-            .readEntity(SessionResponse.class).sessionId.id;
+        super(credentials, serviceUrl);
     }
 
-    public UserSession(String id, String serviceUrl) throws Exception {
+    public User(String id, String serviceUrl) throws Exception {
         super(serviceUrl);
         this.id = id;
-
         //Ensure the session token is valid
         fetchUser();
     }
 
-    public User fetchUser() throws Exception{
+    public wappsto.rest.session.model.User fetchUser() throws Exception{
         return new Request.Builder(service)
             .atEndPoint(API.USER)
             .atEndPoint("me")
             .get(id)
-            .readEntity(User.class);
+            .readEntity(wappsto.rest.session.model.User.class);
     }
 
     public String getId() {
@@ -74,11 +68,11 @@ public class UserSession  extends  Session{
     }
 
     public static class Builder {
-        private AdminSession admin;
+        private Admin admin;
         private String serviceUrl;
 
         private Credentials credentials;
-        public Builder(AdminSession admin, String serviceUrl) {
+        public Builder(Admin admin, String serviceUrl) {
             this.admin = admin;
             this.serviceUrl = serviceUrl;
         }
@@ -88,9 +82,9 @@ public class UserSession  extends  Session{
             return this;
         }
 
-        public UserSession create() throws Exception {
+        public User create() throws Exception {
             admin.register(credentials);
-            return new UserSession(credentials, serviceUrl);
+            return new User(credentials, serviceUrl);
         }
 
     }

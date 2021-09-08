@@ -5,8 +5,8 @@ import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
-import wappsto.rest.model.AdminCredentials;
-import wappsto.rest.session.AdminSession;
+import wappsto.rest.session.model.AdminCredentials;
+import wappsto.rest.session.Admin;
 
 @Action(name = "Delete user")
 public class DeleteUser extends ActionWithAdminSession implements WebAction {
@@ -22,7 +22,7 @@ public class DeleteUser extends ActionWithAdminSession implements WebAction {
         );
 
         try {
-            AdminSession admin = new AdminSession(
+            Admin admin = new Admin(
                 credentials,
                 serviceUrl
             );

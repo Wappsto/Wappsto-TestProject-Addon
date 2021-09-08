@@ -3,8 +3,9 @@ package rest;
 import org.junit.jupiter.api.*;
 import util.Config;
 import wappsto.rest.exceptions.*;
-import wappsto.rest.model.*;
-import wappsto.rest.session.AdminSession;
+import wappsto.rest.session.Admin;
+import wappsto.rest.session.model.AdminCredentials;
+import wappsto.rest.session.model.Credentials;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Utils.*;
@@ -21,7 +22,7 @@ public class AdminSessionTest {
     public class fails_to_create {
         @Test
         public void with_invalid_admin_credentials() {
-            assertThrows(HttpException.class, () -> new AdminSession(
+            assertThrows(HttpException.class, () -> new Admin(
                 new AdminCredentials(null, null),
                 testConfig.API_ROOT
             ));

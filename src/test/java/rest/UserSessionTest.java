@@ -3,7 +3,7 @@ package rest;
 import org.junit.jupiter.api.*;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.model.Credentials;
+import wappsto.rest.session.model.Credentials;
 import wappsto.rest.session.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,14 +28,14 @@ public class UserSessionTest {
 
     @Test
     public void creates_new_user_session() throws Exception {
-        UserSession session = createNewUserSession();
+        User session = createNewUserSession();
 
         assertNotNull(session.getId());
     }
 
     @Test
     public void fetches_own_user() throws Exception {
-        UserSession session = createNewUserSession();
+        User session = createNewUserSession();
 
         assertEquals(
             defaultUser().username,
@@ -47,7 +47,7 @@ public class UserSessionTest {
     public class installs_wapp {
         @Test
         public void from_enum() throws Exception {
-            UserSession session = createNewUserSession();
+            User session = createNewUserSession();
 
             session.install(Wapp.HISTORICAL_DATA);
             assert session.fetchWapps().size() == 1
@@ -56,7 +56,7 @@ public class UserSessionTest {
 
         @Test
         public void from_name() throws Exception {
-            UserSession session = createNewUserSession();
+            User session = createNewUserSession();
 
             session.install("Historical Data");
             assert session.fetchWapps().size() == 1
@@ -66,7 +66,7 @@ public class UserSessionTest {
 
     @Test
     public void fails_to_install_wapp_from_invalid_name() throws Exception {
-        UserSession session = createNewUserSession();
+        User session = createNewUserSession();
 
         assertThrows(
             IllegalStateException.class,
@@ -79,7 +79,7 @@ public class UserSessionTest {
     public class fails_to_claim {
         @Test
         public void invalid_network() throws Exception {
-            UserSession session = createNewUserSession();
+            User session = createNewUserSession();
 
             assertThrows(
                 HttpException.class,
@@ -90,7 +90,7 @@ public class UserSessionTest {
 
         @Test
         public void when_not_authorized() throws Exception {
-            UserSession session = createNewUserSession();
+            User session = createNewUserSession();
 
             assertThrows(
                 HttpException.class,
@@ -107,7 +107,7 @@ public class UserSessionTest {
             testConfig.DEVELOPER_PASSWORD
         );
 
-        UserSession session = new UserSession(
+        User session = new User(
             credentials,
             serviceUrl
         );
@@ -115,8 +115,8 @@ public class UserSessionTest {
         assertDoesNotThrow(() -> session.claimNetwork(testConfig.NETWORK));
     }
 
-    private UserSession createNewUserSession() throws Exception {
-        UserSession session = new UserSession.Builder(admin(), serviceUrl)
+    private User createNewUserSession() throws Exception {
+        User session = new User.Builder(admin(), serviceUrl)
             .withCredentials(defaultUser())
             .create();
         return session;

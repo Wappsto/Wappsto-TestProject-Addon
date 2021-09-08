@@ -1,24 +1,20 @@
 package wappsto.rest.session;
-import wappsto.rest.model.*;
 import wappsto.rest.request.*;
+import wappsto.rest.session.model.AdminCredentials;
+import wappsto.rest.session.model.Credentials;
+import wappsto.rest.session.model.SessionResponse;
+import wappsto.rest.session.model.User;
+
 import javax.ws.rs.core.Response;
 
-public class AdminSession extends Session{
+public class Admin extends Session{
 
 
-    public AdminSession(
+    public Admin(
         AdminCredentials credentials,
         String serviceUrl
     ) throws Exception {
-
-        super(serviceUrl);
-        Response response = new Request.Builder(service)
-            .atEndPoint(API.SESSION)
-            .withBody(credentials)
-            .post();
-
-        id = response
-            .readEntity(SessionResponse.class).sessionId.id;
+        super(credentials, serviceUrl);
     }
 
     public void register(Credentials credentials) throws Exception {

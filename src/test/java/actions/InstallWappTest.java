@@ -1,11 +1,9 @@
 package actions;
 
-import io.testproject.java.sdk.v2.drivers.WebDriver;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Cookie;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.session.UserSession;
+import wappsto.rest.session.User;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,7 +61,7 @@ public class InstallWappTest {
                 testConfig.API_ROOT,
                 "Historical Data"
             );
-            UserSession session = new UserSession.Builder(
+            User session = new User.Builder(
                 admin(),
                 testConfig.API_ROOT
             ).withCredentials(defaultUser())
@@ -77,8 +75,8 @@ public class InstallWappTest {
         }
     }
 
-    private UserSession createNewSession() throws Exception {
-        return new UserSession.Builder(
+    private User createNewSession() throws Exception {
+        return new User.Builder(
             admin(),
             testConfig.API_ROOT
         ).withCredentials(defaultUser())

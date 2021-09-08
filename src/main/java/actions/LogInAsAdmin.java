@@ -6,8 +6,8 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
-import wappsto.rest.model.AdminCredentials;
-import wappsto.rest.session.AdminSession;
+import wappsto.rest.session.model.AdminCredentials;
+import wappsto.rest.session.Admin;
 
 @Action(name = "Log in as admin")
 public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
@@ -36,7 +36,7 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
     }
 
     private String createNewAdminSession() throws Exception {
-        return new AdminSession(
+        return new Admin(
             new AdminCredentials(
                 adminUsername,
                 adminPassword

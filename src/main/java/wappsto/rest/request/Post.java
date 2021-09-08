@@ -5,8 +5,8 @@ import wappsto.rest.exceptions.MissingField;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
 
-public class PostRequest extends Request{
-    public PostRequest(
+public class Post extends Request{
+    public Post(
         WebTarget service,
         Entity body
     ){

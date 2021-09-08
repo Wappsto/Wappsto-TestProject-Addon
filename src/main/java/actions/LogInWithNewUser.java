@@ -6,8 +6,10 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
-import wappsto.rest.model.*;
 import wappsto.rest.session.*;
+import wappsto.rest.session.model.AdminCredentials;
+import wappsto.rest.session.model.Credentials;
+
 import static actions.Utils.*;
 
 @Action(name = "Create a new logged in user")
@@ -42,10 +44,10 @@ public class LogInWithNewUser
             password
         );
 
-        AdminSession admin;
-        UserSession session;
+        Admin admin;
+        User session;
         try {
-            admin = new AdminSession(
+            admin = new Admin(
                 adminCredentials,
                 serviceUrl);
         }
@@ -56,7 +58,7 @@ public class LogInWithNewUser
         }
 
         try {
-            session = new UserSession.Builder(admin, serviceUrl)
+            session = new User.Builder(admin, serviceUrl)
                 .withCredentials(userCredentials)
                 .create();
         } catch (Exception e) {

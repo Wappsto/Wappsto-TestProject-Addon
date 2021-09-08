@@ -4,12 +4,13 @@ import io.testproject.java.enums.AutomatedBrowserType;
 import io.testproject.java.sdk.v2.Runner;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.model.*;
-import wappsto.rest.session.AdminSession;
+import wappsto.rest.session.Admin;
+import wappsto.rest.session.model.AdminCredentials;
+import wappsto.rest.session.model.Credentials;
 
 
 public class Utils {
-    private static AdminSession admin;
+    private static Admin admin;
     private static Runner runner;
 
     public static Credentials defaultUser() {
@@ -19,10 +20,10 @@ public class Utils {
         );
     }
 
-    public static AdminSession admin() throws Exception {
+    public static Admin admin() throws Exception {
         Config tc = new Config();
         if (admin == null) {
-            admin = new AdminSession(
+            admin = new Admin(
                 new AdminCredentials(
                     tc.ADMIN_USERNAME,
                     tc.ADMIN_PASSWORD

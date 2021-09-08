@@ -6,8 +6,8 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.model.Credentials;
-import wappsto.rest.session.UserSession;
+import wappsto.rest.session.model.Credentials;
+import wappsto.rest.session.User;
 
 import static actions.Utils.*;
 
@@ -32,7 +32,7 @@ public class LogInExistingUser implements WebAction {
     ) throws FailureException {
         WebDriver browser = helper.getDriver();
 
-        UserSession session;
+        User session;
         try {
             session = createNewUserSession();
         } catch (Exception e) {
@@ -43,9 +43,9 @@ public class LogInExistingUser implements WebAction {
         return ExecutionResult.PASSED;
     }
 
-    private UserSession createNewUserSession() throws Exception {
-        UserSession session;
-        session = new UserSession(
+    private User createNewUserSession() throws Exception {
+        User session;
+        session = new User(
             new Credentials(
                 username,
                 password

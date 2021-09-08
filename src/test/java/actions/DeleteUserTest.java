@@ -3,7 +3,7 @@ package actions;
 import org.junit.jupiter.api.*;
 import util.Config;
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.model.Credentials;
+import wappsto.rest.session.model.Credentials;
 
 import java.util.concurrent.ExecutionException;
 

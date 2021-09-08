@@ -64,39 +64,39 @@ public abstract class Request {
         }
 
         public Response get() throws Exception {
-            return new GetRequest(
+            return new Get(
                 service
             ).send();
         }
 
         public Response get(String session) throws Exception {
-            return new GetRequest(
+            return new Get(
                 service
             ).send(session);
         }
 
         public Response post() throws Exception {
-            return new PostRequest(
+            return new Post(
                 service,
                 body
             ).send();
         }
 
         public Response post(String session) throws Exception {
-            return new PostRequest(
+            return new Post(
                 service,
                 body
             ).send(session);
         }
 
         public Response delete() throws Exception {
-            return new DeleteRequest(
+            return new Delete(
                 service
             ).send();
         }
 
         public Response delete(String session) throws Exception {
-            return new DeleteRequest(
+            return new Delete(
                 service
             ).send(session);
         }

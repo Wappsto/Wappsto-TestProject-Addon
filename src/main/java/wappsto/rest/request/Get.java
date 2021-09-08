@@ -3,8 +3,8 @@ package wappsto.rest.request;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-public class GetRequest extends Request {
-    public GetRequest(WebTarget service) {
+public class Get extends Request {
+    public Get(WebTarget service) {
         super(service);
     }
     
