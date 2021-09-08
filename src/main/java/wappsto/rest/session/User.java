@@ -3,7 +3,7 @@ package wappsto.rest.session;
 import wappsto.rest.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.model.InstallationRequest;
-import wappsto.rest.session.model.Credentials;
+import wappsto.rest.session.model.*;
 
 import javax.ws.rs.core.Response;
 import java.util.Collection;
@@ -23,12 +23,12 @@ public class User extends  Session{
         fetchUser();
     }
 
-    public wappsto.rest.session.model.User fetchUser() throws Exception{
+    public UserResponse fetchUser() throws Exception{
         return new Request.Builder(service)
             .atEndPoint(API.USER)
             .atEndPoint("me")
             .get(id)
-            .readEntity(wappsto.rest.session.model.User.class);
+            .readEntity(UserResponse.class);
     }
 
     public void install(Wapp wapp) throws Exception {

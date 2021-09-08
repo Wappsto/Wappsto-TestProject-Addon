@@ -2,8 +2,7 @@ package wappsto.rest.session;
 import wappsto.rest.request.*;
 import wappsto.rest.session.model.AdminCredentials;
 import wappsto.rest.session.model.Credentials;
-import wappsto.rest.session.model.SessionResponse;
-import wappsto.rest.session.model.User;
+import wappsto.rest.session.model.UserResponse;
 
 import javax.ws.rs.core.Response;
 
@@ -31,13 +30,13 @@ public class Admin extends Session{
             .delete(id);
     }
 
-    public User fetchUser(String username) throws Exception {
+    public UserResponse fetchUser(String username) throws Exception {
         Response response = new Request.Builder(service)
             .atEndPoint(API.USER)
             .atEndPoint(username)
             .get(id);
         return response
-            .readEntity(User.class);
+            .readEntity(UserResponse.class);
     }
 
     public String getId() {
