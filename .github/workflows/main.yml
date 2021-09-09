@@ -21,15 +21,15 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      WAPPSTO_ADMIN_USERNAME : ${{}}
-      WAPPSTO_ADMIN_PASSWORD :  ${{}}
-      TESTPROJECT_DEV_TOKEN : ${{}}
+      WAPPSTO_ADMIN_USERNAME : ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
+      WAPPSTO_ADMIN_PASSWORD :  ${{ secrets.WAPPSTO_ADMIN_PASSWORD }}
+      TESTPROJECT_DEV_TOKEN : ${{ secrets.TESTPROJECT_DEV_TOKEN }}
       WAPPSTO_API_ROOT : "https://qa.wappsto.com/services/2.0"
       WAPPSTO_APP_URL : "https://qa.wappsto.com/"
       WAPPSTO_ADMIN_PANEL_URL : "https://admin.qa.wappsto.com/"
-      WAPPSTO_TEST_NETWORK : ${{}}
-      WAPPSTO_DEVELOPER_USERNAME : ${{}}
-      WAPPSTO_DEVELOPER_PASSWORD : ${{}}
+      WAPPSTO_TEST_NETWORK : ${{ secrets.WAPPSTO_TEST_NETWORK }}
+      WAPPSTO_DEVELOPER_USERNAME : ${{ secrets.APPSTO_DEVELOPER_USERNAME }}
+      WAPPSTO_DEVELOPER_PASSWORD : ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
