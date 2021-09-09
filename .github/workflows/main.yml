@@ -19,17 +19,6 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    env:
-      WAPPSTO_ADMIN_USERNAME : ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
-      WAPPSTO_ADMIN_PASSWORD :  ${{ secrets.WAPPSTO_ADMIN_PASSWORD }}
-      TESTPROJECT_DEV_TOKEN : ${{ secrets.TESTPROJECT_DEV_TOKEN }}
-      WAPPSTO_API_ROOT : "https://qa.wappsto.com/services/2.0"
-      WAPPSTO_APP_URL : "https://qa.wappsto.com/"
-      WAPPSTO_ADMIN_PANEL_URL : "https://admin.qa.wappsto.com/"
-      WAPPSTO_TEST_NETWORK : ${{ secrets.WAPPSTO_TEST_NETWORK }}
-      WAPPSTO_DEVELOPER_USERNAME : ${{ secrets.APPSTO_DEVELOPER_USERNAME }}
-      WAPPSTO_DEVELOPER_PASSWORD : ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -42,15 +31,36 @@ jobs:
           java-version: '11'
           # Java distribution. See the list of supported distributions in README file
           distribution: 'adopt'
-
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.2
+        with:
+          maven-version: 3.8.2
       - name: Install TestProject SDK
         run: mvn install:install-file -Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar
-
-      - name: Build and Run Tests with Surefire
-        run: mvn test --batch-mode --fail-at-end
-      
-      - name: Publish Test Report
-        if: ${{ always() }}
-        uses: scacap/action-surefire-report@v1
-      
-      
+      - name: Run TestProject agent
+        env:
+          TP_API_KEY: ${{ secrets.TESTPROJECT_API_KEY }}
+        run: |
+          envsubst < .github/ci/docker-compose.yml > docker-compose.yml
+          docker-compose -f docker-compose.yml up -d
+      - name: Sleep until the TestProject agent can run tests
+        uses: mydea/action-wait-for-api@v1
+        with:
+          url: http://localhost:8585/api/status
+          expected-response-field: registered
+          expected-response-field-value: true
+          interval: 1
+          timeout: 60
+      - name: Run tests with Maven
+        env:
+          WAPPSTO_ADMIN_USERNAME : ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
+          WAPPSTO_ADMIN_PASSWORD :  ${{ secrets.WAPPSTO_ADMIN_PASSWORD }}
+          TESTPROJECT_DEV_TOKEN : ${{ secrets.TESTPROJECT_DEV_TOKEN }}
+          WAPPSTO_API_ROOT : "https://qa.wappsto.com/services/2.0"
+          WAPPSTO_APP_URL : "https://qa.wappsto.com/"
+          WAPPSTO_ADMIN_PANEL_URL : "https://admin.qa.wappsto.com/"
+          WAPPSTO_TEST_NETWORK : ${{ secrets.WAPPSTO_TEST_NETWORK }}
+          WAPPSTO_DEVELOPER_USERNAME : ${{ secrets.APPSTO_DEVELOPER_USERNAME }}
+          WAPPSTO_DEVELOPER_PASSWORD : ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
+        run: mvn clean verify
+        working-directory: opensdk/code-reuse
