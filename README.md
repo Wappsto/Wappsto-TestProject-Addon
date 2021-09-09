@@ -20,14 +20,15 @@ mvn install:install-file\
 # Testing
 In order to run the automated test suite, the following environment variables need to be set:
 ```
-username=<admin_email>
-password=<admin_password>
-dev_token=<testproject.io_dev_token>
-api_root=<wappsto_api_url>
-app_url=<wappsto_dashboard_url>
-admin_panel=<admin_panel_url>
-network=<iot_test_network_uuid>
-developer_username=<dev_dashboard_account_email>
-developer_password=<dev_dashboard_account_password>
+WAPPSTO_ADMIN_USERNAME : <admin_email>
+WAPPSTO_ADMIN_PASSWORD : <admin_password>
+TESTPROJECT_DEV_TOKEN : <testproject.io_dev_token>
+TESTPROJECT_API_TOKEN : 
+WAPPSTO_API_ROOT : <wappsto_api_url>
+WAPPSTO_APP_URL : <wappsto_dashboard_url>
+WAPPSTO_ADMIN_PANEL_URL : <admin_panel_url>
+WAPPSTO_TEST_NETWORK : <iot_test_network_uuid>
+WAPPSTO_DEVELOPER_USERNAME : <dev_dashboard_account_email>
+WAPPSTO_DEVELOPER_PASSWORD : <dev_dashboard_account_password>
 ```
 Note that the developer account needs to have permission to claim the network UUID.
