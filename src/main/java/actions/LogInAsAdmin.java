@@ -46,8 +46,7 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
     }
 
     private void storeSession(String sessionId, JavascriptExecutor driver) {
-        JavascriptExecutor js = driver;
-        js.executeScript(
+        driver.executeScript(
             String.format(
                 "window.localStorage.setItem('%s', '%s')", "sessionID",
                 sessionId));

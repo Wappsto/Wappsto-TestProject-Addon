@@ -8,6 +8,8 @@ import wappsto.rest.session.Admin;
 import wappsto.rest.session.model.AdminCredentials;
 import wappsto.rest.session.model.Credentials;
 
+import static util.Env.*;
+
 
 public class Utils {
     private static Admin admin;
@@ -21,14 +23,13 @@ public class Utils {
     }
 
     public static Admin admin() throws Exception {
-        Config tc = new Config();
         if (admin == null) {
             admin = new Admin(
                 new AdminCredentials(
-                    tc.ADMIN_USERNAME,
-                    tc.ADMIN_PASSWORD
+                    env().get(Env.ADMIN_USERNAME),
+                    env().get(Env.ADMIN_PASSWORD)
                 ),
-                tc.API_ROOT
+                env().get(API_ROOT)
             );
         }
         return admin;
@@ -37,7 +38,7 @@ public class Utils {
     public static Runner runner() throws Exception {
         if (runner == null) {
             runner = Runner.createWeb(
-                new Config().DEV_TOKEN,
+                env().get(DEV_TOKEN),
                 AutomatedBrowserType.Chrome);
         }
 

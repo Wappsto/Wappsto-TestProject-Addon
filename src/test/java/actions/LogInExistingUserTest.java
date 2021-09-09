@@ -4,16 +4,15 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import util.Config;
 import wappsto.rest.exceptions.HttpException;
 import java.util.concurrent.ExecutionException;
 
+import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class LogInExistingUserTest {
-    private static Config testConfig;
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -21,7 +20,6 @@ public class LogInExistingUserTest {
             admin().delete(defaultUser().username);
         } catch (HttpException ignored) {
         }
-        testConfig = new Config();
     }
 
     @BeforeEach
@@ -34,8 +32,8 @@ public class LogInExistingUserTest {
         admin().register(defaultUser());
 
         LogInExistingUser action = createAction(
-            testConfig.API_ROOT,
-            testConfig.APP_URL,
+            env().get(API_ROOT),
+            env().get(APP_URL),
             defaultUser().username,
             defaultUser().password);
 
@@ -63,17 +61,15 @@ public class LogInExistingUserTest {
     @Nested
     public class fails_to_log_in {
         @Test
-        public void with_invalid_credentials() throws Exception {
+        public void with_invalid_credentials() {
             LogInExistingUser action = createAction(
-                testConfig.API_ROOT,
-                testConfig.APP_URL,
+                env().get(API_ROOT),
+                env().get(APP_URL),
                 "123",
                 "123"
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
 
         @Test
@@ -82,14 +78,12 @@ public class LogInExistingUserTest {
 
             LogInExistingUser action = createAction(
                 "123",
-                testConfig.APP_URL,
+                env().get(APP_URL),
                 defaultUser().username,
                 defaultUser().password
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
     }
 

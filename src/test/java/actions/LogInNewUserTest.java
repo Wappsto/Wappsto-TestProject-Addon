@@ -3,20 +3,19 @@ package actions;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import util.Config;
+import util.Env;
 import wappsto.rest.exceptions.HttpException;
 import java.util.concurrent.ExecutionException;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogInNewUserTest {
-    private static Config testConfig;
 
     @BeforeAll
     public static void setup() throws Exception {
-        testConfig = new Config();
         try {
             admin().delete(defaultUser().username);
         } catch (HttpException e) {
@@ -34,12 +33,12 @@ public class LogInNewUserTest {
     @Test
     public void logs_in_new_user() throws Exception {
         LogInWithNewUser action = createAction(
-            testConfig.ADMIN_USERNAME,
-            testConfig.ADMIN_PASSWORD,
+            env().get(Env.ADMIN_USERNAME),
+            env().get(Env.ADMIN_PASSWORD),
             defaultUser().username,
             defaultUser().password,
-            testConfig.API_ROOT,
-            testConfig.APP_URL);
+            env().get(API_ROOT),
+            env().get(APP_URL));
 
         runner().run(action);
         WebDriver browser = runner().getDriver();
@@ -71,45 +70,39 @@ public class LogInNewUserTest {
                 "123",
                 defaultUser().username,
                 defaultUser().password,
-                testConfig.API_ROOT,
-                testConfig.APP_URL
+                env().get(API_ROOT),
+                env().get(APP_URL)
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
 
         @Test
         public void with_invalid_service_url() {
             LogInWithNewUser action = createAction(
-                testConfig.ADMIN_USERNAME,
-                testConfig.ADMIN_PASSWORD,
+                env().get(ADMIN_USERNAME),
+                env().get(ADMIN_PASSWORD),
                 defaultUser().username,
                 defaultUser().password,
                 "123",
-                testConfig.APP_URL
+                env().get(APP_URL)
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
 
         @Test
         public void with_invalid_user_credentials() {
             LogInWithNewUser action = createAction(
-                testConfig.ADMIN_USERNAME,
-                testConfig.ADMIN_PASSWORD,
+                env().get(ADMIN_USERNAME),
+                env().get(ADMIN_PASSWORD),
                 "123",
                 defaultUser().password,
-                testConfig.API_ROOT,
-                testConfig.APP_URL
+                env().get(Env.API_ROOT),
+                env().get(APP_URL)
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
     }
 

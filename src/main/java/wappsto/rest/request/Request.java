@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 
 public abstract class Request {
     public static final String SESSION_HEADER = "x-session";
-    protected WebTarget service;
+    protected final WebTarget service;
     protected Entity body;
 
     public Request(WebTarget service) {

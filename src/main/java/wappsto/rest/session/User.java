@@ -2,7 +2,6 @@ package wappsto.rest.session;
 
 import wappsto.rest.model.*;
 import wappsto.rest.request.*;
-import wappsto.rest.model.InstallationRequest;
 import wappsto.rest.session.model.*;
 
 import javax.ws.rs.core.Response;
@@ -63,8 +62,8 @@ public class User extends  Session{
     }
 
     public static class Builder {
-        private Admin admin;
-        private String serviceUrl;
+        private final Admin admin;
+        private final String serviceUrl;
 
         private Credentials credentials;
         public Builder(Admin admin, String serviceUrl) {

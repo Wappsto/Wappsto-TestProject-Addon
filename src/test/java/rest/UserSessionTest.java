@@ -1,22 +1,21 @@
 package rest;
 
 import org.junit.jupiter.api.*;
-import util.Config;
 import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.session.model.Credentials;
 import wappsto.rest.session.*;
+
+import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class UserSessionTest {
-    private static Config testConfig;
     private static String serviceUrl;
 
     @BeforeAll
-    public static void setup() throws Exception {
-        testConfig = new Config();
-        serviceUrl = testConfig.API_ROOT;
+    public static void setup() {
+        serviceUrl = env().get(API_ROOT);
 
 
         try {
@@ -94,7 +93,7 @@ public class UserSessionTest {
 
             assertThrows(
                 HttpException.class,
-                () -> session.claimNetwork(testConfig.NETWORK),
+                () -> session.claimNetwork(env().get(NETWORK_TOKEN)),
                 "Unauthorized"
             );
         }
@@ -103,8 +102,8 @@ public class UserSessionTest {
     @Test
     public void claims_network() throws Exception {
         Credentials credentials = new Credentials(
-            testConfig.DEVELOPER_USERNAME,
-            testConfig.DEVELOPER_PASSWORD
+            env().get(DEVELOPER_USERNAME),
+            env().get(DEVELOPER_PASSWORD)
         );
 
         User session = new User(
@@ -112,14 +111,13 @@ public class UserSessionTest {
             serviceUrl
         );
 
-        assertDoesNotThrow(() -> session.claimNetwork(testConfig.NETWORK));
+        assertDoesNotThrow(() -> session.claimNetwork(env().get(NETWORK_TOKEN)));
     }
 
     private User createNewUserSession() throws Exception {
-        User session = new User.Builder(admin(), serviceUrl)
+        return new User.Builder(admin(), serviceUrl)
             .withCredentials(defaultUser())
             .create();
-        return session;
     }
 
     @AfterEach

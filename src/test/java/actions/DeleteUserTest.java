@@ -1,24 +1,23 @@
 package actions;
 
 import org.junit.jupiter.api.*;
-import util.Config;
+import util.Env;
 import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.session.model.Credentials;
 
 import java.util.concurrent.ExecutionException;
 
+import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeleteUserTest {
-    private static Config testConfig;
     private static String serviceUrl;
 
 
     @BeforeAll
     public static void setup() throws Exception {
-        testConfig = new Config();
-        serviceUrl = testConfig.API_ROOT;
+        serviceUrl = env().get(API_ROOT);
         try {
             admin().delete(defaultUser().username);
         } catch (HttpException e) {
@@ -43,16 +42,14 @@ public class DeleteUserTest {
         DeleteUser action = createAction(
             serviceUrl,
             defaultUser().username,
-            testConfig.ADMIN_USERNAME,
-            testConfig.ADMIN_PASSWORD
+            env().get(Env.ADMIN_USERNAME),
+            env().get(Env.ADMIN_PASSWORD)
             );
 
         runner().run(action);
 
         assertThrows(HttpException.class,
-            () -> {
-                admin().fetchUser(defaultUser().username);
-            },
+            () -> admin().fetchUser(defaultUser().username),
             "Not Found");
     }
 
@@ -63,15 +60,13 @@ public class DeleteUserTest {
             admin().register(defaultUser());
 
             DeleteUser action = createAction(
-                testConfig.API_ROOT,
+                env().get(API_ROOT),
                 defaultUser().username,
                 "123",
                 "123"
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
 
         @Test
@@ -81,13 +76,11 @@ public class DeleteUserTest {
             DeleteUser action = createAction(
                 "invalid_root",
                 defaultUser().username,
-                testConfig.ADMIN_USERNAME,
-                testConfig.ADMIN_PASSWORD
+                env().get(ADMIN_USERNAME),
+                env().get(ADMIN_PASSWORD)
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
     }
 

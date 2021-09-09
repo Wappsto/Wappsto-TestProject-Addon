@@ -1,22 +1,18 @@
 package rest;
 
 import org.junit.jupiter.api.*;
-import util.Config;
 import wappsto.rest.exceptions.*;
 import wappsto.rest.session.Admin;
 import wappsto.rest.session.model.AdminCredentials;
 import wappsto.rest.session.model.Credentials;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static util.Env.API_ROOT;
+import static util.Env.env;
 import static util.Utils.*;
 
 public class AdminSessionTest {
-    private static Config testConfig;
 
-    @BeforeAll
-    public static void setup() throws Exception {
-        testConfig = new Config();
-    }
 
     @Nested
     public class fails_to_create {
@@ -24,7 +20,7 @@ public class AdminSessionTest {
         public void with_invalid_admin_credentials() {
             assertThrows(HttpException.class, () -> new Admin(
                 new AdminCredentials(null, null),
-                testConfig.API_ROOT
+                env().get(API_ROOT)
             ));
         }
     }

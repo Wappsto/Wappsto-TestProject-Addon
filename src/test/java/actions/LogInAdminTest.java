@@ -4,11 +4,10 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import util.Config;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
@@ -16,12 +15,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 
 public class LogInAdminTest {
-    private static Config testConfig;
-
-    @BeforeAll
-    public static void setup() throws IOException {
-        testConfig = new Config();
-    }
 
     @BeforeEach
     public void reset() throws Exception {
@@ -31,10 +24,11 @@ public class LogInAdminTest {
     @Test
     public void logs_in_as_admin() throws Exception {
         LogInAsAdmin action = createAction(
-            testConfig.ADMIN_PANEL,
-            testConfig.ADMIN_USERNAME,
-            testConfig.ADMIN_PASSWORD,
-            testConfig.API_ROOT);
+            env().get(ADMIN_PANEL),
+            env().get(ADMIN_USERNAME),
+            env().get(ADMIN_PASSWORD),
+            env().get(API_ROOT)
+        );
 
         runner().run(action);
 
@@ -48,29 +42,25 @@ public class LogInAdminTest {
         @Test
         public void with_invalid_credentials() {
             LogInAsAdmin action = createAction(
-                testConfig.ADMIN_PANEL,
+                env().get(ADMIN_PANEL),
                 "123",
                 "123",
-                testConfig.API_ROOT
+                env().get(API_ROOT)
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
 
         @Test
         public void with_invalid_service_url() {
             LogInAsAdmin action = createAction(
-                testConfig.ADMIN_PANEL,
-                testConfig.ADMIN_USERNAME,
-                testConfig.ADMIN_PASSWORD,
+                env().get(ADMIN_PANEL),
+                env().get(ADMIN_USERNAME),
+                env().get(ADMIN_PASSWORD),
                 "123"
             );
 
-            assertThrows(ExecutionException.class, () -> {
-                runner().run(action);
-            });
+            assertThrows(ExecutionException.class, () -> runner().run(action));
         }
     }
 
