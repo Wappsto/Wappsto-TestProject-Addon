@@ -38,7 +38,7 @@ jobs:
         run: pwd
 
       - name: Install TestProject SDK
-        run: mvn install:install-file '-Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar'
+        run: mvn install:install-file -Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar
           
       - name: Build and Run Tests
         run: mvn test --batch-mode --fail-at-end
