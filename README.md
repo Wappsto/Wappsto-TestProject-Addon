@@ -23,7 +23,6 @@ In order to run the automated test suite, the following environment variables ne
 WAPPSTO_ADMIN_USERNAME : <admin_email>
 WAPPSTO_ADMIN_PASSWORD : <admin_password>
 TESTPROJECT_DEV_TOKEN : <testproject.io_dev_token>
-TESTPROJECT_API_TOKEN : 
 WAPPSTO_API_ROOT : <wappsto_api_url>
 WAPPSTO_APP_URL : <wappsto_dashboard_url>
 WAPPSTO_ADMIN_PANEL_URL : <admin_panel_url>
