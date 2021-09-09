@@ -18,7 +18,7 @@ mvn install:install-file\
 ```
 
 # Testing
-In order to run the automated test suite, the file `src/test/resources/test-secret.config` needs to exist, and contain the following properties:
+In order to run the automated test suite, the following environment variables need to be set:
 ```
 username=<admin_email>
 password=<admin_password>
