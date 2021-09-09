@@ -16,15 +16,25 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  Build and Test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    env:
+      WAPPSTO_ADMIN_USERNAME : ${{}}
+      WAPPSTO_ADMIN_PASSWORD :  ${{}}
+      TESTPROJECT_DEV_TOKEN : ${{}}
+      WAPPSTO_API_ROOT : "https://qa.wappsto.com/services/2.0"
+      WAPPSTO_APP_URL : "https://qa.wappsto.com/"
+      WAPPSTO_ADMIN_PANEL_URL : "https://admin.qa.wappsto.com/"
+      WAPPSTO_TEST_NETWORK : ${{}}
+      WAPPSTO_DEVELOPER_USERNAME : ${{}}
+      WAPPSTO_DEVELOPER_PASSWORD : ${{}}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
 
       - name: Setup Java JDK
         uses: actions/setup-java@v2.3.0
@@ -34,13 +44,10 @@ jobs:
           # Java distribution. See the list of supported distributions in README file
           distribution: 'adopt'
 
-      - name: What is pwd anyway
-        run: pwd
-
       - name: Install TestProject SDK
         run: mvn install:install-file -Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar
-          
-      - name: Build and Run Tests
+
+      - name: Build and Run Tests with Surefire
         run: mvn test --batch-mode --fail-at-end
       
       - name: Publish Test Report
