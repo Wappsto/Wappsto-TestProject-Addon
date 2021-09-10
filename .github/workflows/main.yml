@@ -71,5 +71,5 @@ jobs:
           WAPPSTO_DEVELOPER_USERNAME: ${{ secrets.WAPPSTO_DEVELOPER_USERNAME }}
           WAPPSTO_DEVELOPER_PASSWORD: ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
         run: |
-          mvn -DtestGroup=actions
-          mvn -DtestGroup=rest
+          mvn -DtestGroup=actions test
+          mvn -DtestGroup=rest test
