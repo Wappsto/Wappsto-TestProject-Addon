@@ -31,12 +31,6 @@ jobs:
           java-version: '11'
           # Java distribution. See the list of supported distributions in README file
           distribution: 'adopt'
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.2
-        with:
-          maven-version: 3.8.2
-      - name: Install TestProject SDK
-        run: mvn install:install-file -Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar
       - name: Run TestProject agent
         env:
           TP_API_KEY: ${{ secrets.TESTPROJECT_API_KEY }}
@@ -51,6 +45,12 @@ jobs:
           expected-response-field-value: true
           interval: 1
           timeout: 60
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.2
+        with:
+          maven-version: 3.8.2
+      - name: Install TestProject SDK
+        run: mvn install:install-file -Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar
       - name: Run tests with Maven
         env:
           WAPPSTO_ADMIN_USERNAME : ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
