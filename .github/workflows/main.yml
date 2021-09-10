@@ -51,6 +51,10 @@ jobs:
           expected-response-field-value: true
           interval: 1
           timeout: 60
+      - name: Get pwd contents and path
+        run: |
+          pwd
+          ls -a
       - name: Run tests with Maven
         env:
           WAPPSTO_ADMIN_USERNAME : ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
