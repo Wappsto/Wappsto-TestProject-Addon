@@ -1,5 +1,6 @@
-package actions;
+package actions.admin;
 
+import actions.LogInAsAdmin;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
