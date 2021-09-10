@@ -8,7 +8,6 @@ import javax.ws.rs.core.Response;
 
 public class Admin extends Session{
 
-
     public Admin(
         AdminCredentials credentials,
         String serviceUrl
@@ -37,9 +36,5 @@ public class Admin extends Session{
             .get(id);
         return response
             .readEntity(UserResponse.class);
-    }
-
-    public String getId() {
-        return id;
     }
 }

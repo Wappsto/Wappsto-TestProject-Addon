@@ -42,13 +42,15 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
                 adminPassword
             ),
             serviceUrl
-        ).getId();
+        ).id;
     }
 
     private void storeSession(String sessionId, JavascriptExecutor driver) {
         driver.executeScript(
             String.format(
                 "window.localStorage.setItem('%s', '%s')", "sessionID",
-                sessionId));
+                sessionId
+            )
+        );
     }
 }

@@ -27,7 +27,7 @@ public class AdminSessionTest {
 
     @Test
     public void creates_a_new_session() throws Exception {
-        assertNotNull(admin().getId());
+        assertNotNull(admin().id);
     }
 
     @Test
