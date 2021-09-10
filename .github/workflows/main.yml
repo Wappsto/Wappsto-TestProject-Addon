@@ -37,6 +37,12 @@ jobs:
         run: |
           envsubst < .github/ci/docker-compose.yml > docker-compose.yml
           docker-compose -f docker-compose.yml up -d
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.2
+        with:
+          maven-version: 3.8.2
+      - name: Install TestProject SDK
+        run: mvn install:install-file -Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar
       - name: Sleep until the TestProject agent can run tests
         uses: mydea/action-wait-for-api@v1
         with:
@@ -45,12 +51,6 @@ jobs:
           expected-response-field-value: true
           interval: 1
           timeout: 60
-      - name: Set up Maven
-        uses: stCarolas/setup-maven@v4.2
-        with:
-          maven-version: 3.8.2
-      - name: Install TestProject SDK
-        run: mvn install:install-file -Dfile=external-dep/TestProject_SDK_0.65.0.jar -DgroupId=io.testproject -DartifactId=java-sdk -Dversion=0.65.0 -Dpackaging=jar
       - name: Run tests with Maven
         env:
           WAPPSTO_ADMIN_USERNAME : ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
@@ -63,5 +63,6 @@ jobs:
           WAPPSTO_DEVELOPER_USERNAME : ${{ secrets.APPSTO_DEVELOPER_USERNAME }}
           WAPPSTO_DEVELOPER_PASSWORD : ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
         run: |
-          mvn clean
+          mvn -DtestGroup=actions test
+          mvn -DtestGroup=rest test
         working-directory: opensdk/code-reuse
