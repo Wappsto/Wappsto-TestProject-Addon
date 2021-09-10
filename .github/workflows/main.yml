@@ -70,6 +70,5 @@ jobs:
           WAPPSTO_DEVELOPER_USERNAME : ${{ secrets.APPSTO_DEVELOPER_USERNAME }}
           WAPPSTO_DEVELOPER_PASSWORD : ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
         run: |
-          mvn -DtestGroup=actions test
-          mvn -DtestGroup=rest test
+          mvn
         working-directory: opensdk/code-reuse
