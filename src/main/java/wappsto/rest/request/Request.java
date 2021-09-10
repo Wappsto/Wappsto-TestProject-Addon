@@ -71,7 +71,7 @@ public abstract class Request {
         /**
          * Serialize a POJO into JSON
          * @param body
-         * @return
+         * @return this
          */
         public Builder withBody(Object body) {
             this.body = Entity.json(body);
@@ -81,7 +81,7 @@ public abstract class Request {
         /**
          * Append the given path to the requested URL
          * @param path  The relative path to the endpoint
-         * @return
+         * @return this
          */
         public Builder atEndPoint(String path) {
             this.service = service.path(path);
@@ -91,7 +91,7 @@ public abstract class Request {
         /**
          * Append the given path to the requested URL
          * @param path  The relative path to the endpoint
-         * @return
+         * @return this
          */
         public Builder atEndPoint(API path) {
             return atEndPoint(path.toString());
@@ -99,7 +99,7 @@ public abstract class Request {
 
         /**
          * Send a GET request to the given endpoint
-         * @return
+         * @return The JSON response body deserialized into POJO
          * @throws Exception
          */
         public Response get() throws Exception {
@@ -111,7 +111,7 @@ public abstract class Request {
         /**
          * Send a GET request with a session header to the given endpoint
          * @param session
-         * @return
+         * @return The JSON response body deserialized into POJO
          * @throws Exception
          */
         public Response get(String session) throws Exception {
@@ -122,7 +122,7 @@ public abstract class Request {
 
         /**
          * Send a POST request to the given endpoint.
-         * @return
+         * @return The JSON response body deserialized into POJO
          * @throws Exception
          */
         public Response post() throws Exception {
@@ -135,7 +135,7 @@ public abstract class Request {
         /**
          * Send a POST request with a session header to the given endpoint
          * @param session
-         * @return
+         * @return The JSON response body deserialized into POJO
          * @throws Exception
          */
         public Response post(String session) throws Exception {
@@ -147,7 +147,7 @@ public abstract class Request {
 
         /**
          * Send a DELETE request to the given endpoint
-         * @return
+         * @return The JSON response body deserialized into POJO
          * @throws Exception
          */
         public Response delete() throws Exception {
@@ -159,7 +159,7 @@ public abstract class Request {
         /**
          * Send a DELETE request with a session header to the given endpoint
          * @param session
-         * @return
+         * @return The JSON response body deserialized into POJO
          * @throws Exception
          */
         public Response delete(String session) throws Exception {
