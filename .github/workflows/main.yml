@@ -71,5 +71,4 @@ jobs:
           WAPPSTO_DEVELOPER_PASSWORD : ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
         run: |
           echo $PATH
-          mvn clean
         working-directory: opensdk/code-reuse
