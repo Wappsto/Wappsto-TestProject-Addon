@@ -9,7 +9,6 @@ services:
       TP_API_KEY: "${TP_API_KEY}"
       TP_AGENT_TEMP: "true"
       TP_SDK_PORT: "8686"
-      TP_AGENT_ALIAS: "Wappsto TestProject Addon"
       CHROME: "chrome:4444"
       CHROME_EXT: "localhost:5555"
       FIREFOX: "firefox:4444"
