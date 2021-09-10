@@ -61,7 +61,7 @@ jobs:
           echo $PATH
           which mvn
       - name: Run tests with Maven
-        env:
+        #env:
           #WAPPSTO_ADMIN_USERNAME: ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
           #WAPPSTO_ADMIN_PASSWORD:  ${{ secrets.WAPPSTO_ADMIN_PASSWORD }}
           #TESTPROJECT_DEV_TOKEN: ${{ secrets.TESTPROJECT_DEV_TOKEN }}
