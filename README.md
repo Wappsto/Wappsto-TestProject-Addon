@@ -30,4 +30,4 @@ WAPPSTO_TEST_NETWORK : <iot_test_network_uuid>
 WAPPSTO_DEVELOPER_USERNAME : <dev_dashboard_account_email>
 WAPPSTO_DEVELOPER_PASSWORD : <dev_dashboard_account_password>
 ```
-Note that the developer account needs to have permission to claim the network UUID.
+Note that the developer account needs to have permission to claim the network UUID. Also note that the github build action does not run tests that depend on the admin panel, since it cannot be accessed outside Seluxit's local network.
