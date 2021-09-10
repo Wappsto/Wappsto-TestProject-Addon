@@ -13,6 +13,12 @@ public abstract class Session {
     protected Client client;
     protected WebTarget service;
 
+    /**
+     * The base class for API sessions
+     * @param credentials   Login credentials
+     * @param serviceUrl    URL to the API
+     * @throws Exception
+     */
     public Session(Credentials credentials, String serviceUrl) throws Exception {
         createClient(serviceUrl);
 
@@ -23,6 +29,11 @@ public abstract class Session {
             .readEntity(SessionResponse.class).sessionId.id;
     }
 
+    /**
+     * Instantiates a session object from an existing session ID
+     * @param id            Session ID
+     * @param serviceUrl    URL to the API
+     */
     public Session(String id, String serviceUrl) {
         createClient(serviceUrl);
         this.id = id;
