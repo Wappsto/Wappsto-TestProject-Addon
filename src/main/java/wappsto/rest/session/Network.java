@@ -17,7 +17,7 @@ public class Network {
      * @param id
      * @throws Exception
      */
-    public void claimNetwork(String id) throws Exception {
+    public void claim(String id) throws Exception {
         new Request.Builder(session.service)
             .atEndPoint(API.NETWORK)
             .atEndPoint(id)

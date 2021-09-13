@@ -35,7 +35,7 @@ public class NetworkTest {
             Network network = new Network(session);
             assertThrows(
                 HttpException.class,
-                () -> network.claimNetwork("bad id"),
+                () -> network.claim("bad id"),
                 "Bad request"
             );
         }
@@ -47,7 +47,7 @@ public class NetworkTest {
 
             assertThrows(
                 HttpException.class,
-                () -> network.claimNetwork(env().get(NETWORK_TOKEN)),
+                () -> network.claim(env().get(NETWORK_TOKEN)),
                 "Unauthorized"
             );
         }
@@ -68,7 +68,7 @@ public class NetworkTest {
         Network network = new Network(session);
 
         assertDoesNotThrow(
-            () -> network.claimNetwork(env().get(NETWORK_TOKEN))
+            () -> network.claim(env().get(NETWORK_TOKEN))
         );
     }
 

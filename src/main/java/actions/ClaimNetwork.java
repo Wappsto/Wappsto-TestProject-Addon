@@ -41,7 +41,7 @@ public class ClaimNetwork implements WebAction {
         Network network = new Network(session);
 
         try {
-            network.claimNetwork(networkId.trim());
+            network.claim(networkId.trim());
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to claim network with Id: " + networkId + "\n" +
