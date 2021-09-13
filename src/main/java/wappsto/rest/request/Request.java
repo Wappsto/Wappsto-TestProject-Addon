@@ -99,7 +99,7 @@ public abstract class Request {
 
         /**
          * Send a GET request to the given endpoint
-         * @return The JSON response body deserialized into POJO
+         * @return JSON response body
          * @throws Exception
          */
         public Response get() throws Exception {
@@ -111,7 +111,7 @@ public abstract class Request {
         /**
          * Send a GET request with a session header to the given endpoint
          * @param session
-         * @return The JSON response body deserialized into POJO
+         * @return JSON response body
          * @throws Exception
          */
         public Response get(String session) throws Exception {
@@ -122,7 +122,7 @@ public abstract class Request {
 
         /**
          * Send a POST request to the given endpoint.
-         * @return The JSON response body deserialized into POJO
+         * @return JSON response body
          * @throws Exception
          */
         public Response post() throws Exception {
@@ -135,7 +135,7 @@ public abstract class Request {
         /**
          * Send a POST request with a session header to the given endpoint
          * @param session
-         * @return The JSON response body deserialized into POJO
+         * @return JSON response body
          * @throws Exception
          */
         public Response post(String session) throws Exception {
@@ -147,7 +147,7 @@ public abstract class Request {
 
         /**
          * Send a DELETE request to the given endpoint
-         * @return The JSON response body deserialized into POJO
+         * @return JSON response body
          * @throws Exception
          */
         public Response delete() throws Exception {
@@ -159,7 +159,7 @@ public abstract class Request {
         /**
          * Send a DELETE request with a session header to the given endpoint
          * @param session
-         * @return The JSON response body deserialized into POJO
+         * @return JSON response body
          * @throws Exception
          */
         public Response delete(String session) throws Exception {
