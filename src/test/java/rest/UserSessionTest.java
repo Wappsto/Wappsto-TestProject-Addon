@@ -1,9 +1,7 @@
 package rest;
 
 import org.junit.jupiter.api.*;
-import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.session.core.User;
-import wappsto.rest.session.model.Credentials;
+import wappsto.rest.session.User;
 
 import static util.Env.*;
 import static util.Utils.*;

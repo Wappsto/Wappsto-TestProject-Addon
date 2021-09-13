@@ -1,12 +1,7 @@
-package wappsto.rest.session.core;
+package wappsto.rest.session;
 
-import wappsto.rest.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.session.model.*;
-import wappsto.rest.session.Wapps;
-
-import javax.ws.rs.core.Response;
-import java.util.Collection;
 
 public class User extends  Session{
 

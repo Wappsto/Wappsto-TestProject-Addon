@@ -1,16 +1,15 @@
-package wappsto.rest.session;
+package wappsto.rest.iot;
 
 import wappsto.rest.request.API;
 import wappsto.rest.request.Request;
-import wappsto.rest.session.core.Session;
+import wappsto.rest.session.Session;
 
-public class Network {
+public class NetworkService {
     private Session session;
 
-    public Network(Session session) {
+    public NetworkService(Session session) {
         this.session = session;
     }
-
 
     /**
      * Claim an already existing network by its UUID
@@ -23,5 +22,8 @@ public class Network {
             .atEndPoint(id)
             .withBody("{}")
             .post(session.id);
+    }
+
+    public void create() {
     }
 }

@@ -1,18 +1,18 @@
-package wappsto.rest.session;
+package wappsto.rest.wapps;
 
 import wappsto.rest.model.InstallationRequest;
 import wappsto.rest.model.WappsResponse;
 import wappsto.rest.request.API;
 import wappsto.rest.request.Request;
-import wappsto.rest.session.core.Session;
+import wappsto.rest.session.Session;
 
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 
-public class Wapp {
+public class WappService {
     private Session session;
 
-    public Wapp(Session session) {
+    public WappService(Session session) {
         this.session = session;
     }
 

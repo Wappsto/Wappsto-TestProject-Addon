@@ -1,4 +1,4 @@
-package wappsto.rest.session.core;
+package wappsto.rest.session;
 
 import org.glassfish.jersey.client.ClientConfig;
 import wappsto.rest.request.API;

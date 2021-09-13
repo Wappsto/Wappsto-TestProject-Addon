@@ -7,7 +7,7 @@ import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
 import wappsto.rest.session.model.Credentials;
-import wappsto.rest.session.core.User;
+import wappsto.rest.session.User;
 
 import static actions.Utils.*;
 

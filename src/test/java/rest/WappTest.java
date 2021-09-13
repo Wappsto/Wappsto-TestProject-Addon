@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.session.Wapp;
-import wappsto.rest.session.Wapps;
-import wappsto.rest.session.core.User;
+import wappsto.rest.wapps.WappService;
+import wappsto.rest.wapps.Wapps;
+import wappsto.rest.session.User;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.Env.API_ROOT;
@@ -32,7 +32,7 @@ public class WappTest {
         @Test
         public void from_enum() throws Exception {
             User session = createNewUserSession(serviceUrl);
-            Wapp wapp = new Wapp(session);
+            WappService wapp = new WappService(session);
 
             wapp.install(Wapps.HISTORICAL_DATA);
             assert wapp.fetchInstalled().size() == 1
@@ -42,7 +42,7 @@ public class WappTest {
         @Test
         public void from_name() throws Exception {
             User session = createNewUserSession(serviceUrl);
-            Wapp wapp = new Wapp(session);
+            WappService wapp = new WappService(session);
 
             wapp.install("Historical Data");
             assert wapp.fetchInstalled().size() == 1
@@ -56,7 +56,7 @@ public class WappTest {
 
         assertThrows(
             IllegalStateException.class,
-            () -> new Wapp(session).install(""),
+            () -> new WappService(session).install(""),
             "Wapp not found"
         );
     }

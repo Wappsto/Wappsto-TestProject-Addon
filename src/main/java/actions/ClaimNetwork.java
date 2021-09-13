@@ -7,8 +7,8 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.session.Network;
-import wappsto.rest.session.core.User;
+import wappsto.rest.iot.NetworkService;
+import wappsto.rest.session.User;
 
 import static actions.Utils.getSessionFrom;
 
@@ -38,7 +38,7 @@ public class ClaimNetwork implements WebAction {
             );
         }
 
-        Network network = new Network(session);
+        NetworkService network = new NetworkService(session);
 
         try {
             network.claim(networkId.trim());

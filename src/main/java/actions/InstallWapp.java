@@ -6,8 +6,8 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.session.Wapp;
-import wappsto.rest.session.core.User;
+import wappsto.rest.wapps.WappService;
+import wappsto.rest.session.User;
 
 import static actions.Utils.getSessionFrom;
 
@@ -33,7 +33,7 @@ public class InstallWapp implements WebAction {
                 sessionId,
                 serviceUrl
             );
-            Wapp wapp = new Wapp(session);
+            WappService wapp = new WappService(session);
             wapp.install(nameOfWapp);
         } catch (Exception e) {
             throw new FailureException(

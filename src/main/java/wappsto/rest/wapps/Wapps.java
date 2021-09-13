@@ -1,4 +1,4 @@
-package wappsto.rest.session;
+package wappsto.rest.wapps;
 
 public enum Wapps {
     HISTORICAL_DATA(
