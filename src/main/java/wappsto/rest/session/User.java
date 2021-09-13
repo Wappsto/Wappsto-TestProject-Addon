@@ -32,7 +32,7 @@ public class User extends  Session{
 
     /**
      * Fetch user information associated with the session
-     * @return
+     * @return user
      * @throws Exception
      */
     public UserResponse fetchUser() throws Exception{
@@ -60,7 +60,7 @@ public class User extends  Session{
 
         /**
          * @param credentials
-         * @return
+         * @return this
          */
         public Builder withCredentials(Credentials credentials) {
             this.credentials = credentials;
@@ -69,7 +69,7 @@ public class User extends  Session{
 
         /**
          * Register the user and instantiate the new session
-         * @return
+         * @return this
          * @throws Exception
          */
         public User create() throws Exception {
