@@ -1,7 +1,7 @@
 package wappsto.rest.wapps;
 
-import wappsto.rest.model.InstallationRequest;
-import wappsto.rest.model.WappsResponse;
+import wappsto.rest.wapps.model.InstallationRequest;
+import wappsto.rest.wapps.model.WappsResponse;
 import wappsto.rest.request.API;
 import wappsto.rest.request.Request;
 import wappsto.rest.session.Session;

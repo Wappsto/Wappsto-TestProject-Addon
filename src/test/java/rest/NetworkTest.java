@@ -1,9 +1,6 @@
 package rest;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.iot.NetworkService;
 import wappsto.rest.session.User;
