@@ -8,4 +8,12 @@ public class CreatorResponse {
     @JsonProperty
     public Network network;
 
+    @JsonProperty
+    public String ca;
+
+    @JsonProperty
+    public String certificate;
+
+    @JsonProperty("private_key")
+    public String privateKey;
 }
