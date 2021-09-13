@@ -7,6 +7,7 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
+import wappsto.rest.session.Network;
 import wappsto.rest.session.core.User;
 
 import static actions.Utils.getSessionFrom;
@@ -36,8 +37,11 @@ public class ClaimNetwork implements WebAction {
                 "Failed to get session ID: " + e.getMessage()
             );
         }
+
+        Network network = new Network(session);
+
         try {
-            session.claimNetwork(networkId.trim());
+            network.claimNetwork(networkId.trim());
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to claim network with Id: " + networkId + "\n" +

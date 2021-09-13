@@ -40,48 +40,6 @@ public class UserSessionTest {
         );
     }
 
-    @Nested
-    public class fails_to_claim {
-        @Test
-        public void invalid_network() throws Exception {
-            User session = createNewUserSession(serviceUrl);
-
-            assertThrows(
-                HttpException.class,
-                () -> session.claimNetwork("bad id"),
-                "Bad request"
-            );
-        }
-
-        @Test
-        public void when_not_authorized() throws Exception {
-            User session = createNewUserSession(serviceUrl);
-
-            assertThrows(
-                HttpException.class,
-                () -> session.claimNetwork(env().get(NETWORK_TOKEN)),
-                "Unauthorized"
-            );
-        }
-    }
-
-    @Test
-    public void claims_network() throws Exception {
-        Credentials credentials = new Credentials(
-            env().get(DEVELOPER_USERNAME),
-            env().get(DEVELOPER_PASSWORD)
-        );
-
-        User session = new User(
-            credentials,
-            serviceUrl
-        );
-
-        assertDoesNotThrow(
-            () -> session.claimNetwork(env().get(NETWORK_TOKEN))
-        );
-    }
-
 
 
     @AfterEach

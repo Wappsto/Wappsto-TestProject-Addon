@@ -47,18 +47,6 @@ public class User extends  Session{
             .get(id)
             .readEntity(UserResponse.class);
     }
-    /**
-     * Claim an already existing network by its UUID
-     * @param id
-     * @throws Exception
-     */
-    public void claimNetwork(String id) throws Exception {
-        new Request.Builder(service)
-            .atEndPoint(API.NETWORK)
-            .atEndPoint(id)
-            .withBody("{}")
-            .post(this.id);
-    }
 
     public static class Builder {
         private final Admin admin;
