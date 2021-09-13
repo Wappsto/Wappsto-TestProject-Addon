@@ -47,21 +47,6 @@ public class User extends  Session{
             .get(id)
             .readEntity(UserResponse.class);
     }
-
-    /**
-     * Fetch all Wapps installed on the user. Currently, not much useful info
-     * from the response gets deserialized into POJO
-     * @return
-     * @throws Exception
-     */
-    public Collection<String> fetchWapps() throws Exception {
-        Response response = new Request.Builder(service)
-            .atEndPoint(API.INSTALLATION)
-            .get(id);
-
-        return response.readEntity(WappsResponse.class).id;
-    }
-
     /**
      * Claim an already existing network by its UUID
      * @param id
