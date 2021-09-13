@@ -4,7 +4,8 @@ import io.testproject.java.enums.AutomatedBrowserType;
 import io.testproject.java.sdk.v2.Runner;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.session.Admin;
+import wappsto.rest.session.core.Admin;
+import wappsto.rest.session.core.User;
 import wappsto.rest.session.model.AdminCredentials;
 import wappsto.rest.session.model.Credentials;
 
@@ -33,6 +34,12 @@ public class Utils {
             );
         }
         return admin;
+    }
+
+    public static User createNewUserSession(String serviceUrl) throws Exception {
+        return new User.Builder(admin(), serviceUrl)
+            .withCredentials(defaultUser())
+            .create();
     }
 
     public static Runner runner() throws Exception {

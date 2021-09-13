@@ -25,7 +25,7 @@ public abstract class Request {
     /**
      * Request with JSON body
      * @param service
-     * @param body
+     * @param body JSON request body
      */
     public Request(
         WebTarget service,

@@ -2,8 +2,8 @@ package rest;
 
 import org.junit.jupiter.api.*;
 import wappsto.rest.exceptions.HttpException;
+import wappsto.rest.session.core.User;
 import wappsto.rest.session.model.Credentials;
-import wappsto.rest.session.*;
 
 import static util.Env.*;
 import static util.Utils.*;
@@ -17,24 +17,22 @@ public class UserSessionTest {
     public static void setup() {
         serviceUrl = env().get(API_ROOT);
 
-
         try {
             admin().delete(defaultUser().username);
         } catch (Exception ignored) {
-
         }
     }
 
     @Test
     public void creates_new_user_session() throws Exception {
-        User session = createNewUserSession();
+        User session = createNewUserSession(serviceUrl);
 
         assertNotNull(session.id);
     }
 
     @Test
     public void fetches_own_user() throws Exception {
-        User session = createNewUserSession();
+        User session = createNewUserSession(serviceUrl);
 
         assertEquals(
             defaultUser().username,
@@ -43,42 +41,10 @@ public class UserSessionTest {
     }
 
     @Nested
-    public class installs_wapp {
-        @Test
-        public void from_enum() throws Exception {
-            User session = createNewUserSession();
-
-            session.install(Wapp.HISTORICAL_DATA);
-            assert session.fetchWapps().size() == 1
-                : "Incorrect number of wapps found";
-        }
-
-        @Test
-        public void from_name() throws Exception {
-            User session = createNewUserSession();
-
-            session.install("Historical Data");
-            assert session.fetchWapps().size() == 1
-                : "Incorrect number of wapps found";
-        }
-    }
-
-    @Test
-    public void fails_to_install_wapp_from_invalid_name() throws Exception {
-        User session = createNewUserSession();
-
-        assertThrows(
-            IllegalStateException.class,
-            () -> session.install(""),
-            "Wapp not found"
-        );
-    }
-
-    @Nested
     public class fails_to_claim {
         @Test
         public void invalid_network() throws Exception {
-            User session = createNewUserSession();
+            User session = createNewUserSession(serviceUrl);
 
             assertThrows(
                 HttpException.class,
@@ -89,7 +55,7 @@ public class UserSessionTest {
 
         @Test
         public void when_not_authorized() throws Exception {
-            User session = createNewUserSession();
+            User session = createNewUserSession(serviceUrl);
 
             assertThrows(
                 HttpException.class,
@@ -111,14 +77,12 @@ public class UserSessionTest {
             serviceUrl
         );
 
-        assertDoesNotThrow(() -> session.claimNetwork(env().get(NETWORK_TOKEN)));
+        assertDoesNotThrow(
+            () -> session.claimNetwork(env().get(NETWORK_TOKEN))
+        );
     }
 
-    private User createNewUserSession() throws Exception {
-        return new User.Builder(admin(), serviceUrl)
-            .withCredentials(defaultUser())
-            .create();
-    }
+
 
     @AfterEach
     public void tearDown() {

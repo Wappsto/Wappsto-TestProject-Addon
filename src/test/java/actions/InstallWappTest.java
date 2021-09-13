@@ -2,7 +2,8 @@ package actions;
 
 import org.junit.jupiter.api.*;
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.session.User;
+import wappsto.rest.session.Wapp;
+import wappsto.rest.session.core.User;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,7 +63,8 @@ public class InstallWappTest {
             logInBrowser(session.id, env().get(APP_URL));
             runner().run(action);
 
-            assert session.fetchWapps().size() == 1
+            Wapp wapp = new Wapp(session);
+            assert wapp.fetchInstalled().size() == 1
                 : "Incorrect number of wapps";
         }
     }

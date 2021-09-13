@@ -1,4 +1,4 @@
-package wappsto.rest.session;
+package wappsto.rest.session.core;
 
 import org.glassfish.jersey.client.ClientConfig;
 import wappsto.rest.request.API;
@@ -11,7 +11,7 @@ import javax.ws.rs.client.*;
 public abstract class Session {
     public final String id;
     protected Client client;
-    protected WebTarget service;
+    public final WebTarget service;
 
     /**
      * The base class for API sessions
@@ -21,6 +21,7 @@ public abstract class Session {
      */
     public Session(Credentials credentials, String serviceUrl) throws Exception {
         createClient(serviceUrl);
+        service = client.target(serviceUrl);
 
         id = new Request.Builder(service)
             .atEndPoint(API.SESSION)
@@ -36,11 +37,11 @@ public abstract class Session {
      */
     public Session(String id, String serviceUrl) {
         createClient(serviceUrl);
+        service = client.target(serviceUrl);
         this.id = id;
     }
 
     protected void createClient(String serviceUrl) {
         client = ClientBuilder.newClient(new ClientConfig());
-        service = client.target(serviceUrl);
     }
 }

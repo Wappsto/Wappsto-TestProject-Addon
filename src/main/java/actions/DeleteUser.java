@@ -6,7 +6,7 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import wappsto.rest.session.model.AdminCredentials;
-import wappsto.rest.session.Admin;
+import wappsto.rest.session.core.Admin;
 
 @Action(name = "Delete user")
 public class DeleteUser extends ActionWithAdminSession implements WebAction {

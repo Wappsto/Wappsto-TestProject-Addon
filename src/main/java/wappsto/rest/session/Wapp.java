@@ -1,38 +1,58 @@
 package wappsto.rest.session;
 
-public enum Wapp {
-    HISTORICAL_DATA(
-        "Historical Data",
-        "a56aeb91-06ac-4e64-9b24-16f8a7a90ec2"
-    ),
-    WAPP_CREATOR(
-        "Wapp Creator",
-        "355994b4-b74c-4d62-8c92-a6e5304e7cc2"
-    ),
-    IOT_RAPID_PROTOTYPING(
-        "IoT Rapid Prototyping",
-        "1e54f21e-8514-465a-9f79-5c346155e58a"
-    ),
-    DATA_FORWARDER(
-        "Data forwarder",
-        "db5fa34e-0f7f-4eb6-bc45-f05376b02fce"
-    );
+import wappsto.rest.model.InstallationRequest;
+import wappsto.rest.model.WappsResponse;
+import wappsto.rest.request.API;
+import wappsto.rest.request.Request;
+import wappsto.rest.session.core.Session;
 
-    private final String name;
-    public final String id;
+import javax.ws.rs.core.Response;
+import java.util.Collection;
 
-    Wapp(String name, String id) {
-        this.name = name;
-        this.id = id;
+public class Wapp {
+    private Session session;
+
+    public Wapp(Session session) {
+        this.session = session;
     }
 
-    public static Wapp from(String name) {
-        for (Wapp wapp : values()) {
-            if (wapp.name.equals(name)) {
-                return wapp;
-            }
-        }
+    /**
+     * Install a Wapp on the logged-in user
+     * @param wapp
+     * @throws Exception
+     */
+    public void install(Wapps wapp) throws Exception {
+        InstallationRequest install = new InstallationRequest(
+            wapp.id
+        );
 
-        throw new IllegalStateException("Wapp not found");
+        new Request.Builder(session.service)
+            .atEndPoint(API.INSTALLATION)
+            .withBody(install)
+            .post(session.id);
+    }
+
+    /**
+     * Install a Wapp by name on the logged-in user
+     * @param name
+     * @throws Exception
+     */
+    public void install(String name) throws Exception {
+        install(Wapps.from(name));
+    }
+
+
+    /**
+     * Fetch all Wapps installed on the user. Currently, not much useful info
+     * from the response gets deserialized into POJO
+     * @return
+     * @throws Exception
+     */
+    public Collection<String> fetchInstalled() throws Exception {
+        Response response = new Request.Builder(session.service)
+            .atEndPoint(API.INSTALLATION)
+            .get(session.id);
+
+        return response.readEntity(WappsResponse.class).id;
     }
 }

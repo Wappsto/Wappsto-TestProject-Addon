@@ -1,8 +1,9 @@
-package wappsto.rest.session;
+package wappsto.rest.session.core;
 
 import wappsto.rest.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.session.model.*;
+import wappsto.rest.session.Wapps;
 
 import javax.ws.rs.core.Response;
 import java.util.Collection;
@@ -45,31 +46,6 @@ public class User extends  Session{
             .atEndPoint("me")
             .get(id)
             .readEntity(UserResponse.class);
-    }
-
-    /**
-     * Install a Wapp on the logged-in user
-     * @param wapp
-     * @throws Exception
-     */
-    public void install(Wapp wapp) throws Exception {
-        InstallationRequest install = new InstallationRequest(
-            wapp.id
-        );
-
-        new Request.Builder(service)
-            .atEndPoint(API.INSTALLATION)
-            .withBody(install)
-            .post(id);
-    }
-
-    /**
-     * Install a Wapp by name on the logged-in user
-     * @param nameOfWapp
-     * @throws Exception
-     */
-    public void install(String nameOfWapp) throws Exception {
-        install(Wapp.from(nameOfWapp));
     }
 
     /**

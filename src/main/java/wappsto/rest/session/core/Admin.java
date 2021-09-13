@@ -1,4 +1,4 @@
-package wappsto.rest.session;
+package wappsto.rest.session.core;
 import wappsto.rest.request.*;
 import wappsto.rest.session.model.AdminCredentials;
 import wappsto.rest.session.model.Credentials;
