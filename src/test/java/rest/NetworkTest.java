@@ -5,12 +5,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.session.Network;
-import wappsto.rest.session.core.User;
+import wappsto.rest.iot.NetworkService;
+import wappsto.rest.session.User;
 import wappsto.rest.session.model.Credentials;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
@@ -27,12 +26,22 @@ public class NetworkTest {
         }
     }
 
+    @Test
+    public void creates_new_network() throws Exception {
+        User session = createNewUserSession(
+            "https://qa.wappsto.com/services/2.1"
+        );
+        NetworkService network = new NetworkService(session);
+
+        assertNotNull(network.create().network);
+    }
+
     @Nested
     public class fails_to_claim {
         @Test
         public void invalid_network() throws Exception {
             User session = createNewUserSession(serviceUrl);
-            Network network = new Network(session);
+            NetworkService network = new NetworkService(session);
             assertThrows(
                 HttpException.class,
                 () -> network.claim("bad id"),
@@ -43,7 +52,7 @@ public class NetworkTest {
         @Test
         public void when_not_authorized() throws Exception {
             User session = createNewUserSession(serviceUrl);
-            Network network = new Network(session);
+            NetworkService network = new NetworkService(session);
 
             assertThrows(
                 HttpException.class,
@@ -65,7 +74,7 @@ public class NetworkTest {
             serviceUrl
         );
 
-        Network network = new Network(session);
+        NetworkService network = new NetworkService(session);
 
         assertDoesNotThrow(
             () -> network.claim(env().get(NETWORK_TOKEN))

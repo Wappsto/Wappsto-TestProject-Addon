@@ -32,5 +32,11 @@ public enum API {
         public String toString() {
             return "installation";
         }
+    },
+    CREATOR {
+        @Override
+        public String toString() {
+            return "creator";
+        }
     }
 }
