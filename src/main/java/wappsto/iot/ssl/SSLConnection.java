@@ -43,7 +43,8 @@ public class SSLConnection implements Connection {
     }
 
     @Override
-    public void setIncomingCallback(Callback callback) {
+    public void setIncomingCallback(Callback callback) throws InterruptedException {
         fromServer.setCallBack(callback);
+        fromServer.run();
     }
 }

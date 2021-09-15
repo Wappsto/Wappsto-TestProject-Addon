@@ -20,8 +20,8 @@ public class IncomingDataHandler extends Thread{
     public void run() {
         int openBraces = 0;
         String data = "";
+        char readChar = 0;
         while (true) {
-            char readChar = 0;
             try {
                 readChar = (char) incomingData.read();
             } catch (IOException e) {
@@ -34,8 +34,10 @@ public class IncomingDataHandler extends Thread{
                 openBraces--;
             }
             if (openBraces == 0) {
-                callback.parse(data);
-                data = "";
+                if (callback != null) {
+                    callback.parse(data);
+                    data = "";
+                }
             }
         }
     }

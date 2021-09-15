@@ -4,18 +4,14 @@ public class WappstoRPCClient {
     private Connection conn;
     private JsonRPCParser parser;
 
-    public WappstoRPCClient(Connection conn)  {
+    public WappstoRPCClient(Connection conn) throws InterruptedException {
         this.conn = conn;
-        conn.setIncomingCallback(new Callback() {
-            @Override
-            public void parse(String content) {
-                handleIncoming(content);
-            }
-        });
+        conn.setIncomingCallback(content -> handleIncoming(content));
 
     }
 
     private void handleIncoming(String rpc) {
+        System.out.println(rpc);
     }
 
 }
