@@ -62,6 +62,6 @@ jobs:
           WAPPSTO_TEST_NETWORK: ${{ secrets.WAPPSTO_TEST_NETWORK }}
           WAPPSTO_DEVELOPER_USERNAME: ${{ secrets.WAPPSTO_DEVELOPER_USERNAME }}
           WAPPSTO_DEVELOPER_PASSWORD: ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
+          CI_TEST: "true"
         run: |
-          mvn -DtestGroup=actions test
-          mvn -DtestGroup=rest test
+          mvn clean verify

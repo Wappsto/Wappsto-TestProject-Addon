@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.ExecutionException;
 
+import static org.junit.Assume.*;
 import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,8 @@ public class LogInAdminTest {
 
     @Test
     public void logs_in_as_admin() throws Exception {
+        assumeTrue(!isCiTest());
+
         LogInAsAdmin action = createAction(
             env().get(ADMIN_PANEL),
             env().get(ADMIN_USERNAME),
@@ -36,6 +39,10 @@ public class LogInAdminTest {
         WebDriver browser = runner().getDriver();
         assert loggedIn(browser) : "Browser not logged in";
 
+    }
+
+    private boolean isCiTest() {
+        return env().get("CI_TEST").equals("true");
     }
 
     @Nested
