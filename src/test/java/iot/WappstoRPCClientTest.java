@@ -1,8 +1,7 @@
 package iot;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import wappsto.iot.model.WappstoCerts;
+import wappsto.iot.ssl.model.WappstoCerts;
 import org.junit.jupiter.api.Test;
 import wappsto.iot.WappstoRPCClient;
 import wappsto.rest.exceptions.HttpException;

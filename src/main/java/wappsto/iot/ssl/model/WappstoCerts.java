@@ -1,4 +1,4 @@
-package wappsto.iot.model;
+package wappsto.iot.ssl.model;
 
 public class WappstoCerts {
     public final String ca;
