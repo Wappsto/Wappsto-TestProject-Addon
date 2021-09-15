@@ -1,6 +1,8 @@
 package iot;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import wappsto.iot.ssl.SSLConnection;
 import wappsto.iot.ssl.model.WappstoCerts;
 import org.junit.jupiter.api.Test;
 import wappsto.iot.WappstoRPCClient;
@@ -11,7 +13,7 @@ import wappsto.rest.iot.model.NetworkCreatorResponse;
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Utils.*;
 
-public class WappstoRPCClientTest {
+public class SSLConnectionTest {
     private final static String serviceUrl = "https://qa.wappsto.com/services/2.1";
     private final String sslAddress = "qa.wappsto.com";
     private final int sslPort = 53005;
@@ -35,7 +37,15 @@ public class WappstoRPCClientTest {
             networkCreatorResponse.certificate,
             networkCreatorResponse.privateKey
         );
-        WappstoRPCClient client = new WappstoRPCClient(sslAddress, certs, sslPort);
-        assertTrue(client.connected());
+        SSLConnection connection = new SSLConnection(sslAddress, sslPort, certs);
+        assertTrue(connection.connected());
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception{
+        try {
+            admin().delete(defaultUser().username);
+        } catch (HttpException ignored) {
+        }
     }
 }
