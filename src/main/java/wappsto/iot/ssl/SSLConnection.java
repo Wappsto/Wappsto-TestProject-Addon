@@ -5,13 +5,12 @@ import wappsto.iot.Connection;
 import wappsto.iot.ssl.model.WappstoCerts;
 import javax.net.ssl.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 public class SSLConnection implements Connection {
     private SSLSocket socket;
-    private IncomingDataHandler fromServer;
     public final OutputStream toServer;
+    private MessageHandler handler;
 
     public SSLConnection(
         String address,
@@ -22,8 +21,6 @@ public class SSLConnection implements Connection {
         socket = (SSLSocket) sc.getSocketFactory().createSocket(address, port);
         socket.startHandshake();
         toServer = socket.getOutputStream();
-
-        fromServer = new IncomingDataHandler(socket.getInputStream());
     }
 
     private SSLContext init(WappstoCerts certs) throws Exception {
@@ -43,8 +40,19 @@ public class SSLConnection implements Connection {
     }
 
     @Override
-    public void setIncomingCallback(Callback callback) throws InterruptedException {
-        fromServer.setCallBack(callback);
-        fromServer.run();
+    public void start(Callback messageCallback, Callback errorCallback)
+        throws InterruptedException
+    {
+        try {
+            handler = new MessageHandler(
+                socket.getInputStream(),
+                messageCallback,
+                errorCallback
+            );
+            handler.start();
+            System.out.println("Message handler started.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package wappsto.iot;
 
+import wappsto.iot.exceptions.InvalidMessage;
+
 public interface Callback {
-    abstract void parse(String content);
+    abstract void call(String message);
 }
