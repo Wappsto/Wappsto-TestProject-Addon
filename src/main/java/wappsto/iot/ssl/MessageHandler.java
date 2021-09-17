@@ -2,15 +2,18 @@ package wappsto.iot.ssl;
 
 import wappsto.iot.Callback;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.function.Consumer;
 
 import static wappsto.iot.exceptions.InvalidMessage.*;
 
 public class MessageHandler extends Thread{
-    private Callback messageCallBack;
-    private Callback errorCallback;
-    private InputStream incomingData;
+    public static final int MESSAGE_TIMOUT = 500;
+    private final Callback messageCallBack;
+    private final Callback errorCallback;
+    private final InputStream incomingData;
 
     public MessageHandler(
         InputStream incomingData,
@@ -24,66 +27,121 @@ public class MessageHandler extends Thread{
 
 
     public void run() {
-        while (!Thread.interrupted()) {
-            read();
+        try {
+            while (!Thread.interrupted()) {
+                read();
+            }
+        } catch (Exception e) {
+            return;
         }
     }
 
     //so basically i hate this code and i need to come back to it
-    private void read() {
+    private void read() throws Exception {
         int openBraces = 0;
-        String msg = "";
-        int input;
+        String message = "";
+
+        MessageCompleted messageCompleted = callback();
+
         try {
-            input = incomingData.read();
-            char readChar = (char) input;
-
-            while (!inputReceived(input)) {
-                readChar = (char) input;
-
-                if (msg.isEmpty() && readChar != '{') {
-                    incomingData.readAllBytes();
-                    errorCallback.call(MISSING_OPENING_BRACKET);
-                    return;
-                } else {
-                    switch (readChar) {
-                        case '{':
-                            openBraces++;
-                            break;
-                        case '}':
-                            openBraces--;
-                            break;
-                        default:
-                            break;
-                    }
-                    msg += readChar;
-                    if (openBraces == 0) break;
-                }
-
-                input = incomingData.read();
+            char readChar = (char) incomingData.read();;
+            if (readChar != '{') {
+                errorCallback.call(MISSING_OPENING_BRACKET);
+                throw new Exception("IO Exception");
             }
+            openBraces++;
+            message += readChar;
 
-            if (!msg.isEmpty() && readChar != '}') {
+            new MessageBuilder(
+                incomingData,
+                message,
+                openBraces,
+                messageCompleted
+            ).start();
+
+            if(!waitFor(messageCompleted)) {
                 errorCallback.call(MISSING_CLOSING_BRACKET);
-                return;
+                throw new Exception("IO Exception");
             }
 
-            if (openBraces != 0) {
-                errorCallback.call(MISMATCHED_BRACKET);
-                return;
-            }
-
-            messageCallBack.call(msg);
+            message = messageCompleted.message();
+            messageCallBack.call(message);
 
         } catch (IOException e) {
-            errorCallback.call("IO Exception");
+            throw e;
         }
 
     }
 
-    private boolean inputReceived(int input) {
-        return input == -1;
+    private boolean waitFor(MessageCompleted messageCompleted) {
+        Duration timeout = Duration.ofMillis(MESSAGE_TIMOUT);
+        Instant messageStarted = Instant.now();
+        while (!messageCompleted.completed()) {
+            if (Instant.now().isAfter(messageStarted.plus(timeout))) {
+                errorCallback.call("Timout: Message never completed");
+                return false;
+            }
+        }
+        return true;
     }
 
+    private MessageCompleted callback() {
+        return new MessageCompleted() {
+            private boolean completed = false;
+            private String message;
+            @Override
+            public void accept(String message) {
+                this.message = message;
+                completed = true;
+            }
+            public boolean completed() {
+                return completed;
+            }
 
+            public String message() {
+                return message;
+            }
+        };
+    }
+
+    private interface MessageCompleted extends Consumer<String> {
+        String message();
+        boolean completed();
+    }
+
+    private static class MessageBuilder extends Thread {
+        private final InputStream stream;
+        private String message;
+        private int openBraces;
+        private final Consumer<String> messageCompleted;
+
+        public MessageBuilder(
+            InputStream stream,
+            String message,
+            int openBraces,
+            Consumer<String> messageCompleted
+        ) {
+            this.stream = stream;
+            this.message = message;
+            this.openBraces = openBraces;
+            this.messageCompleted = messageCompleted;
+        }
+
+        public void run() {
+            try {
+                while (!Thread.interrupted()) {
+                    char read = (char)stream.read();
+                    if (read == '{') openBraces++;
+                    else if (read == '}') openBraces--;
+                    message += read;
+                    if (openBraces == 0) {
+                        messageCompleted.accept(message);
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                return;
+            }
+        }
+    }
 }

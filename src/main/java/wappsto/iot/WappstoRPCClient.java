@@ -2,11 +2,11 @@ package wappsto.iot;
 
 import wappsto.iot.exceptions.InvalidMessage;
 
+import java.io.IOException;
+
 public class WappstoRPCClient {
     private Connection conn;
     private JsonRPCParser parser;
-    public String msg = "";
-    public String error = "";
 
     public WappstoRPCClient(Connection conn) throws InterruptedException {
         this.conn = conn;
@@ -18,11 +18,18 @@ public class WappstoRPCClient {
     }
 
     private void handleIncoming(String rpc) {
-        msg = rpc;
+        System.out.println(rpc);
     }
 
-    private void handleError(String error)  {
-        this.error = error;
+    private void handleError(String error) {
+        try {
+            conn.disconnect();
+            conn.start(this::handleIncoming, this::handleError);
+        } catch (Exception e) {
+            System.out.println("Failed to reestablish connection.");
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
 }

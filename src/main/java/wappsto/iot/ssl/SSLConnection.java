@@ -55,4 +55,9 @@ public class SSLConnection implements Connection {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void send(String s) throws IOException {
+        toServer.write(s.getBytes());
+    }
 }
