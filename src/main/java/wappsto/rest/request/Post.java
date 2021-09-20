@@ -1,9 +1,9 @@
 package wappsto.rest.request;
 
-import wappsto.rest.request.exceptions.MissingField;
+import wappsto.rest.request.exceptions.*;
 
 import javax.ws.rs.client.*;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 
 class Post extends Request{
 

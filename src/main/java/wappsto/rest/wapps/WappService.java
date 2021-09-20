@@ -1,15 +1,12 @@
 package wappsto.rest.wapps;
 
-import wappsto.rest.wapps.model.InstallationRequest;
-import wappsto.rest.wapps.model.MarketResponse;
-import wappsto.rest.wapps.model.Wapp;
-import wappsto.rest.wapps.model.WappsResponse;
-import wappsto.rest.request.API;
 import wappsto.rest.request.Request;
-import wappsto.rest.session.Session;
+import wappsto.rest.request.*;
+import wappsto.rest.session.*;
+import wappsto.rest.wapps.model.*;
 
-import javax.ws.rs.core.Response;
-import java.util.Collection;
+import javax.ws.rs.core.*;
+import java.util.*;
 
 public class WappService {
     private Session session;

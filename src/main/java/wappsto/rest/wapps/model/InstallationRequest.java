@@ -1,6 +1,6 @@
 package wappsto.rest.wapps.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 public class InstallationRequest {
     @JsonProperty

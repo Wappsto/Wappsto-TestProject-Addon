@@ -1,7 +1,7 @@
 package wappsto.rest.request;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.*;
 
 class Delete extends Request {
     public Delete(WebTarget service) {

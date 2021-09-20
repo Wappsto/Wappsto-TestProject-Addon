@@ -1,10 +1,10 @@
 package wappsto.rest.session;
-import wappsto.rest.request.*;
-import wappsto.rest.session.model.AdminCredentials;
-import wappsto.rest.session.model.Credentials;
-import wappsto.rest.session.model.UserResponse;
 
-import javax.ws.rs.core.Response;
+import wappsto.rest.request.Request;
+import wappsto.rest.request.*;
+import wappsto.rest.session.model.*;
+
+import javax.ws.rs.core.*;
 
 public class Admin extends Session{
 
