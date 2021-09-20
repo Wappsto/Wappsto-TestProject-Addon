@@ -1,6 +1,5 @@
 package wappsto.rest.wapps;
 
-import wappsto.rest.exceptions.WappNotFound;
 import wappsto.rest.wapps.model.InstallationRequest;
 import wappsto.rest.wapps.model.MarketResponse;
 import wappsto.rest.wapps.model.Wapp;
@@ -11,7 +10,6 @@ import wappsto.rest.session.Session;
 
 import javax.ws.rs.core.Response;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 public class WappService {
     private Session session;
@@ -39,18 +37,6 @@ public class WappService {
             .post(session.id);
     }
 
-    private Wapp fetchFromStore(String name) throws Exception {
-        try {
-            return fetchAllFromStore()
-                .stream()
-                .filter(wapp -> wapp.name.equals(name))
-                .findFirst()
-                .get();
-        } catch (NoSuchElementException e) {
-            throw new WappNotFound("Wapp not found");
-        }
-    }
-
 
     /**
      * Fetch all Wapps installed on the user. Currently, not much useful info
@@ -72,5 +58,13 @@ public class WappService {
             .get()
             .readEntity(MarketResponse.class)
             .wapps;
+    }
+
+    private Wapp fetchFromStore(String name) throws Exception {
+        return fetchAllFromStore()
+            .stream()
+            .filter(wapp -> wapp.name.equals(name))
+            .findFirst()
+            .orElseThrow(() -> new Exception("Wapp not found"));
     }
 }

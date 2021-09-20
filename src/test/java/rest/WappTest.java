@@ -4,8 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.exceptions.WappNotFound;
+import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.wapps.WappService;
 import wappsto.rest.session.User;
 
@@ -55,7 +54,7 @@ public class WappTest {
         User session = createNewUserSession(serviceUrl);
 
         assertThrows(
-            WappNotFound.class,
+            Exception.class,
             () -> new WappService(session).install(""),
             "Wapp not found"
         );

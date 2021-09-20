@@ -1,4 +1,4 @@
-package wappsto.rest.exceptions;
+package wappsto.rest.request.exceptions;
 
 public class MissingField extends Exception {
     public MissingField(String field) {

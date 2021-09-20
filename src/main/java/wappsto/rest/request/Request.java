@@ -1,6 +1,6 @@
 package wappsto.rest.request;
 
-import wappsto.rest.exceptions.HttpException;
+import wappsto.rest.request.exceptions.HttpException;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;

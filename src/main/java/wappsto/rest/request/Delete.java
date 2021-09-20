@@ -3,7 +3,7 @@ package wappsto.rest.request;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-public class Delete extends Request {
+class Delete extends Request {
     public Delete(WebTarget service) {
         super(service);
     }

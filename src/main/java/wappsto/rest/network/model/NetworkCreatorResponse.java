@@ -1,4 +1,4 @@
-package wappsto.rest.iot.model;
+package wappsto.rest.network.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

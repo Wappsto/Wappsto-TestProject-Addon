@@ -5,10 +5,9 @@ import org.junit.jupiter.api.BeforeAll;
 import wappsto.iot.ssl.SSLConnection;
 import wappsto.iot.ssl.model.WappstoCerts;
 import org.junit.jupiter.api.Test;
-import wappsto.iot.WappstoRPCClient;
-import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.iot.NetworkService;
-import wappsto.rest.iot.model.NetworkCreatorResponse;
+import wappsto.rest.request.exceptions.HttpException;
+import wappsto.rest.network.NetworkService;
+import wappsto.rest.network.model.NetworkCreatorResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Utils.*;

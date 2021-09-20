@@ -1,11 +1,11 @@
 package wappsto.rest.request;
 
-import wappsto.rest.exceptions.MissingField;
+import wappsto.rest.request.exceptions.MissingField;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
 
-public class Post extends Request{
+class Post extends Request{
 
     public Post(WebTarget service, Entity body){
         super(service, body);

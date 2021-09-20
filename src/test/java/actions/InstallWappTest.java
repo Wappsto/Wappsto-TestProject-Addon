@@ -1,7 +1,7 @@
 package actions;
 
 import org.junit.jupiter.api.*;
-import wappsto.rest.exceptions.HttpException;
+import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.wapps.WappService;
 import wappsto.rest.session.User;
 import java.util.concurrent.ExecutionException;
