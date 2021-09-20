@@ -33,6 +33,13 @@ public enum API {
             return "installation";
         }
     },
+    MARKET {
+        @Override
+        public String toString() {
+            return "search/market";
+        }
+    },
+
     CREATOR {
         @Override
         public String toString() {
