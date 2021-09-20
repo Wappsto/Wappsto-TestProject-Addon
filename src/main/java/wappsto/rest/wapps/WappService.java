@@ -8,9 +8,16 @@ import wappsto.rest.wapps.model.*;
 import javax.ws.rs.core.*;
 import java.util.*;
 
+/**
+ * Manages Wapps on a user
+ */
 public class WappService {
     private Session session;
 
+    /**
+     * Instantiate the Wapp service with a user session
+     * @param session user session
+     */
     public WappService(Session session) {
         this.session = session;
     }
@@ -21,12 +28,8 @@ public class WappService {
      * @throws Exception
      */
     public void install(String name) throws Exception {
-        String applicationId = fetchFromStore(name)
-            .application;
-
-        InstallationRequest install = new InstallationRequest(
-            applicationId
-        );
+        String applicationId = fetchFromStore(name).application;
+        InstallationRequest install = new InstallationRequest(applicationId);
 
         new Request.Builder(session.service)
             .atEndPoint(API.INSTALLATION)
@@ -49,6 +52,11 @@ public class WappService {
         return response.readEntity(WappsResponse.class).id;
     }
 
+    /**
+     * Fetches all Wapps from the store
+     * @return Collection of all wapps
+     * @throws Exception
+     */
     public Collection<Wapp> fetchAllFromStore() throws Exception {
         return new Request.Builder(session.service)
             .atEndPoint(API.MARKET)
