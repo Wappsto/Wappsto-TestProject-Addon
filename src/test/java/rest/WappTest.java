@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import wappsto.rest.exceptions.HttpException;
 import wappsto.rest.exceptions.WappNotFound;
 import wappsto.rest.wapps.WappService;
-import wappsto.rest.wapps.Wapps;
 import wappsto.rest.session.User;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
