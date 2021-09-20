@@ -1,12 +1,18 @@
-package wappsto.iot;
+package wappsto.iot.rpc;
 
-public class WappstoRPCClient {
+import java.io.*;
+
+public class RPCClient {
     private Connection conn;
     private JsonRPCParser parser;
 
-    public WappstoRPCClient(Connection conn) throws InterruptedException {
+    public RPCClient(Connection conn) throws InterruptedException {
         this.conn = conn;
         conn.start(this::incoming, this::error);
+    }
+
+    public void send(String message) throws IOException {
+        conn.send(message);
     }
 
     private void incoming(String rpc) {

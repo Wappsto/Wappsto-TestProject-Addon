@@ -2,7 +2,7 @@ package iot;
 
 import org.junit.Ignore;
 import org.junit.jupiter.api.*;
-import wappsto.iot.Callback;
+import wappsto.iot.rpc.Callback;
 import wappsto.iot.ssl.MessageHandler;
 
 import java.io.*;

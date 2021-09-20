@@ -1,6 +1,6 @@
 package wappsto.iot.ssl;
 
-import wappsto.iot.*;
+import wappsto.iot.rpc.*;
 
 import java.io.*;
 import java.time.*;

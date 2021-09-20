@@ -12,7 +12,7 @@ import java.util.*;
  * Manages Wapps on a user
  */
 public class WappService {
-    private Session session;
+    private final Session session;
 
     /**
      * Instantiate the Wapp service with a user session

@@ -1,4 +1,4 @@
-package wappsto.iot;
+package wappsto.iot.rpc;
 
 import java.io.IOException;
 
