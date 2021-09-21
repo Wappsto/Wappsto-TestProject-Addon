@@ -61,4 +61,6 @@ jobs:
           WAPPSTO_APP_URL: "https://qa.wappsto.com/"
           CI_TEST: "true"
         run: |
-          mvn clean verify
+          mvn test --batch-mode --fail-at-end
+      - name: Publish Surefire report
+        uses: scacap/action-surefire-report@v1
