@@ -40,9 +40,7 @@ public class SSLConnection implements Connection {
     }
 
     @Override
-    public void start(Callback messageCallback, Callback errorCallback)
-        throws InterruptedException
-    {
+    public void start(Callback messageCallback, Callback errorCallback) {
         try {
             handler = new MessageHandler(
                 socket.getInputStream(),
