@@ -1,11 +1,10 @@
 package wappsto.iot.ssl;
 
-import wappsto.iot.Callback;
+import wappsto.iot.rpc.*;
 
 import java.io.*;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.function.Consumer;
+import java.time.*;
+import java.util.function.*;
 
 import static wappsto.iot.exceptions.InvalidMessage.*;
 
@@ -35,8 +34,6 @@ public class MessageHandler extends Thread{
             return;
         }
     }
-
-    //so basically i hate this code and i need to come back to it
     private void read() throws Exception {
         int openBraces = 0;
         String message = "";

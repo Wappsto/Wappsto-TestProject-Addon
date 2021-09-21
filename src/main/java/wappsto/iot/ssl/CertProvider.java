@@ -1,15 +1,15 @@
 package wappsto.iot.ssl;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import wappsto.iot.ssl.model.WappstoCerts;
+import org.bouncycastle.jce.provider.*;
+import wappsto.iot.ssl.model.*;
 
 import javax.net.ssl.*;
 import java.io.*;
 import java.security.*;
-import java.security.cert.*;
 import java.security.cert.Certificate;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Base64;
+import java.security.cert.*;
+import java.security.spec.*;
+import java.util.*;
 
 public class CertProvider {
     public final TrustManager[] trustManagers;

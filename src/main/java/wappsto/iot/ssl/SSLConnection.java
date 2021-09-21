@@ -1,11 +1,10 @@
 package wappsto.iot.ssl;
 
-import wappsto.iot.Callback;
-import wappsto.iot.Connection;
-import wappsto.iot.ssl.model.WappstoCerts;
+import wappsto.iot.rpc.*;
+import wappsto.iot.ssl.model.*;
+
 import javax.net.ssl.*;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 public class SSLConnection implements Connection {
     private SSLSocket socket;

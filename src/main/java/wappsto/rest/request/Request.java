@@ -1,10 +1,9 @@
 package wappsto.rest.request;
 
-import wappsto.rest.exceptions.HttpException;
+import wappsto.rest.request.exceptions.*;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.*;
 
 /**
  * Base HTTP Request class

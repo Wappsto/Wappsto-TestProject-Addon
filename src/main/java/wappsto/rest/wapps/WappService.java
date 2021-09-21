@@ -1,44 +1,40 @@
 package wappsto.rest.wapps;
 
-import wappsto.rest.wapps.model.InstallationRequest;
-import wappsto.rest.wapps.model.WappsResponse;
-import wappsto.rest.request.API;
 import wappsto.rest.request.Request;
-import wappsto.rest.session.Session;
+import wappsto.rest.request.*;
+import wappsto.rest.session.*;
+import wappsto.rest.wapps.model.*;
 
-import javax.ws.rs.core.Response;
-import java.util.Collection;
+import javax.ws.rs.core.*;
+import java.util.*;
 
+/**
+ * Manages Wapps on a user
+ */
 public class WappService {
-    private Session session;
+    private final Session session;
 
+    /**
+     * Instantiate the Wapp service with a user session
+     * @param session user session
+     */
     public WappService(Session session) {
         this.session = session;
     }
 
     /**
-     * Install a Wapp on the logged-in user
-     * @param wapp
+     * Install a Wapp by name on the logged-in user
+     * @param name Name of wapp
      * @throws Exception
      */
-    public void install(Wapps wapp) throws Exception {
-        InstallationRequest install = new InstallationRequest(
-            wapp.id
-        );
+    public void install(String name) throws Exception {
+        String applicationId = fetchFromStore(name).application;
+        InstallationRequest install = new InstallationRequest(applicationId);
 
         new Request.Builder(session.service)
             .atEndPoint(API.INSTALLATION)
             .withBody(install)
             .post(session.id);
-    }
-
-    /**
-     * Install a Wapp by name on the logged-in user
-     * @param name
-     * @throws Exception
-     */
-    public void install(String name) throws Exception {
-        install(Wapps.from(name));
     }
 
 
@@ -54,5 +50,26 @@ public class WappService {
             .get(session.id);
 
         return response.readEntity(WappsResponse.class).id;
+    }
+
+    /**
+     * Fetches all Wapps from the store
+     * @return Collection of all wapps
+     * @throws Exception
+     */
+    public Collection<Wapp> fetchAllFromStore() throws Exception {
+        return new Request.Builder(session.service)
+            .atEndPoint(API.MARKET)
+            .get()
+            .readEntity(MarketResponse.class)
+            .wapps;
+    }
+
+    private Wapp fetchFromStore(String name) throws Exception {
+        return fetchAllFromStore()
+            .stream()
+            .filter(wapp -> wapp.name.equals(name))
+            .findFirst()
+            .orElseThrow(() -> new Exception("Wapp not found"));
     }
 }

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Env;
-import wappsto.rest.exceptions.HttpException;
+import wappsto.rest.request.exceptions.HttpException;
 import java.util.concurrent.ExecutionException;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;

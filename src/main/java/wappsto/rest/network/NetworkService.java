@@ -1,9 +1,8 @@
-package wappsto.rest.iot;
+package wappsto.rest.network;
 
-import wappsto.rest.iot.model.NetworkCreatorResponse;
-import wappsto.rest.request.API;
-import wappsto.rest.request.Request;
-import wappsto.rest.session.Session;
+import wappsto.rest.network.model.*;
+import wappsto.rest.request.*;
+import wappsto.rest.session.*;
 
 public class NetworkService {
     private Session session;

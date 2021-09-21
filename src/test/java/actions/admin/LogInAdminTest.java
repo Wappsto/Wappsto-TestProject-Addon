@@ -7,11 +7,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.ExecutionException;
-
-import static org.junit.Assume.*;
 import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 
@@ -42,7 +41,12 @@ public class LogInAdminTest {
     }
 
     private boolean isCiTest() {
-        return env().get("CI_TEST").equals("true");
+        String ciEnv = env().get("CI_TEST");
+        if (ciEnv != null) {
+            return ciEnv.equals("true");
+        } else {
+            return true;
+        }
     }
 
     @Nested

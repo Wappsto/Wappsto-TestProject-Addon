@@ -1,7 +1,7 @@
 package rest;
 
 import org.junit.jupiter.api.*;
-import wappsto.rest.exceptions.*;
+import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.Admin;
 import wappsto.rest.session.model.AdminCredentials;
 import wappsto.rest.session.model.Credentials;

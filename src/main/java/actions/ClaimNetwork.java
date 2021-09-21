@@ -7,7 +7,7 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.iot.NetworkService;
+import wappsto.rest.network.NetworkService;
 import wappsto.rest.session.User;
 
 import static actions.Utils.getSessionFrom;

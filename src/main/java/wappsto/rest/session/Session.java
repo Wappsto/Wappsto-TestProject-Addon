@@ -1,10 +1,8 @@
 package wappsto.rest.session;
 
-import org.glassfish.jersey.client.ClientConfig;
-import wappsto.rest.request.API;
-import wappsto.rest.request.Request;
-import wappsto.rest.session.model.Credentials;
-import wappsto.rest.session.model.SessionResponse;
+import org.glassfish.jersey.client.*;
+import wappsto.rest.request.*;
+import wappsto.rest.session.model.*;
 
 import javax.ws.rs.client.*;
 

@@ -1,8 +1,8 @@
 package rest;
 
 import org.junit.jupiter.api.*;
-import wappsto.rest.exceptions.HttpException;
-import wappsto.rest.iot.NetworkService;
+import wappsto.rest.request.exceptions.HttpException;
+import wappsto.rest.network.NetworkService;
 import wappsto.rest.session.User;
 import wappsto.rest.session.model.Credentials;
 

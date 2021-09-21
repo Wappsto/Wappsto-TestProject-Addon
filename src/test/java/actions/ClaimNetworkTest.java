@@ -1,7 +1,7 @@
 package actions;
 
 import org.junit.jupiter.api.*;
-import wappsto.rest.exceptions.HttpException;
+import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.session.model.Credentials;
 import wappsto.rest.session.User;
 
