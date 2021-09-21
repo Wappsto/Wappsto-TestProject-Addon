@@ -55,7 +55,6 @@ public class RPCClientTest {
         VirtualNetwork network = createVirtualIoTDevice();
         RPCClient client = new RPCClient(connection, network);
         NetworkService networkService = new NetworkService(session);
-        Thread.sleep(500);
         assertNotNull(
             networkService.fetch(creatorResponse.network.id).id
         );
