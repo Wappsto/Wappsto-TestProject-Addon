@@ -60,6 +60,7 @@ public class NetworkTest {
     }
 
     @Test
+    @Disabled
     public void claims_network() throws Exception {
         Credentials credentials = new Credentials(
             env().get(DEVELOPER_USERNAME),
