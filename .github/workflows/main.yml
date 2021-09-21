@@ -57,7 +57,7 @@ jobs:
           WAPPSTO_ADMIN_USERNAME: ${{ secrets.WAPPSTO_ADMIN_USERNAME }}
           WAPPSTO_ADMIN_PASSWORD:  ${{ secrets.WAPPSTO_ADMIN_PASSWORD }}
           TESTPROJECT_DEV_TOKEN: ${{ secrets.TESTPROJECT_DEV_TOKEN }}
-          WAPPSTO_API_ROOT: "https://qa.wappsto.com/services/2.0"
+          WAPPSTO_API_ROOT: "https://qa.wappsto.com/services"
           WAPPSTO_APP_URL: "https://qa.wappsto.com/"
           WAPPSTO_TEST_NETWORK: ${{ secrets.WAPPSTO_TEST_NETWORK }}
           WAPPSTO_DEVELOPER_USERNAME: ${{ secrets.WAPPSTO_DEVELOPER_USERNAME }}
