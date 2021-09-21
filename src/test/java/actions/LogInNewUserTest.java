@@ -18,10 +18,7 @@ public class LogInNewUserTest {
     public static void setup() throws Exception {
         try {
             admin().delete(defaultUser().username);
-        } catch (HttpException e) {
-            if (!e.getMessage().equals("Not Found")) {
-                throw new Exception(e.getMessage());
-            }
+        } catch (HttpException ignored) {
         }
     }
 

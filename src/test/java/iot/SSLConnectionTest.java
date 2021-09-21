@@ -7,18 +7,21 @@ import wappsto.iot.ssl.model.WappstoCerts;
 import org.junit.jupiter.api.Test;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.network.NetworkService;
-import wappsto.rest.network.model.NetworkCreatorResponse;
+import wappsto.rest.network.model.CreatorResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static util.Env.API_ROOT;
+import static util.Env.env;
 import static util.Utils.*;
 
 public class SSLConnectionTest {
-    private final static String serviceUrl = "https://qa.wappsto.com/services/2.1";
+    private static String serviceUrl;
     private final String sslAddress = "qa.wappsto.com";
     private final int sslPort = 53005;
 
     @BeforeAll
     public static void setup() throws Exception {
+        serviceUrl = env().get(API_ROOT);
         try {
             admin().delete(defaultUser().username);
         } catch (HttpException ignore) {
@@ -27,14 +30,14 @@ public class SSLConnectionTest {
 
     @Test
     public void connects_via_ssl() throws Exception {
-        NetworkCreatorResponse networkCreatorResponse = new NetworkService(
+        CreatorResponse creatorResponse = new NetworkService(
             createNewUserSession(serviceUrl)
-        ).create();
+        ).getCreator();
 
         WappstoCerts certs = new WappstoCerts(
-            networkCreatorResponse.ca,
-            networkCreatorResponse.certificate,
-            networkCreatorResponse.privateKey
+            creatorResponse.ca,
+            creatorResponse.certificate,
+            creatorResponse.privateKey
         );
         SSLConnection connection = new SSLConnection(sslAddress, sslPort, certs);
         assertTrue(connection.connected());

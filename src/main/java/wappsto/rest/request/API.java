@@ -1,6 +1,20 @@
 package wappsto.rest.request;
 
 public enum API {
+    _2_1 {
+        @Override
+        public String toString() {
+            return "2.1";
+        }
+    },
+
+    _2_0 {
+        @Override
+        public String toString() {
+            return "2.0";
+        }
+    },
+
     REGISTER {
         @Override
         public String toString() {

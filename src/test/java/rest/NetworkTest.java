@@ -1,6 +1,7 @@
 package rest;
 
 import org.junit.jupiter.api.*;
+import wappsto.rest.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.network.NetworkService;
 import wappsto.rest.session.User;
@@ -26,11 +27,21 @@ public class NetworkTest {
     @Test
     public void creates_new_network() throws Exception {
         User session = createNewUserSession(
-            "https://qa.wappsto.com/services/2.1"
+            serviceUrl
         );
         NetworkService network = new NetworkService(session);
 
-        assertNotNull(network.create().network);
+        assertNotNull(network.getCreator().network);
+    }
+
+    @Test
+    public void fetches_an_owned_network() throws Exception {
+        User session = createNewUserSession(
+            serviceUrl
+        );
+        NetworkService networkService = new NetworkService(session);
+        Network network = networkService.create();
+        assertEquals(network.id, networkService.fetch(network.id).id);
     }
 
     @Nested

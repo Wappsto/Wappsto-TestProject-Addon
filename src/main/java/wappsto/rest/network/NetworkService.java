@@ -24,11 +24,31 @@ public class NetworkService {
             .post(session.id);
     }
 
-    public NetworkCreatorResponse create() throws Exception {
+    public CreatorResponse getCreator() throws Exception {
         return new Request.Builder(session.service)
+            .atEndPoint(API._2_1)
             .atEndPoint(API.CREATOR)
             .withBody("{}")
             .post(session.id)
-            .readEntity(NetworkCreatorResponse.class);
+            .readEntity(CreatorResponse.class);
+    }
+
+    public Network create() throws Exception {
+        return new Request.Builder(session.service)
+            .atEndPoint(API._2_0)
+            .atEndPoint(API.NETWORK)
+            .withBody("{}")
+            .post(session.id)
+            .readEntity(NetworkResponse.class)
+            .network;
+    }
+
+    public Network fetch(String id) throws Exception {
+        return new Request.Builder(session.service)
+            .atEndPoint(API.NETWORK)
+            .atEndPoint(id)
+            .get(session.id)
+            .readEntity(NetworkResponse.class)
+            .network;
     }
 }

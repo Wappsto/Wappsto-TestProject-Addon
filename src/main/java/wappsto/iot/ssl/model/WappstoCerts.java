@@ -1,5 +1,7 @@
 package wappsto.iot.ssl.model;
 
+import wappsto.rest.network.model.*;
+
 public class WappstoCerts {
     public final String ca;
     public final String client;
@@ -10,5 +12,9 @@ public class WappstoCerts {
         this.ca = ca;
         this.client = client;
         this.privateKey = privateKey;
+    }
+
+    public WappstoCerts(CreatorResponse network) {
+        this(network.ca, network.certificate, network.privateKey);
     }
 }

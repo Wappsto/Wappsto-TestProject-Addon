@@ -37,6 +37,7 @@ public class User extends  Session{
      */
     public UserResponse fetchUser() throws Exception{
         return new Request.Builder(service)
+            .atEndPoint(API._2_0)
             .atEndPoint(API.USER)
             .atEndPoint("me")
             .get(id)
