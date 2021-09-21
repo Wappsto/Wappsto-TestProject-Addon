@@ -26,7 +26,7 @@ public abstract class Session {
             .atEndPoint(API.SESSION)
             .withBody(credentials)
             .post()
-            .readEntity(SessionResponse.class).sessionId.id;
+            .readEntity(SessionResponse.class).sessionMeta.id;
     }
 
     /**

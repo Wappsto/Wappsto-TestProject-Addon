@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreatorResponse {
     @JsonProperty
-    public Network network;
+    public NetworkMeta network;
 
     @JsonProperty
     public String ca;

@@ -59,9 +59,6 @@ jobs:
           TESTPROJECT_DEV_TOKEN: ${{ secrets.TESTPROJECT_DEV_TOKEN }}
           WAPPSTO_API_ROOT: "https://qa.wappsto.com/services"
           WAPPSTO_APP_URL: "https://qa.wappsto.com/"
-          WAPPSTO_TEST_NETWORK: ${{ secrets.WAPPSTO_TEST_NETWORK }}
-          WAPPSTO_DEVELOPER_USERNAME: ${{ secrets.WAPPSTO_DEVELOPER_USERNAME }}
-          WAPPSTO_DEVELOPER_PASSWORD: ${{ secrets.WAPPSTO_DEVELOPER_PASSWORD }}
           CI_TEST: "true"
         run: |
           mvn clean verify

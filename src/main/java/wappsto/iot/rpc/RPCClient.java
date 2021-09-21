@@ -31,7 +31,6 @@ public class RPCClient {
     }
 
     private void incoming(String rpc) {
-        System.out.println(rpc);
     }
 
     private void error(String error) {

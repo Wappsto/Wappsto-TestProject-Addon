@@ -54,6 +54,13 @@ public enum API {
         }
     },
 
+    ACL {
+        @Override
+        public String toString() {
+            return "acl";
+        }
+    },
+
     CREATOR {
         @Override
         public String toString() {

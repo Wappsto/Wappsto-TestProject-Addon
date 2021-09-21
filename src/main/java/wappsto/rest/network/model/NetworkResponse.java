@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NetworkResponse {
-    @JsonProperty ("meta") public Network network;
+    @JsonProperty public NetworkMeta meta;
 }

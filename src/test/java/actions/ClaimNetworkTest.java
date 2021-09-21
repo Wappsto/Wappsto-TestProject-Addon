@@ -1,6 +1,8 @@
 package actions;
 
 import org.junit.jupiter.api.*;
+import wappsto.rest.network.*;
+import wappsto.rest.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.session.model.Credentials;
 import wappsto.rest.session.User;
@@ -12,11 +14,19 @@ import static util.Env.*;
 import static util.Utils.*;
 
 public class ClaimNetworkTest {
+    public static final String NETWORK_FRIEND = "networkfriend@seluxit.com";
+    private static String serviceUrl;
+    private static String appUrl;
+    private User session;
+    private User friend;
 
     @BeforeAll
     public static void setup() throws Exception {
+        serviceUrl = env().get(API_ROOT);
+        appUrl = env().get(APP_URL);
         try {
             admin().delete(defaultUser().username);
+            admin().delete(NETWORK_FRIEND);
         } catch (HttpException ignore) {
         }
 
@@ -25,26 +35,21 @@ public class ClaimNetworkTest {
     @BeforeEach
     public void reset() throws Exception {
         resetRunner();
+        session = createNewUserSession(serviceUrl);
+        friend = makeAFriend();
     }
 
     @Test
-    @Disabled
     public void claims_network() throws Exception {
-        Credentials credentials = new Credentials(
-            env().get(DEVELOPER_USERNAME),
-            env().get(DEVELOPER_PASSWORD)
-        );
+        NetworkService service = new NetworkService(session);
+        NetworkMeta network = service.create();
 
-        User session = new User(
-            credentials,
-            env().get(API_ROOT)
-        );
+        service.share(network, friend.fetchUser());
 
-        logInBrowser(session.id, env().get(APP_URL));
+        logInBrowser(friend.id, appUrl);
 
         ClaimNetwork action = createAction(
-            env().get(NETWORK_TOKEN),
-            env().get(API_ROOT)
+            network.id
         );
 
         runner().run(action);
@@ -55,8 +60,7 @@ public class ClaimNetworkTest {
         @Test
         public void when_browser_is_not_logged_in() {
             ClaimNetwork action = createAction(
-                env().get(NETWORK_TOKEN),
-                env().get(API_ROOT)
+                "token"
             );
 
             assertThrows(
@@ -66,19 +70,15 @@ public class ClaimNetworkTest {
         }
 
         @Test
-        public void when_user_does_not_have_permissions() throws Exception {
+        public void when_network_has_not_been_shared() throws Exception {
+            NetworkService service = new NetworkService(session);
+            NetworkMeta network = service.create();
+
             ClaimNetwork action = createAction(
-                env().get(NETWORK_TOKEN),
-                env().get(API_ROOT)
+                network.id
             );
 
-            User session = new User.Builder(
-                admin(),
-                env().get(API_ROOT)
-            ).withCredentials(defaultUser())
-                .create();
-
-            logInBrowser(session.id, env().get(APP_URL));
+            logInBrowser(friend.id, appUrl);
 
             assertThrows(
                 ExecutionException.class,
@@ -91,14 +91,22 @@ public class ClaimNetworkTest {
     public void tearDown() throws Exception {
         try {
             admin().delete(defaultUser().username);
+            admin().delete(NETWORK_FRIEND);
         } catch (HttpException ignored) {
         }
     }
 
-    private ClaimNetwork createAction(String network, String serviceUrl) {
+    private ClaimNetwork createAction(String network) {
         ClaimNetwork action = new ClaimNetwork();
         action.serviceUrl = serviceUrl;
         action.networkId = network;
         return action;
+    }
+
+    private User makeAFriend() throws Exception {
+        return new User.Builder(admin(), serviceUrl)
+            .withCredentials(
+                new Credentials(NETWORK_FRIEND, "123")
+            ).create();
     }
 }

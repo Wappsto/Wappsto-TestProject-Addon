@@ -13,7 +13,6 @@ import wappsto.rest.session.*;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static util.Env.API_ROOT;
 import static util.Env.env;
@@ -22,7 +21,7 @@ import static util.Utils.*;
 public class RPCClientTest {
     private static String serviceUrl;
     private SSLConnection connection;
-    User session;
+    private User session;
     private CreatorResponse creatorResponse;
 
 
@@ -104,6 +103,7 @@ public class RPCClientTest {
 
     @AfterEach
     public void tearDown() throws Exception {
+        connection.disconnect();
         try {
             admin().delete(defaultUser().username);
         } catch (HttpException ignored) {

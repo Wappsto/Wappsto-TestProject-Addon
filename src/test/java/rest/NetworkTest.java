@@ -12,35 +12,58 @@ import static util.Env.*;
 import static util.Utils.*;
 
 public class NetworkTest {
+    public static final String NETWORK_FRIEND = "networkfriend@seluxit.com";
     private static String serviceUrl;
+    private User session;
+    private User friend;
 
     @BeforeAll
-    public static void setup() {
+    public static void setup() throws Exception {
         serviceUrl = env().get(API_ROOT);
 
         try {
             admin().delete(defaultUser().username);
-        } catch (Exception ignored) {
+            admin().delete(NETWORK_FRIEND);
+        } catch (HttpException ignored) {
         }
+    }
+
+    @BeforeEach
+    public void registerUser() throws Exception {
+        session = createNewUserSession(
+            serviceUrl
+        );
+        friend = new User.Builder(admin(), serviceUrl)
+            .withCredentials(
+                new Credentials(
+                    NETWORK_FRIEND,
+                    "123"
+                )
+            ).create();
     }
 
     @Test
     public void creates_new_network() throws Exception {
-        User session = createNewUserSession(
-            serviceUrl
-        );
         NetworkService network = new NetworkService(session);
 
         assertNotNull(network.getCreator().network);
     }
 
     @Test
+    public void shares_an_owned_network() throws Exception {
+        NetworkService service = new NetworkService(session);
+        NetworkMeta network = service.create();
+        service.share(network, friend.fetchUser());
+
+        NetworkService friendService = new NetworkService(friend);
+
+        assertNotNull(friendService.fetch(network.id));
+    }
+
+    @Test
     public void fetches_an_owned_network() throws Exception {
-        User session = createNewUserSession(
-            serviceUrl
-        );
         NetworkService networkService = new NetworkService(session);
-        Network network = networkService.create();
+        NetworkMeta network = networkService.create();
         assertEquals(network.id, networkService.fetch(network.id).id);
     }
 
@@ -48,7 +71,6 @@ public class NetworkTest {
     public class fails_to_claim {
         @Test
         public void invalid_network() throws Exception {
-            User session = createNewUserSession(serviceUrl);
             NetworkService network = new NetworkService(session);
             assertThrows(
                 HttpException.class,
@@ -59,34 +81,28 @@ public class NetworkTest {
 
         @Test
         public void when_not_authorized() throws Exception {
-            User session = createNewUserSession(serviceUrl);
-            NetworkService network = new NetworkService(session);
+            NetworkService service = new NetworkService(session);
+            NetworkMeta network = service.create();
+            NetworkService friendService = new NetworkService(friend);
 
             assertThrows(
                 HttpException.class,
-                () -> network.claim(env().get(NETWORK_TOKEN)),
+                () -> friendService.claim(network.id),
                 "Unauthorized"
             );
         }
     }
 
     @Test
-    @Disabled
-    public void claims_network() throws Exception {
-        Credentials credentials = new Credentials(
-            env().get(DEVELOPER_USERNAME),
-            env().get(DEVELOPER_PASSWORD)
-        );
+    public void claims_shared_network() throws Exception {
+        NetworkService service = new NetworkService(session);
+        NetworkMeta network = service.create();
+        service.share(network, friend.fetchUser());
 
-        User session = new User(
-            credentials,
-            serviceUrl
-        );
-
-        NetworkService network = new NetworkService(session);
+        NetworkService friendService = new NetworkService(friend);
 
         assertDoesNotThrow(
-            () -> network.claim(env().get(NETWORK_TOKEN))
+            () -> friendService.claim(network.id)
         );
     }
 
@@ -94,6 +110,7 @@ public class NetworkTest {
     public void tearDown() {
         try {
             admin().delete(defaultUser().username);
+            admin().delete(NETWORK_FRIEND);
         } catch (Exception ignored) {
         }
     }

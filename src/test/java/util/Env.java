@@ -10,8 +10,6 @@ public class Env {
     public static final String DEV_TOKEN = "TESTPROJECT_DEV_TOKEN";
     public static final String APP_URL = "WAPPSTO_APP_URL";
     public static final String NETWORK_TOKEN = "WAPPSTO_TEST_NETWORK";
-    public static final String DEVELOPER_USERNAME = "WAPPSTO_DEVELOPER_USERNAME";
-    public static final String DEVELOPER_PASSWORD = "WAPPSTO_DEVELOPER_PASSWORD";
 
     public static Map<String, String> env() {
         return  System.getenv();

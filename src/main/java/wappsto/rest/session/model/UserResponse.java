@@ -6,4 +6,6 @@ import com.fasterxml.jackson.annotation.*;
 public class UserResponse {
     @JsonProperty("email")
     public String username;
+    @JsonProperty("meta")
+    public UserMeta meta;
 }
