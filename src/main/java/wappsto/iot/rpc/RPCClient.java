@@ -7,9 +7,7 @@ import wappsto.iot.ssl.*;
 import java.io.*;
 
 public class RPCClient {
-    private JsonRPCRequest jsonRPCRequest;
     private Connection conn;
-    private JsonRPCParser parser;
 
     public RPCClient(Connection conn) {
         this.conn = conn;
@@ -20,7 +18,6 @@ public class RPCClient {
         throws IOException
     {
         this(connection);
-        this.jsonRPCRequest = jsonRPCRequest;
         send(new ObjectMapper().writeValueAsString(jsonRPCRequest));
     }
 

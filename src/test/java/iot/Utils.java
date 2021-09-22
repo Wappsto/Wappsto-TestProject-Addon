@@ -7,7 +7,7 @@ import wappsto.rest.network.model.*;
 import java.util.*;
 
 public class Utils {
-    public static Network defaultNetwork(CreatorResponse creatorResponse) {
+    public static Params defaultNetwork(CreatorResponse creatorResponse) {
         Value value = new Value(
             "On/off",
             "rw",
@@ -28,13 +28,13 @@ public class Utils {
 
         LinkedList<Device> devices = new LinkedList<>();
         devices.add(device);
-        Data data = new Data(
+        Network data = new Network(
             "On/off switch",
-            devices,
-            creatorResponse.network.id
+            creatorResponse.network.id,
+            devices
         );
 
-        return new Network(
+        return new Params(
             "/network",
             data
         );

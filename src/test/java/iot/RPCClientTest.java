@@ -4,7 +4,6 @@ import wappsto.iot.rpc.model.schema.*;
 import org.junit.jupiter.api.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.schema.network.*;
-import wappsto.iot.rpc.model.schema.network.Number;
 import wappsto.iot.ssl.*;
 import wappsto.iot.ssl.model.*;
 import wappsto.rest.network.*;
@@ -13,7 +12,6 @@ import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
 
 import java.io.*;
-import java.util.*;
 
 import static iot.Utils.defaultNetwork;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -73,7 +71,7 @@ public class RPCClientTest {
     }
 
     private JsonRPCRequest createVirtualIoTDevice() {
-        Network params = defaultNetwork(creatorResponse);
+        Params params = defaultNetwork(creatorResponse);
 
         JsonRPCRequest jsonRPCRequest = new JsonRPCRequest(
             params,

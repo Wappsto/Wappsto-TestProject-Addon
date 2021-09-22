@@ -9,7 +9,7 @@ import java.util.*;
 import static iot.Utils.defaultNetwork;
 
 public class VirtualIotNetworkTest {
-    private static Network schema;
+    private static Params schema;
 
     @BeforeAll
     public static void setup() {
