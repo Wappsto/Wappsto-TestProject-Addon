@@ -27,7 +27,7 @@ public class NetworkService {
 
     public CreatorResponse getCreator() throws Exception {
         return new Request.Builder(session.service)
-            .atEndPoint(API._2_1)
+            .atEndPoint(API.V2_1)
             .atEndPoint(API.CREATOR)
             .withBody("{}")
             .post(session.id)
@@ -36,7 +36,7 @@ public class NetworkService {
 
     public NetworkMeta create() throws Exception {
         return new Request.Builder(session.service)
-            .atEndPoint(API._2_0)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
             .withBody("{}")
             .post(session.id)
@@ -46,7 +46,7 @@ public class NetworkService {
 
     public NetworkMeta fetch(String id) throws Exception {
         return new Request.Builder(session.service)
-            .atEndPoint(API._2_0)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
             .atEndPoint(id)
             .get(session.id)
@@ -60,7 +60,7 @@ public class NetworkService {
         );
 
         new Request.Builder(session.service)
-            .atEndPoint(API._2_0)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.ACL)
             .atEndPoint(network.id)
             .atEndPoint("permission")

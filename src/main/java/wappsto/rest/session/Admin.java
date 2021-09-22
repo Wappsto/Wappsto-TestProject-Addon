@@ -32,7 +32,7 @@ public class Admin extends Session{
     public void register(Credentials credentials) throws Exception {
         new Request.Builder(service)
             .withBody(credentials)
-            .atEndPoint(API._2_0)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.REGISTER)
             .post(id);
     }
@@ -44,7 +44,7 @@ public class Admin extends Session{
      */
     public void delete(String username) throws Exception {
         new Request.Builder(service)
-            .atEndPoint(API._2_0)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.REGISTER)
             .atEndPoint(username)
             .delete(id);
@@ -60,7 +60,7 @@ public class Admin extends Session{
      */
     public UserResponse fetchUser(String username) throws Exception {
         Response response = new Request.Builder(service)
-            .atEndPoint(API._2_0)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.USER)
             .atEndPoint(username)
             .get(id);

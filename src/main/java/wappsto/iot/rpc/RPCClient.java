@@ -1,15 +1,13 @@
 package wappsto.iot.rpc;
 
 import com.fasterxml.jackson.databind.*;
-import wappsto.iot.rpc.model.request.*;
+import wappsto.iot.rpc.model.schema.*;
 import wappsto.iot.ssl.*;
 
 import java.io.*;
 
-import static javax.ws.rs.client.Entity.json;
-
 public class RPCClient {
-    private VirtualNetwork network;
+    private JsonRPCRequest jsonRPCRequest;
     private Connection conn;
     private JsonRPCParser parser;
 
@@ -18,13 +16,15 @@ public class RPCClient {
         conn.start(this::incoming, this::error);
     }
 
-    public RPCClient(SSLConnection connection, VirtualNetwork network)
+    public RPCClient(SSLConnection connection, JsonRPCRequest jsonRPCRequest)
         throws IOException
     {
         this(connection);
-        this.network = network;
-        send(new ObjectMapper().writeValueAsString(network));
+        this.jsonRPCRequest = jsonRPCRequest;
+        send(new ObjectMapper().writeValueAsString(jsonRPCRequest));
     }
+
+
 
     public void send(String message) throws IOException {
         conn.send(message);

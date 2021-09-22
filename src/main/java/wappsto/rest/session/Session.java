@@ -22,7 +22,7 @@ public abstract class Session {
         service = client.target(serviceUrl);
 
         id = new Request.Builder(service)
-            .atEndPoint(API._2_0)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.SESSION)
             .withBody(credentials)
             .post()
