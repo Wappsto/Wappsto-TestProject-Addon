@@ -3,20 +3,20 @@ package iot;
 import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 import wappsto.iot.rpc.Callback;
-import wappsto.iot.ssl.MessageHandler;
+import wappsto.iot.ssl.DataReader;
 
 import java.io.*;
 
 import static wappsto.iot.exceptions.InvalidMessage.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MessageHandlerTest {
+public class DataReaderTest {
     public static final int WAIT_FOR_INPUT = 100;
     private static ByteArrayInputStream input;
     private static ByteArrayOutputStream toInput;
     private static MessageCallbackMock messageCallback;
     private static ErrorCallbackMock errorCallback;
-    private MessageHandler handler;
+    private DataReader handler;
     private final String ERROR_CALLBACK_NOT_CALLED = "Error callback not called";
 
 
@@ -39,7 +39,7 @@ public class MessageHandlerTest {
                 toInput.toByteArray()
             );
 
-            handler = new MessageHandler(
+            handler = new DataReader(
                 input,
                 messageCallback,
                 errorCallback
@@ -55,14 +55,14 @@ public class MessageHandlerTest {
         public void terminates_with_a_closing_bracket() throws Exception {
             toInput.write("{ does not close".getBytes());
             input = new ByteArrayInputStream(toInput.toByteArray());
-            handler = new MessageHandler(
+            handler = new DataReader(
                 input,
                 messageCallback,
                 errorCallback
             );
 
             handler.start();
-            Thread.sleep(MessageHandler.MESSAGE_TIMOUT + 100);
+            Thread.sleep(DataReader.MESSAGE_TIMOUT + 100);
             assert errorCallback.wasCalled : ERROR_CALLBACK_NOT_CALLED;
             assertEquals(MISSING_CLOSING_BRACKET, errorCallback.message);
 
@@ -75,7 +75,7 @@ public class MessageHandlerTest {
             toInput.write(message.getBytes());
             input = new ByteArrayInputStream(toInput.toByteArray());
 
-            handler = new MessageHandler(
+            handler = new DataReader(
                 input,
                 messageCallback,
                 errorCallback

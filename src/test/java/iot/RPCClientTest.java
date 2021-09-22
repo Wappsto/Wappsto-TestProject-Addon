@@ -1,9 +1,9 @@
 package iot;
 
-import wappsto.iot.rpc.model.schema.*;
+import wappsto.iot.model.schema.*;
 import org.junit.jupiter.api.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.rpc.model.schema.network.*;
+import wappsto.iot.model.schema.network.*;
 import wappsto.iot.ssl.*;
 import wappsto.iot.ssl.model.*;
 import wappsto.rest.network.*;
@@ -71,7 +71,10 @@ public class RPCClientTest {
     }
 
     private JsonRPCRequest createVirtualIoTDevice() {
-        Params params = defaultNetwork(creatorResponse);
+        Params params = new Params(
+            "/network",
+            defaultNetwork(creatorResponse)
+        );
 
         JsonRPCRequest jsonRPCRequest = new JsonRPCRequest(
             params,

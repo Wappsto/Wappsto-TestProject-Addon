@@ -1,5 +1,6 @@
 package wappsto.rest.network;
 
+import org.bouncycastle.ocsp.*;
 import wappsto.rest.network.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.session.*;
@@ -19,6 +20,7 @@ public class NetworkService {
      */
     public void claim(String id) throws Exception {
         new Request.Builder(session.service)
+            .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
             .atEndPoint(id)
             .withBody("{}")
@@ -26,12 +28,14 @@ public class NetworkService {
     }
 
     public CreatorResponse getCreator() throws Exception {
-        return new Request.Builder(session.service)
+        CreatorResponse response = new Request.Builder(session.service)
             .atEndPoint(API.V2_1)
             .atEndPoint(API.CREATOR)
             .withBody("{}")
             .post(session.id)
             .readEntity(CreatorResponse.class);
+        claim(response.network.id);
+        return response;
     }
 
     public NetworkMeta create() throws Exception {

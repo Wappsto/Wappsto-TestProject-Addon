@@ -7,9 +7,8 @@ import javax.net.ssl.*;
 import java.io.*;
 
 public class SSLConnection implements Connection {
-    private SSLSocket socket;
+    private final SSLSocket socket;
     public final OutputStream toServer;
-    private MessageHandler handler;
 
     public SSLConnection(
         String address,
@@ -30,7 +29,6 @@ public class SSLConnection implements Connection {
     }
 
     public boolean connected() {
-        System.out.println(socket.getSession().getId().toString());
         return socket.getSession().isValid();
     }
 
@@ -41,12 +39,12 @@ public class SSLConnection implements Connection {
     @Override
     public void start(Callback messageCallback, Callback errorCallback) {
         try {
-            handler = new MessageHandler(
+            DataReader reader = new DataReader(
                 socket.getInputStream(),
                 messageCallback,
                 errorCallback
             );
-            handler.start();
+            reader.start();
             System.out.println("Message handler started.");
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,16 +1,16 @@
-package wappsto.iot.rpc.model.schema.network;
+package wappsto.iot.model.schema.network;
 
 import com.fasterxml.jackson.annotation.*;
-import wappsto.iot.rpc.model.schema.*;
+import wappsto.iot.model.schema.*;
 
 import java.util.*;
 
-public class Device {
+public class DeviceSchema {
     @JsonProperty public String name;
-    @JsonProperty public Collection<Value> value;
+    @JsonProperty public List<ValueSchema> value;
     @JsonProperty public Meta meta;
 
-    public Device(String name, Collection<Value> value) {
+    public DeviceSchema(String name, List<ValueSchema> value) {
         this.name = name;
         this.value = value;
         meta = new Meta("Device");

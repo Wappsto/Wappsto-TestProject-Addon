@@ -101,9 +101,7 @@ public class NetworkTest {
 
         NetworkService friendService = new NetworkService(friend);
 
-        assertDoesNotThrow(
-            () -> friendService.claim(network.id)
-        );
+        assertDoesNotThrow(() -> friendService.claim(network.id));
     }
 
     @AfterEach

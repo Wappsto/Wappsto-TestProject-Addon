@@ -1,8 +1,8 @@
-package wappsto.iot.rpc.model.schema;
+package wappsto.iot.model.schema;
 
 import com.fasterxml.jackson.annotation.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.rpc.model.schema.network.*;
+import wappsto.iot.model.schema.network.*;
 
 public class JsonRPCRequest {
     @JsonProperty public String jsonrpc;

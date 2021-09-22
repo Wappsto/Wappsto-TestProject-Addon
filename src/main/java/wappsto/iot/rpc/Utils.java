@@ -1,5 +1,7 @@
 package wappsto.iot.rpc;
 
+import org.apache.commons.lang3.*;
+
 import java.nio.charset.*;
 import java.util.*;
 
@@ -11,9 +13,7 @@ public class Utils {
 
     public static String requestId(Methods method) {
         if (identifier.isEmpty()) {
-            byte[] array = new byte[7];
-            new Random().nextBytes(array);
-            identifier = new String(array, Charset.forName("UTF-8")) + "_";
+            identifier = RandomStringUtils.randomAlphanumeric(10) + "_";
         }
         int count = 0;
         switch (method) {

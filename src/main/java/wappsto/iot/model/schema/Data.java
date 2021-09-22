@@ -1,7 +1,6 @@
-package wappsto.iot.rpc.model.schema.network;
+package wappsto.iot.model.schema;
 
 import com.fasterxml.jackson.annotation.*;
-import wappsto.iot.rpc.model.schema.*;
 
 public class Data {
     @JsonProperty public Meta meta;

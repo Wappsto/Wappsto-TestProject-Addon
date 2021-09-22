@@ -1,12 +1,13 @@
 package wappsto.iot.rpc;
 
 import com.fasterxml.jackson.databind.*;
-import wappsto.iot.rpc.model.schema.*;
+import wappsto.iot.model.schema.*;
+import wappsto.iot.model.schema.network.*;
 import wappsto.iot.ssl.*;
 
 import java.io.*;
 
-public class RPCClient {
+public class RPCClient implements IoTClient {
     private Connection conn;
 
     public RPCClient(Connection conn) {
@@ -23,11 +24,18 @@ public class RPCClient {
 
 
 
+    @Override
     public void send(String message) throws IOException {
         conn.send(message);
     }
 
+    @Override
+    public void publish(NetworkSchema schema) {
+
+    }
+
     private void incoming(String rpc) {
+        System.out.println(rpc);
     }
 
     private void error(String error) {

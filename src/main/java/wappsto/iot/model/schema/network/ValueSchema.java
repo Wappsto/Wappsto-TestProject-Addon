@@ -1,17 +1,17 @@
-package wappsto.iot.rpc.model.schema.network;
+package wappsto.iot.model.schema.network;
 
 import com.fasterxml.jackson.annotation.*;
-import wappsto.iot.rpc.model.schema.*;
+import wappsto.iot.model.schema.*;
 
 import java.util.*;
-public class Value {
+public class ValueSchema {
     @JsonProperty public String name;
     @JsonProperty public String permission;
-    @JsonProperty public Collection<State> state;
+    @JsonProperty public List<State> state;
     @JsonProperty public Number number;
     @JsonProperty public Meta meta;
 
-    public Value(String name, String permission, Number number) {
+    public ValueSchema(String name, String permission, Number number) {
         this.name = name;
         this.permission = permission;
         state = new LinkedList<>();

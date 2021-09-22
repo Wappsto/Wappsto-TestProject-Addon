@@ -8,13 +8,13 @@ import java.util.function.*;
 
 import static wappsto.iot.exceptions.InvalidMessage.*;
 
-public class MessageHandler extends Thread{
+public class DataReader extends Thread{
     public static final int MESSAGE_TIMOUT = 500;
     private final Callback messageCallBack;
     private final Callback errorCallback;
     private final InputStream incomingData;
 
-    public MessageHandler(
+    public DataReader(
         InputStream incomingData,
         Callback messageCallback,
         Callback errorCallback
