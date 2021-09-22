@@ -14,7 +14,7 @@ import java.util.*;
 import static iot.Utils.defaultNetwork;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Ignore
+@Disabled
 public class VirtualIotNetworkTest {
     private static NetworkSchema schema;
     private IoTClientMock client;
