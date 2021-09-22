@@ -34,6 +34,12 @@ public class JsonRPCParserTest {
                 request.id = "";
                 request.method = Methods.PUT;
                 request.params = new JsonRPCRequestFromServerParams();
+
+                JsonRPCMessage message = new JsonRPCParser().parse(
+                    new ObjectMapper().writeValueAsString(request)
+                );
+
+                assertTrue(message instanceof JsonRPCRequestFromServer);
             }
         }
     }
