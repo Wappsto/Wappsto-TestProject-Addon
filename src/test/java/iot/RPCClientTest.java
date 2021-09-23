@@ -1,9 +1,8 @@
 package iot;
 
-import wappsto.iot.model.schema.*;
 import org.junit.jupiter.api.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.model.schema.network.*;
+import wappsto.iot.rpc.model.*;
 import wappsto.iot.ssl.*;
 import wappsto.iot.ssl.model.*;
 import wappsto.rest.network.*;
@@ -54,7 +53,7 @@ public class RPCClientTest {
 
     @Test
     public void sends_its_own_structure_to_the_server() throws Exception {
-        JsonRPCRequest jsonRPCRequest = createVirtualIoTDevice();
+        RPCRequest jsonRPCRequest = createVirtualIoTDevice();
         RPCClient client = new RPCClient(connection, jsonRPCRequest);
         NetworkService networkService = new NetworkService(session);
         assertNotNull(
@@ -65,18 +64,18 @@ public class RPCClientTest {
     @Test
     @Disabled
     public void reports_state_change_to_server() throws IOException {
-        JsonRPCRequest jsonRPCRequest = createVirtualIoTDevice();
+        RPCRequest jsonRPCRequest = createVirtualIoTDevice();
         RPCClient client = new RPCClient(connection, jsonRPCRequest);
 
     }
 
-    private JsonRPCRequest createVirtualIoTDevice() {
+    private RPCRequest createVirtualIoTDevice() {
         Params params = new Params(
             "/network",
             defaultNetwork(creatorResponse)
         );
 
-        JsonRPCRequest jsonRPCRequest = new JsonRPCRequest(
+        RPCRequest jsonRPCRequest = new RPCRequest(
             params,
             Methods.POST
         );

@@ -1,10 +1,10 @@
 package iot;
 
-import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.rpc.model.*;
+import wappsto.iot.rpc.Command;
+import wappsto.iot.rpc.model.from.server.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,11 +20,14 @@ public class JsonRPCParserTest {
                 response.id = "id";
                 response.result = new JsonRPCResult();
                 response.result.value = true;
-                JsonRPCMessage message = new JsonRPCParser().parse(
+
+                CommandMock responseCommand = new CommandMock();
+                CommandMock controlCommand = new CommandMock();
+                new JsonRPCParser(responseCommand, controlCommand).parse(
                     new ObjectMapper().writeValueAsString(response)
                 );
 
-                assertTrue(message instanceof JsonRPCResponse);
+                assertTrue(responseCommand.wasCalled);
             }
 
             @Test
@@ -35,14 +38,22 @@ public class JsonRPCParserTest {
                 request.method = Methods.PUT;
                 request.params = new JsonRPCRequestFromServerParams();
 
-                JsonRPCMessage message = new JsonRPCParser().parse(
+                CommandMock responseCommand = new CommandMock();
+                CommandMock controlCommand = new CommandMock();
+                new JsonRPCParser(responseCommand, controlCommand).parse(
                     new ObjectMapper().writeValueAsString(request)
                 );
 
-                assertTrue(message instanceof JsonRPCRequestFromServer);
+                assertTrue(controlCommand.wasCalled);
             }
         }
     }
 
-
+    private class CommandMock implements Command {
+        public boolean wasCalled = false;
+        @Override
+        public void execute(JsonRpcMessage command) {
+            wasCalled = true;
+        }
+    }
 }

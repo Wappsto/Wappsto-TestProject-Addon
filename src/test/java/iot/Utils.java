@@ -1,7 +1,6 @@
 package iot;
 
-import wappsto.iot.model.schema.network.*;
-import wappsto.iot.model.schema.network.Number;
+import wappsto.iot.network.model.*;
 import wappsto.rest.network.model.*;
 
 import java.util.*;
@@ -11,7 +10,7 @@ public class Utils {
         ValueSchema value = new ValueSchema(
             "On/off",
             "rw",
-            new Number(
+            new NumberSchema(
                 0,
                 1,
                 1,

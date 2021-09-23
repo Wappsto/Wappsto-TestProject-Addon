@@ -1,0 +1,14 @@
+package wappsto.iot.network.model;
+
+import com.fasterxml.jackson.annotation.*;
+import wappsto.iot.rpc.model.*;
+
+public class DataSchema extends Data {
+    @JsonProperty public String name;
+    @JsonProperty public Meta meta;
+
+    public DataSchema(String name, String id, String type) {
+        this.meta = new Meta(type, id);
+        this.name = name;
+    }
+}

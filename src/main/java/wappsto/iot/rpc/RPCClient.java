@@ -1,25 +1,28 @@
 package wappsto.iot.rpc;
 
 import com.fasterxml.jackson.databind.*;
-import wappsto.iot.model.schema.*;
-import wappsto.iot.model.schema.network.*;
+import wappsto.iot.rpc.model.*;
 import wappsto.iot.ssl.*;
 
 import java.io.*;
 
 public class RPCClient implements IoTClient {
-    private Connection conn;
+    private final ObjectMapper mapper;
+    private final Connection conn;
 
     public RPCClient(Connection conn) {
         this.conn = conn;
+        this.mapper = new ObjectMapper();
         conn.start(this::incoming, this::error);
     }
 
-    public RPCClient(SSLConnection connection, JsonRPCRequest jsonRPCRequest)
+    public RPCClient(SSLConnection connection, RPCRequest jsonRPCRequest)
         throws IOException
     {
         this(connection);
-        send(new ObjectMapper().writeValueAsString(jsonRPCRequest));
+        String self = new ObjectMapper().writeValueAsString(jsonRPCRequest);
+        System.out.println(self);
+        send(self);
     }
 
 
@@ -29,10 +32,6 @@ public class RPCClient implements IoTClient {
         conn.send(message);
     }
 
-    @Override
-    public void publish(NetworkSchema schema) {
-
-    }
 
     private void incoming(String rpc) {
         System.out.println(rpc);

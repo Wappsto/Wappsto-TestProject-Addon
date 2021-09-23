@@ -1,8 +1,8 @@
-package wappsto.iot.rpc.model;
+package wappsto.iot.rpc.model.from.server;
 
 import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonRPCResponse extends JsonRPCMessage{
+public class JsonRPCResponse extends JsonRpcMessage {
     @JsonProperty public JsonRPCResult result;
 }

@@ -1,22 +1,30 @@
 package wappsto.iot.rpc;
 
 import com.fasterxml.jackson.databind.*;
-import wappsto.iot.rpc.model.*;
+import wappsto.iot.rpc.model.from.server.*;
 
 public class JsonRPCParser {
     ObjectMapper mapper;
+    Command responseFromServer;
+    Command controlState;
 
-    public JsonRPCParser() {
+    public JsonRPCParser(Command responseFromServer, Command controlState) {
+        this.responseFromServer = responseFromServer;
+        this.controlState = controlState;
         mapper = new ObjectMapper();
     }
 
-    public JsonRPCMessage parse(String data) throws Exception {
+    public void parse(String data) throws Exception {
         JsonNode node = mapper.readTree(data);
 
         if (node.get("result") == null) {
-            return mapper.readValue(data, JsonRPCRequestFromServer.class);
+            controlState.execute(
+                mapper.readValue(data, JsonRPCRequestFromServer.class)
+            );
         } else {
-            return mapper.readValue(data, JsonRPCResponse.class);
+            responseFromServer.execute(
+                mapper.readValue(data, JsonRPCResponse.class)
+            );
         }
     }
 }

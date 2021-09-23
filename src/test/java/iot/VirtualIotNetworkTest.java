@@ -1,20 +1,17 @@
 package iot;
 
-import org.junit.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
-import wappsto.iot.*;
+import wappsto.iot.network.*;
+import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.model.schema.network.*;
 import wappsto.rest.network.model.*;
 
-import java.io.*;
 import java.util.*;
 
 import static iot.Utils.defaultNetwork;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 public class VirtualIotNetworkTest {
     private static NetworkSchema schema;
     private IoTClientMock client;
@@ -35,32 +32,32 @@ public class VirtualIotNetworkTest {
     @Nested
     public class reports_its_state {
         @Test
-        public void on_startup() {
+        public void on_startup() throws Exception {
 
             VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
-            assertTrue(client.receivedSchema);
-            assertEquals("Startup", client.state);
+            assertTrue(client.state.contains(schema.meta.id.toString()));
         }
 
-        public void on_state_change() {
+        @Test
+        public void on_state_change() throws Exception {
             VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
-            //network.update(key, value);
+
+            UUID state = schema.device.get(0)
+                .value.get(0)
+                .state.get(1)
+                .meta.id;
+            network.update(state, "1");
+            assertTrue(client.state.contains("\"data\":\"1\""));
         }
     }
 
     private class IoTClientMock implements IoTClient {
 
-        public boolean receivedSchema = false;
         public String state;
 
         @Override
-        public void send(String message) throws IOException {
+        public void send(String message) {
             state = message;
-        }
-
-        @Override
-        public void publish(NetworkSchema schema) {
-            receivedSchema = true;
         }
     }
 }

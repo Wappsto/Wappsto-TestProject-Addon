@@ -1,11 +1,10 @@
-package wappsto.iot.model.schema.network;
+package wappsto.iot.network.model;
 
 import com.fasterxml.jackson.annotation.*;
-import wappsto.iot.model.schema.*;
 
 import java.util.*;
 
-public class NetworkSchema extends Data {
+public class NetworkSchema extends DataSchema {
     @JsonProperty public List<DeviceSchema> device;
     public NetworkSchema(String name, String id, List<DeviceSchema> device) {
         super(name, id, "network");
