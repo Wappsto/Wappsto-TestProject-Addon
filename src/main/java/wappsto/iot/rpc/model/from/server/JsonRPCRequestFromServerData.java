@@ -5,7 +5,9 @@ import wappsto.iot.rpc.model.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonRPCRequestFromServerData {
-    @JsonProperty String data;
     @JsonProperty
+    public String data;
+    @JsonProperty
+    public
     Meta meta;
 }

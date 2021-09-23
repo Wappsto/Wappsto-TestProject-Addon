@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.rpc.model.*;
+import wappsto.iot.rpc.model.from.server.*;
 import wappsto.rest.network.model.*;
 
 import java.util.*;
@@ -46,7 +48,15 @@ public class VirtualIotNetworkTest {
                 .value.get(0)
                 .state.get(1)
                 .meta.id;
-            network.update(state, "1");
+
+            JsonRPCRequestFromServer rpc = new JsonRPCRequestFromServer();
+            rpc.params = new JsonRPCRequestFromServerParams();
+            rpc.params.data = new JsonRPCRequestFromServerData();
+            rpc.params.data.data = "1";
+            rpc.params.data.meta = new Meta("State", state.toString());
+
+            ControlStateData request = new ControlStateData(rpc);
+            network.update(request);
             assertTrue(client.state.contains("\"data\":\"1\""));
         }
     }
@@ -54,6 +64,11 @@ public class VirtualIotNetworkTest {
     private class IoTClientMock implements IoTClient {
 
         public String state;
+
+        @Override
+        public void start(JsonRPCParser parser) {
+
+        }
 
         @Override
         public void send(String message) {

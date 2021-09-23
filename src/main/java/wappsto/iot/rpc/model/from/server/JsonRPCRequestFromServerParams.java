@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonRPCRequestFromServerParams {
-    @JsonProperty JsonRPCRequestFromServerData data;
+    @JsonProperty public JsonRPCRequestFromServerData data;
 }

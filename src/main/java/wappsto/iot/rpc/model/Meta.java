@@ -18,4 +18,7 @@ public class Meta {
         this(type);
         this.id = UUID.fromString(id);
     }
+
+    public Meta() {
+    }
 }

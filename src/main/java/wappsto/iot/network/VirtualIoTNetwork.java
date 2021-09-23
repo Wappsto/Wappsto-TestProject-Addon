@@ -39,15 +39,23 @@ public class VirtualIoTNetwork {
         }
 
         try {
+            client.start(new JsonRPCParser(null, this::update));
             client.send(toJson(schema));
         } catch (JsonProcessingException e) {
             throw new Exception("Schema error: " + e.getMessage());
         }
     }
 
-    public void update(UUID key, String value) throws IOException {
-        values.get(key).value = value;
-        ReportState report = new ReportState("/state", new ReportData(value));
-        client.send(toJson(new RPCRequest(report, Methods.PUT)));
+    public void update(ControlStateData request) {
+        values.get(request.state).value = request.data;
+        ReportState report = new ReportState(
+            "/state",
+            new ReportData(request.data)
+        );
+        try {
+            client.send(toJson(new RPCRequest(report, Methods.PUT)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

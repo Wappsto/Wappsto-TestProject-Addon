@@ -7,25 +7,18 @@ import wappsto.iot.ssl.*;
 import java.io.*;
 
 public class RPCClient implements IoTClient {
-    private final ObjectMapper mapper;
     private final Connection conn;
+    private JsonRPCParser parser;
 
     public RPCClient(Connection conn) {
         this.conn = conn;
-        this.mapper = new ObjectMapper();
+    }
+
+    @Override
+    public void start(JsonRPCParser parser) {
+        this.parser = parser;
         conn.start(this::incoming, this::error);
     }
-
-    public RPCClient(SSLConnection connection, RPCRequest jsonRPCRequest)
-        throws IOException
-    {
-        this(connection);
-        String self = new ObjectMapper().writeValueAsString(jsonRPCRequest);
-        System.out.println(self);
-        send(self);
-    }
-
-
 
     @Override
     public void send(String message) throws IOException {
@@ -33,8 +26,8 @@ public class RPCClient implements IoTClient {
     }
 
 
-    private void incoming(String rpc) {
-        System.out.println(rpc);
+    private void incoming(String data) {
+        parser.parse(data);
     }
 
     private void error(String error) {

@@ -3,7 +3,7 @@ package iot;
 import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.rpc.Command;
+import wappsto.iot.rpc.model.*;
 import wappsto.iot.rpc.model.from.server.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +37,9 @@ public class JsonRPCParserTest {
                 request.id = "";
                 request.method = Methods.PUT;
                 request.params = new JsonRPCRequestFromServerParams();
+                request.params.data = new JsonRPCRequestFromServerData();
+                request.params.data.meta = new Meta("thing");
+                request.params.data.data = "1";
 
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
@@ -49,10 +52,15 @@ public class JsonRPCParserTest {
         }
     }
 
-    private class CommandMock implements Command {
+    private class CommandMock implements ControlState, ServerReponse {
         public boolean wasCalled = false;
         @Override
-        public void execute(JsonRpcMessage command) {
+        public void execute(ControlStateData command) {
+            wasCalled = true;
+        }
+
+        @Override
+        public void execute(ResponseData data) {
             wasCalled = true;
         }
     }
