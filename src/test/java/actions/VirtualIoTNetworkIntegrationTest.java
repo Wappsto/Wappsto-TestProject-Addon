@@ -93,12 +93,12 @@ public class VirtualIoTNetworkIntegrationTest {
         VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
 
         UUID controlState = schema.device.get(0).value.get(0).state.stream()
-            .filter(s -> s.type == "Control")
+            .filter(s -> s.type.equals("Control"))
             .findAny()
             .orElseThrow().meta.id;
 
         UUID reportState = schema.device.get(0).value.get(0).state.stream()
-            .filter(s -> s.type == "Report")
+            .filter(s -> s.type.equals("Report"))
             .findAny()
             .orElseThrow().meta.id;
 
