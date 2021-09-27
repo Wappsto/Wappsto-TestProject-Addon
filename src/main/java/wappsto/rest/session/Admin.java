@@ -1,10 +1,7 @@
 package wappsto.rest.session;
 
-import wappsto.rest.request.Request;
 import wappsto.rest.request.*;
 import wappsto.rest.session.model.*;
-
-import javax.ws.rs.core.*;
 
 public class Admin extends Session{
 
@@ -48,23 +45,5 @@ public class Admin extends Session{
             .atEndPoint(API.REGISTER)
             .atEndPoint(username)
             .delete(id);
-    }
-
-    /**
-     * Fetch a user by username. Currently, only the username gets deserialized
-     * from the server response, so this method is only useful for validating
-     * the correctness of other methods.
-     * @param username
-     * @return
-     * @throws Exception
-     */
-    public UserResponse fetchUser(String username) throws Exception {
-        Response response = new Request.Builder(service)
-            .atEndPoint(API.V2_0)
-            .atEndPoint(API.USER)
-            .atEndPoint(username)
-            .get(id);
-        return response
-            .readEntity(UserResponse.class);
     }
 }

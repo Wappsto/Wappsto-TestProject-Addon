@@ -45,7 +45,6 @@ public class SSLConnection implements Connection {
                 errorCallback
             );
             reader.start();
-            System.out.println("Message handler started.");
         } catch (IOException e) {
             e.printStackTrace();
         }

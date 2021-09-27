@@ -1,4 +1,4 @@
-package wappsto.iot.rpc;
+package wappsto.iot.rpc.model;
 
 import java.util.*;
 

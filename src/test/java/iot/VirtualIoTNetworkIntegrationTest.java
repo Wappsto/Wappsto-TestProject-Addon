@@ -1,9 +1,10 @@
-package actions;
+package iot;
 
 import org.junit.jupiter.api.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.rpc.model.*;
 import wappsto.iot.ssl.*;
 import wappsto.iot.ssl.model.*;
 import wappsto.rest.network.*;
@@ -103,6 +104,7 @@ public class VirtualIoTNetworkIntegrationTest {
             .orElseThrow().meta.id;
 
         service.updateState(controlState, "1");
+        Thread.sleep(300);
         assertEquals("1", service.getState(reportState));
         client.stop();
     }

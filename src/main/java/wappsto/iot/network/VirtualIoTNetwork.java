@@ -40,7 +40,7 @@ public class VirtualIoTNetwork {
 
         try {
             client.start(new JsonRPCParser(
-                data -> System.out.println(data.id),
+                data -> {},
                 this::update)
             );
             client.send(toJson(

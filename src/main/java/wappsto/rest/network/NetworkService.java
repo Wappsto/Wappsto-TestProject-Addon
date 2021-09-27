@@ -60,14 +60,18 @@ public class NetworkService {
     }
 
     public void share(NetworkMeta network, UserResponse friend) throws Exception {
+        share(network.id, friend.meta.id);
+    }
+
+    public void share(String networkId, String friendId) throws Exception {
         NetworkShareRequest request = new NetworkShareRequest(
-            friend.meta.id
+            friendId
         );
 
         new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.ACL)
-            .atEndPoint(network.id)
+            .atEndPoint(networkId)
             .atEndPoint("permission")
             .withBody(request)
             .post(session.id);

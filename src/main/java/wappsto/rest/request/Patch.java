@@ -1,6 +1,5 @@
 package wappsto.rest.request;
 
-import com.fasterxml.jackson.databind.*;
 import org.glassfish.jersey.client.*;
 import wappsto.rest.request.exceptions.*;
 
@@ -33,8 +32,6 @@ public class Patch extends Request{
         if (body == null) {
             throw new MissingField("Body in a post request cannot be null");
         }
-
-        System.out.println(new ObjectMapper().writeValueAsString(body));
 
         Invocation.Builder builder = service
             .request("application/json")

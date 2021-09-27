@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.rpc.model.*;
 import wappsto.rest.network.model.*;
 
 import java.util.*;
