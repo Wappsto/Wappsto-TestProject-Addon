@@ -4,10 +4,6 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import org.apache.commons.lang3.*;
 
-import java.nio.charset.*;
-import java.text.*;
-import java.util.*;
-
 public class Utils {
     private static String identifier = "";
     private static int getCount = 0;
@@ -34,14 +30,6 @@ public class Utils {
                 break;
         }
         return identifier + method + count;
-    }
-
-    public static String getCurrentTimestamp() {
-        SimpleDateFormat sdf = new SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss.SSSSSSX"
-        );
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return sdf.format(new Date());
     }
 
     public static String toJson(Object o) throws JsonProcessingException {

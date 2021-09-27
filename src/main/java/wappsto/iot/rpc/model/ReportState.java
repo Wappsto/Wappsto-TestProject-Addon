@@ -1,10 +1,10 @@
 package wappsto.iot.rpc.model;
 
-import wappsto.iot.network.model.*;
+import java.util.*;
 
 public class ReportState extends Params {
 
-    public ReportState(String url, ReportData data) {
-        super(url, data);
+    public ReportState(UUID state, ReportData data) {
+        super("/state/" + state.toString(), data);
     }
 }

@@ -8,7 +8,7 @@ import wappsto.iot.rpc.model.*;
 import java.io.*;
 import java.util.*;
 
-import static wappsto.iot.rpc.Utils.toJson;
+import static wappsto.iot.rpc.Utils.*;
 
 public class VirtualIoTNetwork {
     private final NetworkSchema schema;
@@ -39,20 +39,27 @@ public class VirtualIoTNetwork {
         }
 
         try {
-            client.start(new JsonRPCParser(null, this::update));
-            client.send(toJson(schema));
+            client.start(new JsonRPCParser(
+                data -> System.out.println(data.id),
+                this::update)
+            );
+            client.send(toJson(
+                new RPCRequest(new Params("/network", schema), Methods.POST))
+            );
         } catch (JsonProcessingException e) {
             throw new Exception("Schema error: " + e.getMessage());
         }
     }
 
     public void update(ControlStateData request) {
-        values.get(request.state).value = request.data;
-        ReportState report = new ReportState(
-            "/state",
-            new ReportData(request.data)
-        );
         try {
+            client.send(toJson(new SuccessResponseToServer(request.id)));
+            values.get(request.state).value = request.data;
+            ReportState report = new ReportState(
+                values.get(request.state).reportState,
+                new ReportData(request.data)
+            );
+
             client.send(toJson(new RPCRequest(report, Methods.PUT)));
         } catch (IOException e) {
             e.printStackTrace();

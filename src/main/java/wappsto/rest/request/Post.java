@@ -23,6 +23,10 @@ class Post extends Request{
     }
 
     public Response send(String session) throws Exception {
+        if (body == null) {
+            throw new MissingField("Body in a post request cannot be null");
+        }
+
         Response response = service
             .request("application/json")
             .header(SESSION_HEADER, session)

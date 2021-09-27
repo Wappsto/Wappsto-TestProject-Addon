@@ -1,10 +1,11 @@
 package wappsto.rest.network;
 
-import org.bouncycastle.ocsp.*;
 import wappsto.rest.network.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.session.*;
 import wappsto.rest.session.model.*;
+
+import java.util.*;
 
 public class NetworkService {
     private Session session;
@@ -70,5 +71,23 @@ public class NetworkService {
             .atEndPoint("permission")
             .withBody(request)
             .post(session.id);
+    }
+
+    public void updateState(UUID id, String data) throws Exception {
+        new Request.Builder(session.service)
+            .atEndPoint(API.V2_0)
+            .atEndPoint(API.STATE)
+            .atEndPoint(id.toString())
+            .withBody(new UpdateStateRequest(data))
+            .patch(session.id);
+    }
+
+    public String getState(UUID id) throws Exception {
+        return new Request.Builder(session.service)
+            .atEndPoint(API.V2_0)
+            .atEndPoint(API.STATE)
+            .atEndPoint(id.toString())
+            .get(session.id)
+            .readEntity(StateResponse.class).data;
     }
 }

@@ -1,17 +1,14 @@
 package iot;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.Test;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.rpc.model.*;
-import wappsto.iot.rpc.model.from.server.*;
 import wappsto.rest.network.model.*;
 
 import java.util.*;
 
-import static iot.Utils.defaultNetwork;
+import static iot.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VirtualIotNetworkTest {
@@ -49,13 +46,8 @@ public class VirtualIotNetworkTest {
                 .state.get(1)
                 .meta.id;
 
-            JsonRPCRequestFromServer rpc = new JsonRPCRequestFromServer();
-            rpc.params = new JsonRPCRequestFromServerParams();
-            rpc.params.data = new JsonRPCRequestFromServerData();
-            rpc.params.data.data = "1";
-            rpc.params.data.meta = new Meta("State", state.toString());
 
-            ControlStateData request = new ControlStateData(rpc);
+            ControlStateData request = new ControlStateData("1", state, "1");
             network.update(request);
             assertTrue(client.state.contains("\"data\":\"1\""));
         }
@@ -73,6 +65,11 @@ public class VirtualIotNetworkTest {
         @Override
         public void send(String message) {
             state = message;
+        }
+
+        @Override
+        public void stop() {
+
         }
     }
 }

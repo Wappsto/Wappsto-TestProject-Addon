@@ -166,5 +166,9 @@ public abstract class Request {
                 service
             ).send(session);
         }
+
+        public Response patch(String session) throws Exception {
+            return new Patch(service, body).send(session);
+        }
     }
 }

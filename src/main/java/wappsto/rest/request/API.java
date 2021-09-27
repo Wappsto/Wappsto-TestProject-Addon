@@ -62,6 +62,13 @@ public enum API {
         }
     },
 
+    STATE {
+        @Override
+        public String toString() {
+            return "state";
+        }
+    },
+
     CREATOR {
         @Override
         public String toString() {

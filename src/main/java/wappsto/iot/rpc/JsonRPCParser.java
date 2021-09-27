@@ -9,7 +9,10 @@ public class JsonRPCParser {
     ServerReponse responseFromServer;
     ControlState controlState;
 
-    public JsonRPCParser(ServerReponse responseFromServer, ControlState controlState) {
+    public JsonRPCParser(
+        ServerReponse responseFromServer,
+        ControlState controlState
+    ) {
         this.responseFromServer = responseFromServer;
         this.controlState = controlState;
         mapper = new ObjectMapper();
@@ -20,9 +23,14 @@ public class JsonRPCParser {
             JsonNode node = mapper.readTree(data);
 
             if (node.get("result") == null) {
+                JsonRPCRequestFromServer request = mapper
+                    .readValue(data, JsonRPCRequestFromServer.class);
+
                 controlState.execute(
                     new ControlStateData(
-                        mapper.readValue(data, JsonRPCRequestFromServer.class)
+                        request.id,
+                        request.params.data.meta.id,
+                        request.params.data.data
                     )
                 );
             } else {

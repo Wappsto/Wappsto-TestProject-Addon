@@ -6,7 +6,7 @@ import wappsto.iot.rpc.model.*;
 import java.text.*;
 import java.util.*;
 
-import static wappsto.iot.rpc.Utils.getCurrentTimestamp;
+import static wappsto.Util.*;
 
 public class StateSchema {
     @JsonProperty public String data;
