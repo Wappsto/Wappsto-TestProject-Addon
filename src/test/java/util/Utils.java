@@ -67,4 +67,10 @@ public class Utils {
             new Cookie("sessionID", sessionId)
         );
     }
+
+    public static void logBrowserOut() throws Exception {
+        WebDriver browser = runner().getDriver();
+        browser.manage().deleteAllCookies();
+    }
+
 }

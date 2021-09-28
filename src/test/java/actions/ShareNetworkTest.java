@@ -88,10 +88,6 @@ public class ShareNetworkTest {
         assertDoesNotThrow(() -> friendService.claim(network));
     }
 
-    private void logBrowserOut() throws Exception {
-        WebDriver browser = runner().getDriver();
-        browser.manage().deleteAllCookies();
-    }
 
     private ShareNetwork createNewAction(
         String serviceUrl,
