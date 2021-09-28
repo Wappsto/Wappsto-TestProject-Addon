@@ -46,9 +46,14 @@ public abstract class Request {
             case FORBIDDEN:
             case UNAUTHORIZED:
             case NOT_FOUND:
-                throw new HttpException(response.getStatusInfo().getReasonPhrase());
+                throw new HttpException(
+                    response.getStatusInfo().getReasonPhrase()
+                );
             default:
-                throw new IllegalStateException("Unexpected value");
+                throw new IllegalStateException(
+                    "Unexpected response: "
+                        + response.getStatusInfo().getReasonPhrase()
+                );
         }
     }
 
