@@ -5,16 +5,19 @@ import wappsto.iot.rpc.model.*;
 import wappsto.iot.rpc.model.from.server.*;
 
 public class JsonRPCParser {
-    ObjectMapper mapper;
-    ServerReponse responseFromServer;
-    ControlState controlState;
+    private final SuccessResponse successResponse;
+    private final ObjectMapper mapper;
+    private final ServerReponse responseFromServer;
+    private final ControlState controlState;
 
     public JsonRPCParser(
         ServerReponse responseFromServer,
-        ControlState controlState
+        ControlState controlState,
+        SuccessResponse successResponse
     ) {
         this.responseFromServer = responseFromServer;
         this.controlState = controlState;
+        this.successResponse = successResponse;
         mapper = new ObjectMapper();
     }
 
@@ -25,10 +28,11 @@ public class JsonRPCParser {
             if (node.get("result") == null) {
                 JsonRPCRequestFromServer request = mapper
                     .readValue(data, JsonRPCRequestFromServer.class);
-
+                successResponse.execute(
+                    new SuccessResponseToServer(request.id)
+                );
                 controlState.execute(
                     new ControlStateData(
-                        request.id,
                         request.params.data.meta.id,
                         request.params.data.data
                     )

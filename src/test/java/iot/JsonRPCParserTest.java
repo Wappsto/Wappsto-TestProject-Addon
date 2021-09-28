@@ -23,7 +23,12 @@ public class JsonRPCParserTest {
 
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
-                new JsonRPCParser(responseCommand, controlCommand).parse(
+                CommandMock successResponse = new CommandMock();
+                new JsonRPCParser(
+                    responseCommand,
+                    controlCommand,
+                    successResponse
+                ).parse(
                     new ObjectMapper().writeValueAsString(response)
                 );
 
@@ -43,7 +48,12 @@ public class JsonRPCParserTest {
 
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
-                new JsonRPCParser(responseCommand, controlCommand).parse(
+                CommandMock successResponse = new CommandMock();
+                new JsonRPCParser(
+                    responseCommand,
+                    controlCommand,
+                    successResponse
+                ).parse(
                     new ObjectMapper().writeValueAsString(request)
                 );
 
@@ -52,7 +62,11 @@ public class JsonRPCParserTest {
         }
     }
 
-    private class CommandMock implements ControlState, ServerReponse {
+    private class CommandMock implements
+        ControlState,
+        ServerReponse,
+        SuccessResponse
+    {
         public boolean wasCalled = false;
         @Override
         public void execute(ControlStateData command) {
@@ -61,6 +75,11 @@ public class JsonRPCParserTest {
 
         @Override
         public void execute(ResponseData data) {
+            wasCalled = true;
+        }
+
+        @Override
+        public void execute(SuccessResponseToServer response) {
             wasCalled = true;
         }
     }

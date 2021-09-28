@@ -14,13 +14,13 @@ public class VirtualIoTNetwork {
     public final NetworkSchema schema;
     public final IoTClient client;
     private HashMap<UUID, Value> values;
+    private List<UUID> controlStates;
 
-    public VirtualIoTNetwork(NetworkSchema schema, IoTClient client)
-        throws Exception
-    {
+    public VirtualIoTNetwork(NetworkSchema schema, IoTClient client) {
         this.schema = schema;
         this.client = client;
         values = new HashMap<>();
+        controlStates = new LinkedList<>();
         for (DeviceSchema d : schema.device) {
             for (ValueSchema v : d.value) {
                 StateSchema control = v.state.stream()
@@ -31,6 +31,7 @@ public class VirtualIoTNetwork {
                     .filter(s -> s.type.equals("Report"))
                     .findAny()
                     .orElseThrow();
+                controlStates.add(control.meta.id);
                 values.put(
                     control.meta.id,
                     new Value(report.meta.id, report.data)
@@ -38,31 +39,28 @@ public class VirtualIoTNetwork {
             }
         }
 
-        try {
-            client.start(new JsonRPCParser(
-                data -> {},
-                this::update)
-            );
-            client.send(toJson(
-                new RPCRequest(new Params("/network", schema), Methods.POST))
-            );
-        } catch (JsonProcessingException e) {
-            throw new Exception("Schema error: " + e.getMessage());
-        }
+        client.start(new JsonRPCParser(
+            data -> {},
+            this::update,
+            response -> client.send(toJson(response)))
+        );
+        client.send(toJson(
+            new RPCRequest(new Params("/network", schema), Methods.POST))
+        );
+
     }
 
     public void update(ControlStateData request) {
-        try {
-            client.send(toJson(new SuccessResponseToServer(request.id)));
-            values.get(request.state).value = request.data;
-            ReportState report = new ReportState(
-                values.get(request.state).reportState,
-                new ReportData(request.data)
-            );
+        values.get(request.state).value = request.data;
+        ReportState report = new ReportState(
+            values.get(request.state).reportState,
+            new ReportData(request.data)
+        );
 
-            client.send(toJson(new RPCRequest(report, Methods.PUT)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        client.send(toJson(new RPCRequest(report, Methods.PUT)));
+    }
+
+    public UUID getControlState(int index) {
+        return controlStates.get(index);
     }
 }

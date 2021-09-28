@@ -51,7 +51,6 @@ public class VirtualIoTNetworkIntegrationTest {
 
         network.update(
             new ControlStateData(
-                "1",
                 schema.device.get(0).value.get(0).state.stream()
                     .filter(s -> s.type == "Control")
                     .findAny()

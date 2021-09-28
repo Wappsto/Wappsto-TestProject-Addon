@@ -48,7 +48,7 @@ public class VirtualIotNetworkTest {
                 .meta.id;
 
 
-            ControlStateData request = new ControlStateData("1", state, "1");
+            ControlStateData request = new ControlStateData(state, "1");
             network.update(request);
             assertTrue(client.state.contains("\"data\":\"1\""));
         }

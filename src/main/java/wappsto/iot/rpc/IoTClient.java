@@ -5,7 +5,7 @@ import java.io.*;
 public interface IoTClient {
     void start(JsonRPCParser parser);
 
-    void send(String message) throws IOException;
+    void send(String message);
 
     void stop();
 }

@@ -7,8 +7,7 @@ public class ControlStateData {
     public UUID state;
     public String data;
 
-    public ControlStateData(String id, UUID state, String data) {
-        this.id = id;
+    public ControlStateData(UUID state, String data) {
         this.state = state;
         this.data = data;
     }

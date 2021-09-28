@@ -22,8 +22,12 @@ public class RPCClient implements IoTClient {
     }
 
     @Override
-    public void send(String message) throws IOException {
-        conn.send(message);
+    public void send(String message) {
+        try {
+            conn.send(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
@@ -31,7 +35,7 @@ public class RPCClient implements IoTClient {
         try {
             conn.disconnect();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
     }
 

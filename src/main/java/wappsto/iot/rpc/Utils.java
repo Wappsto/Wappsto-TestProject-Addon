@@ -32,7 +32,11 @@ public class Utils {
         return identifier + method + count;
     }
 
-    public static String toJson(Object o) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(o);
+    public static String toJson(Object o) {
+        try {
+            return new ObjectMapper().writeValueAsString(o);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
