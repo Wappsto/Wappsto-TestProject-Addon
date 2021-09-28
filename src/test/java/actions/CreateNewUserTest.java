@@ -20,6 +20,11 @@ public class CreateNewUserTest {
         resetUser();
     }
 
+    @BeforeEach
+    public void reset() throws Exception {
+        resetRunner();
+    }
+
     @Test
     public void registers_new_user() throws Exception {
         CreateNewUser action = new CreateNewUser();

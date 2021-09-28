@@ -51,8 +51,8 @@ public class User extends  Session{
 
         /**
          * Builder class used to register new users and log them in
-         * @param admin
-         * @param serviceUrl
+         * @param admin Admin session
+         * @param serviceUrl API URL
          */
         public Builder(Admin admin, String serviceUrl) {
             this.admin = admin;
