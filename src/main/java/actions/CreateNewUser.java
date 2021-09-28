@@ -27,6 +27,12 @@ public class CreateNewUser extends ActionWithAdminSession implements WebAction {
             adminUsername,
             adminPassword
         );
+
+        Credentials userCredentials = new Credentials(
+            username,
+            password
+        );
+
         Admin admin;
         try {
             admin = new Admin(adminCredentials, serviceUrl);
@@ -36,7 +42,7 @@ public class CreateNewUser extends ActionWithAdminSession implements WebAction {
             );
         }
         try {
-            admin.register(new Credentials(username, password));
+            admin.register(userCredentials);
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to register user: " + e.getMessage()

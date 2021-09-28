@@ -30,10 +30,9 @@ public class LogInWithNewUser
     public String password;
 
     @Override
-    public ExecutionResult execute(
-        WebAddonHelper helper
-    ) throws FailureException {
-
+    public ExecutionResult execute(WebAddonHelper helper)
+        throws FailureException
+    {
         WebDriver browser = helper.getDriver();
 
         AdminCredentials adminCredentials = new AdminCredentials(
@@ -48,9 +47,7 @@ public class LogInWithNewUser
         Admin admin;
         User session;
         try {
-            admin = new Admin(
-                adminCredentials,
-                serviceUrl);
+            admin = new Admin(adminCredentials, serviceUrl);
         }
         catch (Exception e) {
             throw new FailureException(
