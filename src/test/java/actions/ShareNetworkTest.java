@@ -1,5 +1,6 @@
 package actions;
 
+import io.testproject.java.sdk.v2.drivers.*;
 import org.junit.jupiter.api.*;
 import wappsto.rest.network.*;
 import wappsto.rest.request.exceptions.*;
@@ -14,17 +15,19 @@ import static util.Utils.*;
 
 public class ShareNetworkTest {
     private static String serviceUrl;
+    private static String appUrl;
     private User user;
     private User friend;
-    private NetworkService service;
     private static String friendUsername;
 
     @BeforeAll
     public static void setup() throws Exception {
         serviceUrl = env().get(API_ROOT);
+        appUrl = env().get(APP_URL);
         friendUsername = "friend123@seluxit.com";
         try {
             admin().delete(defaultUser().username);
+            admin().delete(friendUsername);
         } catch (HttpException ignored) {
         }
     }
@@ -37,7 +40,7 @@ public class ShareNetworkTest {
         friend = new User.Builder(admin(), serviceUrl)
             .withCredentials(new Credentials(friendUsername, "123"))
             .create();
-        service = new NetworkService(user);
+        logInBrowser(user.id, appUrl);
     }
 
     @Nested
@@ -52,20 +55,42 @@ public class ShareNetworkTest {
         }
 
         @Test
-        public void invalid_user() throws Exception {
+        public void when_browser_is_not_logged_in() throws Exception {
             NetworkService service = new NetworkService(user);
             String network = service.create().id;
-            ShareNetwork action = createNewAction(serviceUrl, network, "");
+            ShareNetwork action = createNewAction(
+                serviceUrl,
+                network,
+                friendUsername
+            );
+            logBrowserOut();
+
             assertThrows(
                 ExecutionException.class,
                 () -> runner().run(action)
             );
         }
+    }
 
-        @Test
-        public void when_browser_is_not_logged_in() {
+    @Test
+    public void shares_network_with_other_user() throws Exception {
+        NetworkService selfService = new NetworkService(user);
+        NetworkService friendService = new NetworkService(friend);
 
-        }
+        String network = selfService.create().id;
+        ShareNetwork action = createNewAction(
+            serviceUrl,
+            network,
+            friendUsername
+        );
+
+        runner().run(action);
+        assertDoesNotThrow(() -> friendService.claim(network));
+    }
+
+    private void logBrowserOut() throws Exception {
+        WebDriver browser = runner().getDriver();
+        browser.manage().deleteAllCookies();
     }
 
     private ShareNetwork createNewAction(

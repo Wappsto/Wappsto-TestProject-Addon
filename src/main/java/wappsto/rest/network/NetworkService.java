@@ -63,9 +63,9 @@ public class NetworkService {
         share(network.id, friend.meta.id);
     }
 
-    public void share(String networkId, String friendId) throws Exception {
+    public void share(String networkId, String friendUsername) throws Exception {
         NetworkShareRequest request = new NetworkShareRequest(
-            friendId
+            friendUsername
         );
 
         new Request.Builder(session.service)

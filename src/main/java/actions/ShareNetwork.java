@@ -4,8 +4,10 @@ import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.drivers.*;
+import io.testproject.java.sdk.v2.drivers.WebDriver;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
+import org.openqa.selenium.*;
 import wappsto.rest.network.*;
 import wappsto.rest.session.*;
 
@@ -27,7 +29,14 @@ public class ShareNetwork implements WebAction {
         throws FailureException
     {
         WebDriver browser = helper.getDriver();
-        String sessionId = getSessionFrom(browser);
+        String sessionId;
+        try {
+            sessionId = getSessionFrom(browser);
+        } catch (NoSuchCookieException e) {
+            throw new FailureException(
+                "Browser not logged in: " + e.getMessage()
+            );
+        }
 
         User self;
         try {
