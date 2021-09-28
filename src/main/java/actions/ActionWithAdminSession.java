@@ -4,8 +4,8 @@ import io.testproject.java.annotations.v2.Parameter;
 
 public abstract class ActionWithAdminSession {
     @Parameter(
-        description = "Application API URL",
-        defaultValue = "https://qa.wappsto.com/services/2.1/"
+        description = "Service API URL",
+        defaultValue = "https://qa.wappsto.com/services"
     )
     public String serviceUrl;
 

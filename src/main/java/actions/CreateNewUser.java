@@ -16,9 +16,6 @@ public class CreateNewUser extends ActionWithAdminSession implements WebAction {
     @Parameter(description = "Password")
     public String password;
 
-    @Parameter(description = "Application API URL")
-    public String serviceUrl;
-
     @Override
     public ExecutionResult execute(WebAddonHelper helper)
         throws FailureException
