@@ -27,4 +27,4 @@ WAPPSTO_API_ROOT : <wappsto_api_url>
 WAPPSTO_APP_URL : <wappsto_dashboard_url>
 WAPPSTO_ADMIN_PANEL_URL : <admin_panel_url>
 ```
-Note that the developer account needs to have permission to claim the jsonRPCRequest UUID. Also note that the github build action does not run tests that depend on the admin panel, since it cannot be accessed outside Seluxit's local jsonRPCRequest.
+
