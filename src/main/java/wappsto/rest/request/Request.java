@@ -44,6 +44,7 @@ public abstract class Request {
                 return response;
             case BAD_REQUEST:
             case FORBIDDEN:
+            case PAYMENT_REQUIRED:
             case UNAUTHORIZED:
             case NOT_FOUND:
                 throw new HttpException(
