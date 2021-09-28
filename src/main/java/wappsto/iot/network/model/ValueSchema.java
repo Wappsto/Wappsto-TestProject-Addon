@@ -20,4 +20,49 @@ public class ValueSchema {
         this.number = number;
         meta = new Meta("Value");
     }
+
+    public ValueSchema(
+        String name,
+        ValuePermission permission,
+        NumberSchema numberSchema
+    ) {
+        this(name, permission.toString(), numberSchema);
+    }
+
+    public static class Builder {
+        private final String name;
+        private final ValuePermission permission;
+        private final DeviceSchema.Builder device;
+        private NumberSchema numberSchema;
+
+        public Builder(
+            String name,
+            ValuePermission permission,
+            DeviceSchema.Builder device
+        ) {
+            this.name = name;
+            this.permission = permission;
+            this.device = device;
+        }
+
+
+        public Builder withNumberSchema(
+            int min,
+            int max,
+            int stepSize,
+            String type
+        ) {
+            this.numberSchema = new NumberSchema(min, max, stepSize, type);
+            return this;
+        }
+
+        public DeviceSchema.Builder addToDevice() {
+            if(numberSchema == null) {
+                throw new RuntimeException("Number schema can't be null");
+            }
+
+            device.add(new ValueSchema(name, permission, numberSchema));
+            return device;
+        }
+    }
 }

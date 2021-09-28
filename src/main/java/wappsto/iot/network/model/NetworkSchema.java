@@ -10,4 +10,28 @@ public class NetworkSchema extends DataSchema {
         super(name, id, "network");
         this.device = device;
     }
+
+    public static class Builder {
+        private final String name;
+        private final String networkId;
+        private final List<DeviceSchema> devices;
+
+        public Builder(String name, String networkId) {
+            this.name = name;
+            this.networkId = networkId;
+            devices = new LinkedList<>();
+        }
+
+        public DeviceSchema.Builder addDevice(String name) {
+            return new DeviceSchema.Builder(name, this);
+        }
+
+        public void add(DeviceSchema deviceSchema) {
+            devices.add(deviceSchema);
+        }
+
+        public NetworkSchema build() {
+            return new NetworkSchema(name, networkId, devices);
+        }
+    }
 }

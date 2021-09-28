@@ -26,6 +26,10 @@ public class VirtualIoTNetworkIntegrationTest {
     @BeforeAll
     public static void setup() throws Exception {
         serviceUrl = env().get(API_ROOT);
+        resetUser();
+    }
+
+    private static void resetUser() throws Exception {
         try {
             admin().delete(defaultUser().username);
         } catch (HttpException ignored) {
@@ -64,7 +68,7 @@ public class VirtualIoTNetworkIntegrationTest {
                 "1"
             )
         );
-        Thread.sleep(500);
+        Thread.sleep(2000);
         assertEquals(
             "1",
             service.getState(
@@ -104,13 +108,13 @@ public class VirtualIoTNetworkIntegrationTest {
             .orElseThrow().meta.id;
 
         service.updateState(controlState, "1");
-        Thread.sleep(300);
+        Thread.sleep(2000);
         assertEquals("1", service.getState(reportState));
         client.stop();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        setup();
+        resetUser();
     }
 }
