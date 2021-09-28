@@ -11,8 +11,8 @@ import java.util.*;
 import static wappsto.iot.rpc.Utils.*;
 
 public class VirtualIoTNetwork {
-    private final NetworkSchema schema;
-    private final IoTClient client;
+    public final NetworkSchema schema;
+    public final IoTClient client;
     private HashMap<UUID, Value> values;
 
     public VirtualIoTNetwork(NetworkSchema schema, IoTClient client)

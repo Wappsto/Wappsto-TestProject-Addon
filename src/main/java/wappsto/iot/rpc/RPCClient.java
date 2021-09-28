@@ -1,5 +1,10 @@
 package wappsto.iot.rpc;
 
+import wappsto.iot.network.model.*;
+import wappsto.iot.ssl.*;
+import wappsto.iot.ssl.model.*;
+import wappsto.rest.network.model.*;
+
 import java.io.*;
 
 public class RPCClient implements IoTClient {
@@ -46,4 +51,24 @@ public class RPCClient implements IoTClient {
         }
     }
 
+    public static class Builder {
+        private WappstoCerts certs;
+        private SSLConnection connection;
+
+        public Builder(CreatorResponse creator) {
+            certs = new WappstoCerts(creator);
+        }
+
+        public Builder connectingTo(String address, int port) throws Exception {
+            connection = new SSLConnection(address, port, certs);
+            return this;
+        }
+
+        public RPCClient build() {
+            if(connection == null) {
+                throw new RuntimeException("Connection cannot be null");
+            }
+            return new RPCClient(connection);
+        }
+    }
 }

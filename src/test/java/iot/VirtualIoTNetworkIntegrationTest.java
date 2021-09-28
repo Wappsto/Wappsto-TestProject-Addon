@@ -5,8 +5,6 @@ import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
-import wappsto.iot.ssl.*;
-import wappsto.iot.ssl.model.*;
 import wappsto.rest.network.*;
 import wappsto.rest.network.model.*;
 import wappsto.rest.request.exceptions.*;
@@ -47,14 +45,7 @@ public class VirtualIoTNetworkIntegrationTest {
         NetworkService service = new NetworkService(session);
         CreatorResponse creator = service.getCreator();
 
-        WappstoCerts certs = new WappstoCerts(creator);
-
-        SSLConnection connection = new SSLConnection(
-            "qa.wappsto.com",
-            53005,
-            certs
-        );
-        RPCClient client = new RPCClient(connection);
+        RPCClient client = createClient(creator);
         NetworkSchema schema = defaultNetwork(creator);
         VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
 
@@ -83,19 +74,9 @@ public class VirtualIoTNetworkIntegrationTest {
 
     @Test
     public void retrieves_data_from_dashboard() throws Exception {
+        VirtualIoTNetwork network = createVirtualIoTClient(session);
         NetworkService service = new NetworkService(session);
-        CreatorResponse creator = service.getCreator();
-
-        WappstoCerts certs = new WappstoCerts(creator);
-
-        SSLConnection connection = new SSLConnection(
-            "qa.wappsto.com",
-            53005,
-            certs
-        );
-        RPCClient client = new RPCClient(connection);
-        NetworkSchema schema = defaultNetwork(creator);
-        VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
+        NetworkSchema schema = network.schema;
 
         UUID controlState = schema.device.get(0).value.get(0).state.stream()
             .filter(s -> s.type.equals("Control"))
@@ -106,11 +87,28 @@ public class VirtualIoTNetworkIntegrationTest {
             .filter(s -> s.type.equals("Report"))
             .findAny()
             .orElseThrow().meta.id;
-
+        Thread.sleep(500);
         service.updateState(controlState, "1");
-        Thread.sleep(2000);
+        Thread.sleep(500);
         assertEquals("1", service.getState(reportState));
-        client.stop();
+        network.client.stop();
+    }
+
+    private VirtualIoTNetwork createVirtualIoTClient(User session) throws Exception {
+        NetworkService service = new NetworkService(session);
+        CreatorResponse creator = service.getCreator();
+
+        RPCClient client = createClient(creator);
+        NetworkSchema schema = defaultNetwork(creator);
+        return new VirtualIoTNetwork(schema, client);
+    }
+
+    private RPCClient createClient(CreatorResponse creator)
+        throws Exception
+    {
+        return new RPCClient.Builder(creator)
+            .connectingTo("qa.wappsto.com", 53005)
+            .build();
     }
 
     @AfterEach
