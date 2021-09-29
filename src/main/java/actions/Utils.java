@@ -9,6 +9,7 @@ import wappsto.rest.network.*;
 import wappsto.rest.network.model.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
+import wappsto.rest.session.model.*;
 
 public class Utils {
     public static void logIn(WebDriver browser, String session) {
@@ -98,5 +99,34 @@ public class Utils {
             );
         }
         return network;
+    }
+
+    public static User registerNewUser(
+        AdminCredentials adminCredentials,
+        Credentials userCredentials,
+        String serviceUrl
+    ) throws FailureException
+    {
+        Admin admin;
+        try {
+            admin = new Admin(adminCredentials, serviceUrl);
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to create admin session: " + e.getMessage()
+            );
+        }
+
+        User session;
+        try {
+            session = new User.Builder(admin, serviceUrl)
+                .withCredentials(userCredentials)
+                .create();
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to register user: " + e.getMessage()
+            );
+        }
+
+        return session;
     }
 }

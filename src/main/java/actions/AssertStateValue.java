@@ -7,12 +7,11 @@ import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
 import wappsto.rest.network.*;
-import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
 
 import java.util.*;
 
-import static actions.Utils.getSessionFrom;
+import static actions.Utils.*;
 
 @Action(name = "Assert value of State")
 public class AssertStateValue implements WebAction {

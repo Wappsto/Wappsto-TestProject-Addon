@@ -44,26 +44,11 @@ public class LogInWithNewUser
             password
         );
 
-        Admin admin;
-        User session;
-        try {
-            admin = new Admin(adminCredentials, serviceUrl);
-        }
-        catch (Exception e) {
-            throw new FailureException(
-                "Failed to create admin session: " + e.getMessage()
-            );
-        }
-
-        try {
-            session = new User.Builder(admin, serviceUrl)
-                .withCredentials(userCredentials)
-                .create();
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to register user: " + e.getMessage()
-            );
-        }
+        User session = registerNewUser(
+            adminCredentials,
+            userCredentials,
+            serviceUrl
+        );
 
         browser.get(appUrl);
         logIn(browser, session.id);

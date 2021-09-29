@@ -5,8 +5,9 @@ import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
-import wappsto.rest.session.*;
 import wappsto.rest.session.model.*;
+
+import static actions.Utils.registerNewUser;
 
 @Action(name = "Create new user")
 public class CreateNewUser extends ActionWithAdminSession implements WebAction {
@@ -24,27 +25,11 @@ public class CreateNewUser extends ActionWithAdminSession implements WebAction {
             adminUsername,
             adminPassword
         );
-
         Credentials userCredentials = new Credentials(
             username,
             password
         );
-
-        Admin admin;
-        try {
-            admin = new Admin(adminCredentials, serviceUrl);
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to create admin session: " + e.getMessage()
-            );
-        }
-        try {
-            admin.register(userCredentials);
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to register user: " + e.getMessage()
-            );
-        }
+        registerNewUser(adminCredentials, userCredentials, serviceUrl);
         return ExecutionResult.PASSED;
     }
 }
