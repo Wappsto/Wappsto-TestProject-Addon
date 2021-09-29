@@ -17,8 +17,8 @@ import wappsto.rest.session.*;
 
 import static actions.Utils.getSessionFrom;
 
-@Action(name = "Observe report state change")
-public class ObserveReportStateChangeInDashboard implements WebElementAction {
+@Action(name = "Send report state change to dashboard")
+public class SendReportStateChangeToDashboard implements WebAction {
     @Parameter(description = "Service API root")
     public String serviceUrl;
 
@@ -29,7 +29,7 @@ public class ObserveReportStateChangeInDashboard implements WebElementAction {
     public String port;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper, WebElement element)
+    public ExecutionResult execute(WebAddonHelper helper)
         throws FailureException
     {
         WebDriver browser = helper.getDriver();
@@ -91,11 +91,6 @@ public class ObserveReportStateChangeInDashboard implements WebElementAction {
             network.getControlState(0),
             "1"
         ));
-
-        if (element.getText().equals("1")) {
-            return ExecutionResult.PASSED;
-        } else {
-            return ExecutionResult.FAILED;
-        }
+        return ExecutionResult.PASSED;
     }
 }

@@ -9,7 +9,8 @@ public class Env {
     public static final String ADMIN_PANEL = "WAPPSTO_ADMIN_PANEL_URL";
     public static final String DEV_TOKEN = "TESTPROJECT_DEV_TOKEN";
     public static final String APP_URL = "WAPPSTO_APP_URL";
-    public static final String NETWORK_TOKEN = "WAPPSTO_TEST_NETWORK";
+    public static final String SOCKET_URL = "WAPPSTO_SOCKET_URL";
+    public static final String SOCKET_PORT = "WAPPSTO_SOCKET_PORT";
 
     public static Map<String, String> env() {
         return  System.getenv();
