@@ -59,6 +59,8 @@ jobs:
           TESTPROJECT_DEV_TOKEN: ${{ secrets.TESTPROJECT_DEV_TOKEN }}
           WAPPSTO_API_ROOT: "https://qa.wappsto.com/services"
           WAPPSTO_APP_URL: "https://qa.wappsto.com/"
+          WAPPSTO_SOCKET_URL: "qa.wappsto.com"
+          WAPPSTO_SOCKET_PORT: "53005"
           CI_TEST: "true"
         run: |
           mvn test --batch-mode --fail-at-end
