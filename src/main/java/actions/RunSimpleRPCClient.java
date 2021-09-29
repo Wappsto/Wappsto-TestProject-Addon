@@ -45,6 +45,12 @@ public class RunSimpleRPCClient implements WebAction {
     )
     public String reportState;
 
+    @Parameter(
+        description = "Control state UUID",
+        direction = ParameterDirection.OUTPUT
+    )
+    public String controlState;
+
     @Override
     public ExecutionResult execute(WebAddonHelper helper)
         throws FailureException
@@ -61,6 +67,7 @@ public class RunSimpleRPCClient implements WebAction {
         );
 
         reportState = network.getReportState(0).toString();
+        controlState = network.getControlState(0).toString();
 
         return ExecutionResult.PASSED;
     }
