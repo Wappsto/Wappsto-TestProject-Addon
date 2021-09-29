@@ -1,14 +1,10 @@
 package actions;
 
 import io.testproject.java.execution.results.*;
-import io.testproject.java.sdk.v2.*;
-import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
-
-import java.util.*;
 import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.*;

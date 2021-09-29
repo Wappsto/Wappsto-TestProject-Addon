@@ -15,12 +15,14 @@ public class VirtualIoTNetwork {
     public final IoTClient client;
     private HashMap<UUID, Value> values;
     private List<UUID> controlStates;
+    private List<UUID> reportStates;
 
     public VirtualIoTNetwork(NetworkSchema schema, IoTClient client) {
         this.schema = schema;
         this.client = client;
         values = new HashMap<>();
         controlStates = new LinkedList<>();
+        reportStates = new LinkedList<>();
         for (DeviceSchema d : schema.device) {
             for (ValueSchema v : d.value) {
                 StateSchema control = v.state.stream()
@@ -32,6 +34,7 @@ public class VirtualIoTNetwork {
                     .findAny()
                     .orElseThrow();
                 controlStates.add(control.meta.id);
+                reportStates.add(report.meta.id);
                 values.put(
                     control.meta.id,
                     new Value(report.meta.id, report.data)
@@ -62,5 +65,9 @@ public class VirtualIoTNetwork {
 
     public UUID getControlState(int index) {
         return controlStates.get(index);
+    }
+
+    public UUID getReportState(int index) {
+        return reportStates.get(index);
     }
 }

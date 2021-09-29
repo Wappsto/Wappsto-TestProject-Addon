@@ -1,20 +1,23 @@
 package actions;
 
 import io.testproject.java.annotations.v2.*;
+import io.testproject.java.enums.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
 import wappsto.iot.network.*;
-import wappsto.iot.rpc.model.*;
 import wappsto.rest.network.model.*;
 
 import static actions.Utils.createVirtualIoTNetwork;
 import static actions.Utils.getCreator;
 
-@Action(name = "Send report state change to dashboard")
-public class SendReportStateChangeToDashboard implements WebAction {
+@Action(
+    name = "Run RPC Client",
+    description = "Create and run a simple virtual IoT network"
+)
+public class RunSimpleRPCClient implements WebAction {
     @Parameter(description = "Service API root")
     public String serviceUrl;
 
@@ -24,6 +27,24 @@ public class SendReportStateChangeToDashboard implements WebAction {
     @Parameter(description = "Socket port")
     public String port;
 
+    @Parameter(description = "Minimum value")
+    public String min;
+
+    @Parameter(description = "Maximum value")
+    public String max;
+
+    @Parameter(description = "Step size")
+    public String stepSize;
+
+    @Parameter(description = "Value type")
+    public String type;
+
+    @Parameter(
+        description = "Report state UUID",
+        direction = ParameterDirection.OUTPUT
+    )
+    public String reportState;
+
     @Override
     public ExecutionResult execute(WebAddonHelper helper)
         throws FailureException
@@ -32,17 +53,15 @@ public class SendReportStateChangeToDashboard implements WebAction {
         CreatorResponse creator = getCreator(browser, serviceUrl);
         VirtualIoTNetwork network = createVirtualIoTNetwork(
             creator,
-            0,
-            1,
-            1,
-            "Boolean",
-            port,
-            socketUrl
+            Integer.parseInt(min),
+            Integer.parseInt(max),
+            Integer.parseInt(stepSize),
+            type,
+            port, socketUrl
         );
-        network.update(new ControlStateData(
-            network.getControlState(0),
-            "1"
-        ));
+
+        reportState = network.getReportState(0).toString();
+
         return ExecutionResult.PASSED;
     }
 }
