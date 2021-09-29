@@ -39,7 +39,7 @@ public class VirtualIotNetworkTest {
         }
 
         @Test
-        public void on_state_change() throws Exception {
+        public void on_state_change() {
             VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
 
             UUID state = schema.device.get(0)

@@ -11,12 +11,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
-public class SendReportStateToDashboardTest {
+public class RunSimpleRPCClientTest {
     private static String serviceUrl;
     private static String appUrl;
     private User session;
     private static String socketUrl;
     private static String socketPort;
+    private static final String min = "0";
+    private static final String max = "1";
+    private static final String stepSize = "1";
+    private static final String type = "Boolean";
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -38,11 +42,11 @@ public class SendReportStateToDashboardTest {
     public class fails_to_get_creator {
         @Test
         public void when_browser_is_not_logged_in() throws Exception {
-            SendReportStateChangeToDashboard action = createAction(
+            RunSimpleRPCClient action = createAction(
                 serviceUrl,
                 socketUrl,
-                socketPort
-            );
+                socketPort,
+                min, max, stepSize, type);
             logBrowserOut();
             assertThrows(ExecutionException.class, () -> runner().run(action));
         }
@@ -52,20 +56,28 @@ public class SendReportStateToDashboardTest {
     public class fails_to_connect_iot_device {
         @Test
         public void to_invalid_url() {
-            SendReportStateChangeToDashboard action = createAction(
+            RunSimpleRPCClient action = createAction(
                 serviceUrl,
                 "not-wappsto",
-                socketPort
+                socketPort,
+                min,
+                max,
+                stepSize,
+                type
             );
             assertThrows(ExecutionException.class, () -> runner().run(action));
         }
 
         @Test
         public void to_invalid_port() {
-            SendReportStateChangeToDashboard action = createAction(
+            RunSimpleRPCClient action = createAction(
                 serviceUrl,
                 socketUrl,
-                "8080"
+                "8080",
+                min,
+                max,
+                stepSize,
+                type
             );
 
             assertThrows(ExecutionException.class, () -> runner().run(action));
@@ -74,10 +86,14 @@ public class SendReportStateToDashboardTest {
 
     @Test
     public void sends_report_state_to_wappsto() throws Exception {
-        SendReportStateChangeToDashboard action = createAction(
+        RunSimpleRPCClient action = createAction(
             serviceUrl,
             socketUrl,
-            socketPort
+            socketPort,
+            min,
+            max,
+            stepSize,
+            type
         );
         StepExecutionResult run = runner().run(action);
         assertEquals(
@@ -86,17 +102,21 @@ public class SendReportStateToDashboardTest {
         );
     }
 
-    private SendReportStateChangeToDashboard createAction(
+    private RunSimpleRPCClient createAction(
         String serviceUrl,
         String socketUrl,
-        String socketPort
-    ) {
-        SendReportStateChangeToDashboard action =
-            new SendReportStateChangeToDashboard();
+        String socketPort,
+        String min, String max, String stepSize, String type) {
+        RunSimpleRPCClient action =
+            new RunSimpleRPCClient();
 
         action.serviceUrl = serviceUrl;
         action.socketUrl = socketUrl;
         action.port = socketPort;
+        action.min = min;
+        action.max = max;
+        action.stepSize = stepSize;
+        action.type = type;
         return action;
     }
 
