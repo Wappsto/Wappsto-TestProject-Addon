@@ -7,6 +7,7 @@ import io.testproject.java.sdk.v2.drivers.WebDriver;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
+import wappsto.network.*;
 import wappsto.rest.network.*;
 import wappsto.rest.session.*;
 
@@ -37,7 +38,7 @@ public class ShareNetwork implements WebAction {
             );
         }
         try {
-            new ShareNetworkController(
+            new Controller(
                 sessionId,
                 serviceUrl,
                 network,
@@ -50,5 +51,40 @@ public class ShareNetwork implements WebAction {
         }
 
         return ExecutionResult.PASSED;
+    }
+
+    public static class Controller {
+
+        private NetworkService service;
+        private String network;
+        private String other;
+
+        public Controller(
+            String sessionId,
+            String target,
+            String network,
+            String other
+        ) throws Exception {
+            this(
+                new RestNetworkService(new RestUser(sessionId, target)),
+                network,
+                other
+            );
+        }
+
+        public Controller(
+            NetworkService service,
+            String network,
+            String other
+        ) {
+
+            this.service = service;
+            this.network = network;
+            this.other = other;
+        }
+
+        public void execute() throws Exception {
+            service.share(network, other);
+        }
     }
 }

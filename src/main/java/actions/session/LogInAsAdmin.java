@@ -6,6 +6,7 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
+import wappsto.session.*;
 import wappsto.session.model.AdminCredentials;
 import wappsto.rest.session.RestAdmin;
 
@@ -22,7 +23,7 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
 
         String sessionId;
         try {
-            sessionId = new LogInAsAdminController(
+            sessionId = new Controller(
                 new AdminCredentials(
                     adminUsername,
                     adminPassword
@@ -48,5 +49,24 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
                 sessionId
             )
         );
+    }
+
+    public static class Controller {
+        private final Admin admin;
+
+        public Controller(AdminCredentials credentials, String target)
+            throws Exception
+        {
+            this(new RestAdmin(credentials, target));
+        }
+
+        public Controller(Admin admin) {
+
+            this.admin = admin;
+        }
+
+        public String execute() {
+            return admin.getId();
+        }
     }
 }

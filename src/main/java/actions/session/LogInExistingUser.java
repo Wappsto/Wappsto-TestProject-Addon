@@ -6,6 +6,8 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
+import wappsto.rest.session.*;
+import wappsto.session.*;
 import wappsto.session.model.Credentials;
 
 import static actions.Utils.*;
@@ -33,7 +35,7 @@ public class LogInExistingUser implements WebAction {
 
         String sessionId;
         try {
-            sessionId = new LogInExistingUserController(
+            sessionId = new UserController(
                 new Credentials(username, password),
                 serviceUrl
             ).execute();
@@ -43,5 +45,26 @@ public class LogInExistingUser implements WebAction {
         browser.navigate().to(appUrl);
         logIn(browser, sessionId);
         return ExecutionResult.PASSED;
+    }
+
+    public static class UserController {
+        private User user;
+
+        public UserController(
+            Credentials credentials,
+            String target
+        ) throws Exception {
+            this(
+                new RestUser(credentials, target)
+            );
+        }
+
+        public UserController(User user) {
+            this.user = user;
+        }
+
+        public String execute() {
+            return user.getId();
+        }
     }
 }

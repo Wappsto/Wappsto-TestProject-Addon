@@ -7,6 +7,7 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
+import wappsto.network.*;
 import wappsto.rest.network.RestNetworkService;
 import wappsto.rest.session.RestUser;
 
@@ -32,7 +33,7 @@ public class ClaimNetwork implements WebAction {
         }
 
         try {
-            new ClaimNetworkController(sessionId, serviceUrl, networkId)
+            new Controller(sessionId, serviceUrl, networkId)
                 .execute();
         } catch (Exception e) {
             throw new FailureException(
@@ -45,4 +46,28 @@ public class ClaimNetwork implements WebAction {
     }
 
 
+    public static class Controller {
+        private NetworkService service;
+        private String network;
+
+        public Controller(
+            String sessionId,
+            String target,
+            String network
+        ) throws Exception {
+            this(
+                new RestNetworkService(new RestUser(sessionId, target)),
+                network
+            );
+        }
+
+        public Controller(NetworkService service, String network) {
+            this.service = service;
+            this.network = network;
+        }
+
+        public void execute() throws Exception {
+            service.claim(network);
+        }
+    }
 }

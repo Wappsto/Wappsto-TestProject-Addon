@@ -8,6 +8,7 @@ import io.testproject.java.sdk.v2.drivers.WebDriver;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
+import wappsto.network.*;
 import wappsto.rest.network.*;
 import wappsto.rest.session.*;
 
@@ -35,7 +36,7 @@ public class CreateNetwork implements WebAction {
 
         RestUser session;
         try {
-            network = new CreateNetworkController(sessionId, serviceUrl)
+            network = new Controller(sessionId, serviceUrl)
                 .execute();
         } catch (Exception e) {
             throw new FailureException(
@@ -43,5 +44,25 @@ public class CreateNetwork implements WebAction {
             );
         }
         return ExecutionResult.PASSED;
+    }
+
+    public static class Controller {
+        private NetworkService service;
+
+        public Controller(
+            String sessionId,
+            String target
+        ) throws Exception
+        {
+            this(new RestNetworkService(new RestUser(sessionId, target)));
+        }
+
+        public Controller(NetworkService service) {
+            this.service = service;
+        }
+
+        public String execute() throws Exception {
+            return service.create().id;
+        }
     }
 }
