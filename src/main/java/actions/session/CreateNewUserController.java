@@ -30,6 +30,7 @@ public class CreateNewUserController {
         throws Exception
     {
         admin.register(credentials);
+        //evil dependencty injection hack using reflection
         user = U.getConstructor(Credentials.class, String.class)
             .newInstance(credentials, target);
     }
