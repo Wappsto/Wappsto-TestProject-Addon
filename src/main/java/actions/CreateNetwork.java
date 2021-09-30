@@ -4,7 +4,6 @@ import io.testproject.java.annotations.v2.*;
 import io.testproject.java.enums.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
-import io.testproject.java.sdk.v2.drivers.*;
 import io.testproject.java.sdk.v2.drivers.WebDriver;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
@@ -34,9 +33,9 @@ public class CreateNetwork implements WebAction {
             throw new FailureException("Browser not logged in");
         }
 
-        User session;
+        RestUser session;
         try {
-            session = new User(sessionId, serviceUrl);
+            session = new RestUser(sessionId, serviceUrl);
             NetworkService service = new NetworkService(session);
             network = service.create().id;
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package wappsto.rest.session.model;
+package wappsto.session.model;
 
 import com.fasterxml.jackson.annotation.*;
 

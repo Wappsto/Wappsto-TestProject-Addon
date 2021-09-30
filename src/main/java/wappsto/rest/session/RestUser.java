@@ -1,9 +1,10 @@
 package wappsto.rest.session;
 
 import wappsto.rest.request.*;
-import wappsto.rest.session.model.*;
+import wappsto.session.model.*;
+import wappsto.session.*;
 
-public class User extends  Session{
+public class RestUser extends  Session implements wappsto.session.User {
 
     /**
      * Create an API session with regular user privileges
@@ -11,7 +12,7 @@ public class User extends  Session{
      * @param serviceUrl    URL to API
      * @throws Exception
      */
-    public User(
+    public RestUser(
         Credentials credentials,
         String serviceUrl
     ) throws Exception {
@@ -24,7 +25,7 @@ public class User extends  Session{
      * @param serviceUrl    URL to API
      * @throws Exception
      */
-    public User(String id, String serviceUrl) throws Exception {
+    public RestUser(String id, String serviceUrl) throws Exception {
         super(id, serviceUrl);
         //Ensure the session token is valid
         fetchUser();
@@ -35,6 +36,7 @@ public class User extends  Session{
      * @return user
      * @throws Exception
      */
+    @Override
     public UserResponse fetchUser() throws Exception{
         return (UserResponse) new Request.Builder(service)
             .atEndPoint(API.V2_0)
@@ -43,7 +45,7 @@ public class User extends  Session{
             .get(id, UserResponse.class);
     }
 
-    public static class Builder {
+    public static class Builder implements UserBuilder {
         private final Admin admin;
         private final String serviceUrl;
         private Credentials credentials;
@@ -62,6 +64,7 @@ public class User extends  Session{
          * @param credentials
          * @return this
          */
+        @Override
         public Builder withCredentials(Credentials credentials) {
             this.credentials = credentials;
             return this;
@@ -72,9 +75,10 @@ public class User extends  Session{
          * @return this
          * @throws Exception
          */
-        public User create() throws Exception {
+        @Override
+        public RestUser create() throws Exception {
             admin.register(credentials);
-            return new User(credentials, serviceUrl);
+            return new RestUser(credentials, serviceUrl);
         }
 
     }

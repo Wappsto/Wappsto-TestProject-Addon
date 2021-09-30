@@ -1,9 +1,7 @@
 package iot;
 
 import wappsto.iot.network.model.*;
-import wappsto.rest.network.model.*;
-
-import java.util.*;
+import wappsto.network.model.*;
 
 public class Utils {
 

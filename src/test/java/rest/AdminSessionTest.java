@@ -3,8 +3,8 @@ package rest;
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.Admin;
-import wappsto.rest.session.model.AdminCredentials;
-import wappsto.rest.session.model.Credentials;
+import wappsto.session.model.AdminCredentials;
+import wappsto.session.model.Credentials;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.API_ROOT;

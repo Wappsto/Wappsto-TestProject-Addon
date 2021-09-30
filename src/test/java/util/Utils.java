@@ -5,9 +5,9 @@ import io.testproject.java.sdk.v2.Runner;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import wappsto.rest.session.Admin;
-import wappsto.rest.session.User;
-import wappsto.rest.session.model.AdminCredentials;
-import wappsto.rest.session.model.Credentials;
+import wappsto.rest.session.RestUser;
+import wappsto.session.model.AdminCredentials;
+import wappsto.session.model.Credentials;
 
 import static util.Env.*;
 
@@ -36,8 +36,8 @@ public class Utils {
         return admin;
     }
 
-    public static User createNewUserSession(String serviceUrl) throws Exception {
-        return new User.Builder(admin(), serviceUrl)
+    public static RestUser createNewUserSession(String serviceUrl) throws Exception {
+        return new RestUser.Builder(admin(), serviceUrl)
             .withCredentials(defaultUser())
             .create();
     }

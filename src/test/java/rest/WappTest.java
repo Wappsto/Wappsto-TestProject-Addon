@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.wapps.WappService;
-import wappsto.rest.session.User;
+import wappsto.rest.session.RestUser;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,7 +29,7 @@ public class WappTest {
 
     @Test
     public void fetches_all_wapps() throws Exception {
-        User session = createNewUserSession(serviceUrl);
+        RestUser session = createNewUserSession(serviceUrl);
         WappService wapp = new WappService(session);
 
         assertTrue(wapp.fetchAllFromStore().size() >= 1);
@@ -40,7 +40,7 @@ public class WappTest {
 
         @Test
         public void from_name() throws Exception {
-            User session = createNewUserSession(serviceUrl);
+            RestUser session = createNewUserSession(serviceUrl);
             WappService wapp = new WappService(session);
 
             wapp.install("Historical Data");
@@ -51,7 +51,7 @@ public class WappTest {
 
     @Test
     public void fails_to_install_wapp_from_invalid_name() throws Exception {
-        User session = createNewUserSession(serviceUrl);
+        RestUser session = createNewUserSession(serviceUrl);
 
         assertThrows(
             Exception.class,

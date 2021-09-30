@@ -8,7 +8,7 @@ import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
 import wappsto.rest.network.NetworkService;
-import wappsto.rest.session.User;
+import wappsto.rest.session.RestUser;
 
 import static actions.Utils.getSessionFrom;
 
@@ -26,9 +26,9 @@ public class ClaimNetwork implements WebAction {
         WebDriver browser = helper.getDriver();
         String sessionId = getSessionFrom(browser);
 
-        User session;
+        RestUser session;
         try {
-            session = new User(
+            session = new RestUser(
                 sessionId,
                 serviceUrl
             );

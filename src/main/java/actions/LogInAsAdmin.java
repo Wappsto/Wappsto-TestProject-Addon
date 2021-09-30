@@ -6,7 +6,7 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
-import wappsto.rest.session.model.AdminCredentials;
+import wappsto.session.model.AdminCredentials;
 import wappsto.rest.session.Admin;
 
 @Action(name = "Log in as admin")

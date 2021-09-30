@@ -1,9 +1,9 @@
 package wappsto.rest.session;
 
 import wappsto.rest.request.*;
-import wappsto.rest.session.model.*;
+import wappsto.session.model.*;
 
-public class Admin extends Session{
+public class Admin extends Session implements wappsto.session.Admin {
 
     /**
      * An API session with admin privileges
@@ -26,6 +26,7 @@ public class Admin extends Session{
      * @param credentials
      * @throws Exception
      */
+    @Override
     public void register(Credentials credentials) throws Exception {
         new Request.Builder(service)
             .withBody(credentials)
@@ -39,6 +40,7 @@ public class Admin extends Session{
      * @param username
      * @throws Exception
      */
+    @Override
     public void delete(String username) throws Exception {
         new Request.Builder(service)
             .atEndPoint(API.V2_0)

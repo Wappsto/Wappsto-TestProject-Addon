@@ -3,7 +3,6 @@ package actions;
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
-import io.testproject.java.sdk.v2.drivers.*;
 import io.testproject.java.sdk.v2.drivers.WebDriver;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
@@ -38,9 +37,9 @@ public class ShareNetwork implements WebAction {
             );
         }
 
-        User self;
+        RestUser self;
         try {
-            self = new User(sessionId, serviceUrl);
+            self = new RestUser(sessionId, serviceUrl);
             NetworkService service = new NetworkService(self);
             service.share(network, other);
         } catch (Exception e) {

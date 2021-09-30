@@ -14,7 +14,7 @@ import static util.Utils.*;
 public class RunSimpleRPCClientTest {
     private static String serviceUrl;
     private static String appUrl;
-    private User session;
+    private RestUser session;
     private static String socketUrl;
     private static String socketPort;
     private static final String min = "0";

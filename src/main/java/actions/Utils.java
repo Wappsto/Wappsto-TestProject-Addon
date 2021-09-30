@@ -6,10 +6,10 @@ import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.rest.network.*;
-import wappsto.rest.network.model.*;
+import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
-import wappsto.rest.session.model.*;
+import wappsto.session.model.*;
 
 public class Utils {
     public static void logIn(WebDriver browser, String session) {
@@ -31,10 +31,10 @@ public class Utils {
 
     public static CreatorResponse getCreator(WebDriver browser, String serviceUrl) throws FailureException {
         String sessionId;
-        User session;
+        RestUser session;
         try {
             sessionId = getSessionFrom(browser);
-            session = new User(sessionId, serviceUrl);
+            session = new RestUser(sessionId, serviceUrl);
         } catch (NoSuchCookieException e) {
             throw new FailureException("Browser is not logged in");
         } catch (HttpException e) {
@@ -101,7 +101,7 @@ public class Utils {
         return network;
     }
 
-    public static User registerNewUser(
+    public static RestUser registerNewUser(
         AdminCredentials adminCredentials,
         Credentials userCredentials,
         String serviceUrl
@@ -116,9 +116,9 @@ public class Utils {
             );
         }
 
-        User session;
+        RestUser session;
         try {
-            session = new User.Builder(admin, serviceUrl)
+            session = new RestUser.Builder(admin, serviceUrl)
                 .withCredentials(userCredentials)
                 .create();
         } catch (Exception e) {

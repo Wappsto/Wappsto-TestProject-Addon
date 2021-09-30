@@ -33,10 +33,10 @@ public class ChangeControlStateValue implements WebAction {
         } catch (NoSuchCookieException e) {
             throw new FailureException("Browser not logged in");
         }
-        User session;
+        RestUser session;
         NetworkService service;
         try {
-            session = new User(sessionId, serviceUrl);
+            session = new RestUser(sessionId, serviceUrl);
             service = new NetworkService(session);
             service.updateState(UUID.fromString(controlState), value);
         } catch (Exception e) {

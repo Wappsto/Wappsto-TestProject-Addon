@@ -28,11 +28,11 @@ public class AssertStateValue implements WebAction {
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
         WebDriver browser = helper.getDriver();
         String sessionId;
-        User session;
+        RestUser session;
         NetworkService service;
         try {
             sessionId = getSessionFrom(browser);
-            session = new User(sessionId, serviceUrl);
+            session = new RestUser(sessionId, serviceUrl);
             service = new NetworkService(session);
         } catch (NoSuchCookieException e) {
             throw new FailureException("Session cookie not found");

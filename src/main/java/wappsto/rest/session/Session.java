@@ -3,12 +3,11 @@ package wappsto.rest.session;
 import org.glassfish.jersey.client.*;
 import wappsto.rest.request.Request;
 import wappsto.rest.request.*;
-import wappsto.rest.session.model.*;
+import wappsto.session.model.*;
 
 import javax.ws.rs.client.*;
-import javax.ws.rs.core.*;
 
-public abstract class Session {
+public abstract class Session implements wappsto.session.Session {
     public final String id;
     protected Client client;
     public final WebTarget service;
@@ -53,6 +52,7 @@ public abstract class Session {
      * @return
      * @throws Exception
      */
+    @Override
     public UserResponse fetchUser(String username) throws Exception {
         return (UserResponse) new Request.Builder(service)
             .atEndPoint(API.V2_0)

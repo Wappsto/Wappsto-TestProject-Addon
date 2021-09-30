@@ -5,7 +5,7 @@ import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
-import wappsto.rest.session.model.*;
+import wappsto.session.model.*;
 
 import static actions.Utils.registerNewUser;
 

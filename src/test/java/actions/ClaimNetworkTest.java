@@ -2,10 +2,10 @@ package actions;
 
 import org.junit.jupiter.api.*;
 import wappsto.rest.network.*;
-import wappsto.rest.network.model.*;
+import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.session.model.Credentials;
-import wappsto.rest.session.User;
+import wappsto.session.model.Credentials;
+import wappsto.rest.session.RestUser;
 
 import java.util.concurrent.ExecutionException;
 
@@ -17,8 +17,8 @@ public class ClaimNetworkTest {
     public static final String NETWORK_FRIEND = "networkfriend@seluxit.com";
     private static String serviceUrl;
     private static String appUrl;
-    private User session;
-    private User friend;
+    private RestUser session;
+    private RestUser friend;
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -103,8 +103,8 @@ public class ClaimNetworkTest {
         return action;
     }
 
-    private User makeAFriend() throws Exception {
-        return new User.Builder(admin(), serviceUrl)
+    private RestUser makeAFriend() throws Exception {
+        return new RestUser.Builder(admin(), serviceUrl)
             .withCredentials(
                 new Credentials(NETWORK_FRIEND, "123")
             ).create();

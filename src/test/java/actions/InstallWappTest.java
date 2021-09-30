@@ -3,7 +3,7 @@ package actions;
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.wapps.WappService;
-import wappsto.rest.session.User;
+import wappsto.rest.session.RestUser;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +54,7 @@ public class InstallWappTest {
                 env().get(API_ROOT),
                 "Historical Data"
             );
-            User session = new User.Builder(
+            RestUser session = new RestUser.Builder(
                 admin(),
                 env().get(API_ROOT)
             ).withCredentials(defaultUser())
@@ -69,8 +69,8 @@ public class InstallWappTest {
         }
     }
 
-    private User createNewSession() throws Exception {
-        return new User.Builder(
+    private RestUser createNewSession() throws Exception {
+        return new RestUser.Builder(
             admin(),
             env().get(API_ROOT)
         ).withCredentials(defaultUser())

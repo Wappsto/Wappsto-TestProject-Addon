@@ -7,7 +7,7 @@ import wappsto.iot.ssl.model.WappstoCerts;
 import org.junit.jupiter.api.Test;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.network.NetworkService;
-import wappsto.rest.network.model.CreatorResponse;
+import wappsto.network.model.CreatorResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.API_ROOT;

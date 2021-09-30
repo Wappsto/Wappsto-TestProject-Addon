@@ -1,11 +1,11 @@
 package rest;
 
 import org.junit.jupiter.api.*;
-import wappsto.rest.network.model.*;
+import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.network.NetworkService;
-import wappsto.rest.session.User;
-import wappsto.rest.session.model.Credentials;
+import wappsto.rest.session.RestUser;
+import wappsto.session.model.Credentials;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
@@ -14,8 +14,8 @@ import static util.Utils.*;
 public class NetworkTest {
     public static final String NETWORK_FRIEND = "networkfriend@seluxit.com";
     private static String serviceUrl;
-    private User session;
-    private User friend;
+    private RestUser session;
+    private RestUser friend;
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -33,7 +33,7 @@ public class NetworkTest {
         session = createNewUserSession(
             serviceUrl
         );
-        friend = new User.Builder(admin(), serviceUrl)
+        friend = new RestUser.Builder(admin(), serviceUrl)
             .withCredentials(
                 new Credentials(
                     NETWORK_FRIEND,

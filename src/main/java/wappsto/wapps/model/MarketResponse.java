@@ -1,4 +1,4 @@
-package wappsto.rest.wapps.model;
+package wappsto.wapps.model;
 
 import com.fasterxml.jackson.annotation.*;
 

@@ -6,7 +6,7 @@ import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
 import wappsto.rest.network.*;
-import wappsto.rest.network.model.*;
+import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
 
@@ -19,7 +19,7 @@ import static util.Utils.*;
 
 public class VirtualIoTNetworkIntegrationTest {
     private static String serviceUrl;
-    private User session;
+    private RestUser session;
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -93,7 +93,7 @@ public class VirtualIoTNetworkIntegrationTest {
         network.client.stop();
     }
 
-    private VirtualIoTNetwork createVirtualIoTClient(User session) throws Exception {
+    private VirtualIoTNetwork createVirtualIoTClient(RestUser session) throws Exception {
         NetworkService service = new NetworkService(session);
         CreatorResponse creator = service.getCreator();
 

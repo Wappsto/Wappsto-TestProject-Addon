@@ -1,6 +1,6 @@
 package wappsto.iot.ssl.model;
 
-import wappsto.rest.network.model.*;
+import wappsto.network.model.*;
 
 public class WappstoCerts {
     public final String ca;

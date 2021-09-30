@@ -8,7 +8,7 @@ import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
 import wappsto.iot.network.*;
-import wappsto.rest.network.model.*;
+import wappsto.network.model.*;
 
 import static actions.Utils.createVirtualIoTNetwork;
 import static actions.Utils.getCreator;

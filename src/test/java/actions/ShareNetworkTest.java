@@ -1,11 +1,10 @@
 package actions;
 
-import io.testproject.java.sdk.v2.drivers.*;
 import org.junit.jupiter.api.*;
 import wappsto.rest.network.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
-import wappsto.rest.session.model.*;
+import wappsto.session.model.*;
 
 import java.util.concurrent.*;
 
@@ -16,8 +15,8 @@ import static util.Utils.*;
 public class ShareNetworkTest {
     private static String serviceUrl;
     private static String appUrl;
-    private User user;
-    private User friend;
+    private RestUser user;
+    private RestUser friend;
     private static String friendUsername;
 
     @BeforeAll
@@ -37,7 +36,7 @@ public class ShareNetworkTest {
         resetRunner();
 
         user = createNewUserSession(serviceUrl);
-        friend = new User.Builder(admin(), serviceUrl)
+        friend = new RestUser.Builder(admin(), serviceUrl)
             .withCredentials(new Credentials(friendUsername, "123"))
             .create();
         logInBrowser(user.id, appUrl);

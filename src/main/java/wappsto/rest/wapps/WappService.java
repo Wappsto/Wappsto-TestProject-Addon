@@ -3,15 +3,14 @@ package wappsto.rest.wapps;
 import wappsto.rest.request.Request;
 import wappsto.rest.request.*;
 import wappsto.rest.session.*;
-import wappsto.rest.wapps.model.*;
+import wappsto.wapps.model.*;
 
-import javax.ws.rs.core.*;
 import java.util.*;
 
 /**
  * Manages Wapps on a user
  */
-public class WappService {
+public class WappService implements wappsto.wapps.WappService {
     private final Session session;
 
     /**
@@ -27,6 +26,7 @@ public class WappService {
      * @param name Name of wapp
      * @throws Exception
      */
+    @Override
     public void install(String name) throws Exception {
         String applicationId = fetchFromStore(name).application;
         InstallationRequest install = new InstallationRequest(applicationId);
@@ -44,6 +44,7 @@ public class WappService {
      * @return
      * @throws Exception
      */
+    @Override
     public Collection<String> fetchInstalled() throws Exception {
         return ((WappsResponse) new Request.Builder(session.service)
             .atEndPoint(API.INSTALLATION)
@@ -56,6 +57,7 @@ public class WappService {
      * @return Collection of all wapps
      * @throws Exception
      */
+    @Override
     public Collection<Wapp> fetchAllFromStore() throws Exception {
         return ((MarketResponse) new Request.Builder(session.service)
             .atEndPoint(API.MARKET)

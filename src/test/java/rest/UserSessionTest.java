@@ -1,7 +1,7 @@
 package rest;
 
 import org.junit.jupiter.api.*;
-import wappsto.rest.session.User;
+import wappsto.rest.session.RestUser;
 
 import static util.Env.*;
 import static util.Utils.*;
@@ -23,22 +23,19 @@ public class UserSessionTest {
 
     @Test
     public void creates_new_user_session() throws Exception {
-        User session = createNewUserSession(serviceUrl);
-
+        RestUser session = createNewUserSession(serviceUrl);
         assertNotNull(session.id);
     }
 
     @Test
     public void fetches_own_user() throws Exception {
-        User session = createNewUserSession(serviceUrl);
+        RestUser session = createNewUserSession(serviceUrl);
 
         assertEquals(
             defaultUser().username,
             session.fetchUser().username
         );
     }
-
-
 
     @AfterEach
     public void tearDown() {

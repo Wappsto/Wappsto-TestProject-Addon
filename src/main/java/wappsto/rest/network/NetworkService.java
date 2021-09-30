@@ -1,13 +1,13 @@
 package wappsto.rest.network;
 
-import wappsto.rest.network.model.*;
+import wappsto.network.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.session.*;
-import wappsto.rest.session.model.*;
+import wappsto.session.model.*;
 
 import java.util.*;
 
-public class NetworkService {
+public class NetworkService implements wappsto.network.NetworkService {
     private Session session;
 
     public NetworkService(Session session) {
@@ -19,6 +19,7 @@ public class NetworkService {
      * @param id
      * @throws Exception
      */
+    @Override
     public void claim(String id) throws Exception {
         new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
@@ -33,6 +34,7 @@ public class NetworkService {
      * @return network creator
      * @throws Exception
      */
+    @Override
     public CreatorResponse getCreator() throws Exception {
         CreatorResponse response = ((CreatorResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_1)
@@ -48,6 +50,7 @@ public class NetworkService {
      * @return Network
      * @throws Exception
      */
+    @Override
     public NetworkMeta create() throws Exception {
         return ((NetworkResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
@@ -63,6 +66,7 @@ public class NetworkService {
      * @return Network
      * @throws Exception
      */
+    @Override
     public NetworkMeta fetch(String id) throws Exception {
         return ((NetworkResponse) (new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
@@ -78,6 +82,7 @@ public class NetworkService {
      * @param friend Friend
      * @throws Exception
      */
+    @Override
     public void share(NetworkMeta network, UserResponse friend) throws Exception {
         share(network.id, friend.username);
     }
@@ -88,6 +93,7 @@ public class NetworkService {
      * @param friendUsername Friend username
      * @throws Exception
      */
+    @Override
     public void share(String networkId, String friendUsername) throws Exception {
         NetworkShareRequest request = new NetworkShareRequest(
             friendUsername
@@ -108,6 +114,7 @@ public class NetworkService {
      * @param data Desired value
      * @throws Exception
      */
+    @Override
     public void updateState(UUID id, String data) throws Exception {
         new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
@@ -124,6 +131,7 @@ public class NetworkService {
      * @return State value
      * @throws Exception
      */
+    @Override
     public String getState(UUID id) throws Exception {
         return ((StateResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
