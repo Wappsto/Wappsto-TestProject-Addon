@@ -42,7 +42,7 @@ public class VirtualIoTNetworkIntegrationTest {
     @Test
     public void sends_state_change_to_dashboard() throws Exception {
         //TODO: There's an object or three missing in here
-        NetworkService service = new NetworkService(session);
+        RestNetworkService service = new RestNetworkService(session);
         CreatorResponse creator = service.getCreator();
 
         RPCClient client = createClient(creator);
@@ -74,7 +74,7 @@ public class VirtualIoTNetworkIntegrationTest {
     @Test
     public void retrieves_data_from_dashboard() throws Exception {
         VirtualIoTNetwork network = createVirtualIoTClient(session);
-        NetworkService service = new NetworkService(session);
+        RestNetworkService service = new RestNetworkService(session);
         NetworkSchema schema = network.schema;
 
         UUID controlState = schema.device.get(0).value.get(0).state.stream()
@@ -94,7 +94,7 @@ public class VirtualIoTNetworkIntegrationTest {
     }
 
     private VirtualIoTNetwork createVirtualIoTClient(RestUser session) throws Exception {
-        NetworkService service = new NetworkService(session);
+        RestNetworkService service = new RestNetworkService(session);
         CreatorResponse creator = service.getCreator();
 
         RPCClient client = createClient(creator);

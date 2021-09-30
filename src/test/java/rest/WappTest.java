@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.wapps.WappService;
+import wappsto.rest.wapps.RestWappService;
 import wappsto.rest.session.RestUser;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,7 +30,7 @@ public class WappTest {
     @Test
     public void fetches_all_wapps() throws Exception {
         RestUser session = createNewUserSession(serviceUrl);
-        WappService wapp = new WappService(session);
+        RestWappService wapp = new RestWappService(session);
 
         assertTrue(wapp.fetchAllFromStore().size() >= 1);
     }
@@ -41,7 +41,7 @@ public class WappTest {
         @Test
         public void from_name() throws Exception {
             RestUser session = createNewUserSession(serviceUrl);
-            WappService wapp = new WappService(session);
+            RestWappService wapp = new RestWappService(session);
 
             wapp.install("Historical Data");
             assert wapp.fetchInstalled().size() == 1
@@ -55,7 +55,7 @@ public class WappTest {
 
         assertThrows(
             Exception.class,
-            () -> new WappService(session).install(""),
+            () -> new RestWappService(session).install(""),
             "Wapp not found"
         );
     }

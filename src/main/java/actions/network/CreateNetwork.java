@@ -1,4 +1,4 @@
-package actions;
+package actions.network;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.enums.*;
@@ -35,9 +35,8 @@ public class CreateNetwork implements WebAction {
 
         RestUser session;
         try {
-            session = new RestUser(sessionId, serviceUrl);
-            NetworkService service = new NetworkService(session);
-            network = service.create().id;
+            network = new CreateNetworkController(sessionId, serviceUrl)
+                .execute();
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to create network: " + e.getMessage()

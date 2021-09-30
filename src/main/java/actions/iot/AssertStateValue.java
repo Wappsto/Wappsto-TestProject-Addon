@@ -1,4 +1,4 @@
-package actions;
+package actions.iot;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
@@ -6,10 +6,6 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
-import wappsto.rest.network.*;
-import wappsto.rest.session.*;
-
-import java.util.*;
 
 import static actions.Utils.*;
 
@@ -28,12 +24,15 @@ public class AssertStateValue implements WebAction {
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
         WebDriver browser = helper.getDriver();
         String sessionId;
-        RestUser session;
-        NetworkService service;
+        AssertStateValueController presenter;
         try {
             sessionId = getSessionFrom(browser);
-            session = new RestUser(sessionId, serviceUrl);
-            service = new NetworkService(session);
+            presenter = new AssertStateValueController(
+                sessionId,
+                serviceUrl,
+                state,
+                expected
+            );
         } catch (NoSuchCookieException e) {
             throw new FailureException("Session cookie not found");
         } catch (Exception e) {
@@ -43,8 +42,7 @@ public class AssertStateValue implements WebAction {
         }
 
         try {
-            assert service.getState(UUID.fromString(state)).equals(expected) :
-                "State did not match expected value";
+             presenter.execute();
         } catch (Exception e) {
             throw new FailureException(e.getMessage());
         }

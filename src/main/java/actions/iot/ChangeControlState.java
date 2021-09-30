@@ -1,4 +1,4 @@
-package actions;
+package actions.iot;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
@@ -14,7 +14,7 @@ import java.util.*;
 import static actions.Utils.getSessionFrom;
 
 @Action(name = "Change value of control state")
-public class ChangeControlStateValue implements WebAction {
+public class ChangeControlState implements WebAction {
     @Parameter(description = "Control state UUID")
     public String controlState;
 
@@ -33,12 +33,13 @@ public class ChangeControlStateValue implements WebAction {
         } catch (NoSuchCookieException e) {
             throw new FailureException("Browser not logged in");
         }
-        RestUser session;
-        NetworkService service;
         try {
-            session = new RestUser(sessionId, serviceUrl);
-            service = new NetworkService(session);
-            service.updateState(UUID.fromString(controlState), value);
+            new ChangeControlStateController(
+                sessionId,
+                serviceUrl,
+                controlState,
+                value
+            ).execute();
         } catch (Exception e) {
             throw new FailureException("Error updating state: " + e.getMessage());
         }

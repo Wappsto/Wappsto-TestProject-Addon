@@ -1,4 +1,4 @@
-package actions;
+package actions.session;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.WebAction;
@@ -7,7 +7,7 @@ import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
 import wappsto.session.model.AdminCredentials;
-import wappsto.rest.session.Admin;
+import wappsto.rest.session.RestAdmin;
 
 @Action(name = "Log in as admin")
 public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
@@ -22,7 +22,13 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
 
         String sessionId;
         try {
-            sessionId = createNewAdminSession();
+            sessionId = new LogInAsAdminController(
+                new AdminCredentials(
+                    adminUsername,
+                    adminPassword
+                ),
+                serviceUrl
+            ).execute();
         } catch (Exception e) {
             throw new FailureException("Admin login failed: " + e.getMessage());
         }
@@ -33,16 +39,6 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
         storeSession(sessionId, (JavascriptExecutor) browser);
 
         return ExecutionResult.PASSED;
-    }
-
-    private String createNewAdminSession() throws Exception {
-        return new Admin(
-            new AdminCredentials(
-                adminUsername,
-                adminPassword
-            ),
-            serviceUrl
-        ).id;
     }
 
     private void storeSession(String sessionId, JavascriptExecutor driver) {

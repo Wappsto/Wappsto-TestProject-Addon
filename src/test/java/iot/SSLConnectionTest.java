@@ -6,7 +6,7 @@ import wappsto.iot.ssl.SSLConnection;
 import wappsto.iot.ssl.model.WappstoCerts;
 import org.junit.jupiter.api.Test;
 import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.network.NetworkService;
+import wappsto.rest.network.RestNetworkService;
 import wappsto.network.model.CreatorResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +30,7 @@ public class SSLConnectionTest {
 
     @Test
     public void connects_via_ssl() throws Exception {
-        CreatorResponse creatorResponse = new NetworkService(
+        CreatorResponse creatorResponse = new RestNetworkService(
             createNewUserSession(serviceUrl)
         ).getCreator();
 

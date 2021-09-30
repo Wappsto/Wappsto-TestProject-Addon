@@ -3,7 +3,7 @@ package rest;
 import org.junit.jupiter.api.*;
 import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.network.NetworkService;
+import wappsto.rest.network.RestNetworkService;
 import wappsto.rest.session.RestUser;
 import wappsto.session.model.Credentials;
 
@@ -44,25 +44,25 @@ public class NetworkTest {
 
     @Test
     public void creates_new_network() throws Exception {
-        NetworkService network = new NetworkService(session);
+        RestNetworkService network = new RestNetworkService(session);
 
         assertNotNull(network.getCreator().network);
     }
 
     @Test
     public void shares_an_owned_network() throws Exception {
-        NetworkService service = new NetworkService(session);
+        RestNetworkService service = new RestNetworkService(session);
         NetworkMeta network = service.create();
-        service.share(network, friend.fetchUser());
+        service.share(network, friend.fetchMe());
 
-        NetworkService friendService = new NetworkService(friend);
+        RestNetworkService friendService = new RestNetworkService(friend);
 
         assertNotNull(friendService.fetch(network.id));
     }
 
     @Test
     public void fetches_an_owned_network() throws Exception {
-        NetworkService networkService = new NetworkService(session);
+        RestNetworkService networkService = new RestNetworkService(session);
         NetworkMeta network = networkService.create();
         assertEquals(network.id, networkService.fetch(network.id).id);
     }
@@ -71,7 +71,7 @@ public class NetworkTest {
     public class fails_to_claim {
         @Test
         public void invalid_network() throws Exception {
-            NetworkService network = new NetworkService(session);
+            RestNetworkService network = new RestNetworkService(session);
             assertThrows(
                 HttpException.class,
                 () -> network.claim("bad id"),
@@ -81,9 +81,9 @@ public class NetworkTest {
 
         @Test
         public void when_not_authorized() throws Exception {
-            NetworkService service = new NetworkService(session);
+            RestNetworkService service = new RestNetworkService(session);
             NetworkMeta network = service.create();
-            NetworkService friendService = new NetworkService(friend);
+            RestNetworkService friendService = new RestNetworkService(friend);
 
             assertThrows(
                 HttpException.class,
@@ -95,11 +95,11 @@ public class NetworkTest {
 
     @Test
     public void claims_shared_network() throws Exception {
-        NetworkService service = new NetworkService(session);
+        RestNetworkService service = new RestNetworkService(session);
         NetworkMeta network = service.create();
-        service.share(network, friend.fetchUser());
+        service.share(network, friend.fetchMe());
 
-        NetworkService friendService = new NetworkService(friend);
+        RestNetworkService friendService = new RestNetworkService(friend);
 
         assertDoesNotThrow(() -> friendService.claim(network.id));
     }

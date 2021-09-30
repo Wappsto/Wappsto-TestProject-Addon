@@ -1,8 +1,9 @@
 package actions;
 
+import actions.wapps.*;
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.wapps.WappService;
+import wappsto.rest.wapps.RestWappService;
 import wappsto.rest.session.RestUser;
 import java.util.concurrent.ExecutionException;
 
@@ -24,7 +25,7 @@ public class InstallWappTest {
     public class fails_to_install {
         @Test
         public void invalid_wapp_name() throws Exception {
-            String sessionId = createNewSession().id;
+            String sessionId = createNewSession().getId();
             InstallWapp action = createNewAction(
                 env().get(API_ROOT),
                 ""
@@ -60,10 +61,10 @@ public class InstallWappTest {
             ).withCredentials(defaultUser())
                 .create();
 
-            logInBrowser(session.id, env().get(APP_URL));
+            logInBrowser(session.getId(), env().get(APP_URL));
             runner().run(action);
 
-            WappService wapp = new WappService(session);
+            RestWappService wapp = new RestWappService(session);
             assert wapp.fetchInstalled().size() == 1
                 : "Incorrect number of wapps";
         }

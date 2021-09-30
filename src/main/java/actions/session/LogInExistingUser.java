@@ -1,4 +1,4 @@
-package actions;
+package actions.session;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.WebAction;
@@ -7,7 +7,6 @@ import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
 import wappsto.session.model.Credentials;
-import wappsto.rest.session.RestUser;
 
 import static actions.Utils.*;
 
@@ -32,26 +31,17 @@ public class LogInExistingUser implements WebAction {
     ) throws FailureException {
         WebDriver browser = helper.getDriver();
 
-        RestUser session;
+        String sessionId;
         try {
-            session = createNewUserSession();
+            sessionId = new LogInExistingUserController(
+                new Credentials(username, password),
+                serviceUrl
+            ).execute();
         } catch (Exception e) {
             throw new FailureException("Error logging in: " + e.getMessage());
         }
         browser.navigate().to(appUrl);
-        logIn(browser, session.id);
+        logIn(browser, sessionId);
         return ExecutionResult.PASSED;
-    }
-
-    private RestUser createNewUserSession() throws Exception {
-        RestUser session;
-        session = new RestUser(
-            new Credentials(
-                username,
-                password
-            ),
-            serviceUrl
-        );
-        return session;
     }
 }

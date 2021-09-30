@@ -1,5 +1,6 @@
 package actions;
 
+import actions.session.*;
 import org.junit.jupiter.api.*;
 import util.Env;
 import wappsto.rest.request.exceptions.HttpException;
@@ -41,7 +42,7 @@ public class DeleteUserTest {
             defaultUser().username,
             env().get(Env.ADMIN_USERNAME),
             env().get(Env.ADMIN_PASSWORD)
-            );
+        );
 
         runner().run(action);
 

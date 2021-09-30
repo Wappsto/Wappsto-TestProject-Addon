@@ -2,7 +2,7 @@ package rest;
 
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.Admin;
+import wappsto.rest.session.RestAdmin;
 import wappsto.session.model.AdminCredentials;
 import wappsto.session.model.Credentials;
 
@@ -18,7 +18,7 @@ public class AdminSessionTest {
     public class fails_to_create {
         @Test
         public void with_invalid_admin_credentials() {
-            assertThrows(HttpException.class, () -> new Admin(
+            assertThrows(HttpException.class, () -> new RestAdmin(
                 new AdminCredentials(null, null),
                 env().get(API_ROOT)
             ));
@@ -27,7 +27,7 @@ public class AdminSessionTest {
 
     @Test
     public void creates_a_new_session() throws Exception {
-        assertNotNull(admin().id);
+        assertNotNull(admin().getId());
     }
 
     @Test

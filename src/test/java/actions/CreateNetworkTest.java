@@ -1,5 +1,6 @@
 package actions;
 
+import actions.network.*;
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
@@ -27,7 +28,7 @@ public class CreateNetworkTest {
     public void reset() throws Exception {
         resetRunner();
         session = createNewUserSession(serviceUrl);
-        logInBrowser(session.id, appUrl);
+        logInBrowser(session.getId(), appUrl);
     }
 
     @Test

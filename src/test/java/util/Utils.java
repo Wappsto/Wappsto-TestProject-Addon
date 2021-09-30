@@ -4,7 +4,7 @@ import io.testproject.java.enums.AutomatedBrowserType;
 import io.testproject.java.sdk.v2.Runner;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.session.Admin;
+import wappsto.rest.session.RestAdmin;
 import wappsto.rest.session.RestUser;
 import wappsto.session.model.AdminCredentials;
 import wappsto.session.model.Credentials;
@@ -13,7 +13,7 @@ import static util.Env.*;
 
 
 public class Utils {
-    private static Admin admin;
+    private static RestAdmin admin;
     private static Runner runner;
 
     public static Credentials defaultUser() {
@@ -23,9 +23,9 @@ public class Utils {
         );
     }
 
-    public static Admin admin() throws Exception {
+    public static RestAdmin admin() throws Exception {
         if (admin == null) {
-            admin = new Admin(
+            admin = new RestAdmin(
                 new AdminCredentials(
                     env().get(Env.ADMIN_USERNAME),
                     env().get(Env.ADMIN_PASSWORD)

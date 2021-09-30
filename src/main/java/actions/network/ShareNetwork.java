@@ -1,4 +1,4 @@
-package actions;
+package actions.network;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
@@ -36,12 +36,13 @@ public class ShareNetwork implements WebAction {
                 "Browser not logged in: " + e.getMessage()
             );
         }
-
-        RestUser self;
         try {
-            self = new RestUser(sessionId, serviceUrl);
-            NetworkService service = new NetworkService(self);
-            service.share(network, other);
+            new ShareNetworkController(
+                sessionId,
+                serviceUrl,
+                network,
+                other
+            ).execute();
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to share network: " + e.getMessage()

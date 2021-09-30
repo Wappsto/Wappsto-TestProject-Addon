@@ -1,4 +1,4 @@
-package actions;
+package actions.iot;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.enums.*;
@@ -69,7 +69,8 @@ public class RunSimpleRPCClient implements WebAction {
             Integer.parseInt(max),
             Integer.parseInt(stepSize),
             type,
-            port, socketUrl
+            port,
+            socketUrl
         );
 
         reportState = network.getReportState(0).toString();

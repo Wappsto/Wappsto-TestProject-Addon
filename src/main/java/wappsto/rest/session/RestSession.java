@@ -3,12 +3,13 @@ package wappsto.rest.session;
 import org.glassfish.jersey.client.*;
 import wappsto.rest.request.Request;
 import wappsto.rest.request.*;
+import wappsto.session.*;
 import wappsto.session.model.*;
 
 import javax.ws.rs.client.*;
 
-public abstract class Session implements wappsto.session.Session {
-    public final String id;
+public abstract class RestSession implements Session {
+    protected final String id;
     protected Client client;
     public final WebTarget service;
 
@@ -18,7 +19,7 @@ public abstract class Session implements wappsto.session.Session {
      * @param serviceUrl    URL to the API
      * @throws Exception
      */
-    public Session(Credentials credentials, String serviceUrl) throws Exception {
+    public RestSession(Credentials credentials, String serviceUrl) throws Exception {
         createClient(serviceUrl);
         service = client.target(serviceUrl);
 
@@ -34,7 +35,7 @@ public abstract class Session implements wappsto.session.Session {
      * @param id            Session ID
      * @param serviceUrl    URL to the API
      */
-    public Session(String id, String serviceUrl) {
+    public RestSession(String id, String serviceUrl) {
         createClient(serviceUrl);
         service = client.target(serviceUrl);
         this.id = id;

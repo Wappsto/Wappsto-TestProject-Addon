@@ -1,4 +1,4 @@
-package actions;
+package actions.session;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
@@ -6,8 +6,6 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import wappsto.session.model.*;
-
-import static actions.Utils.registerNewUser;
 
 @Action(name = "Create new user")
 public class CreateNewUser extends ActionWithAdminSession implements WebAction {
@@ -29,7 +27,15 @@ public class CreateNewUser extends ActionWithAdminSession implements WebAction {
             username,
             password
         );
-        registerNewUser(adminCredentials, userCredentials, serviceUrl);
+
+        try {
+            new CreateNewUserController(adminCredentials, userCredentials, serviceUrl).execute();
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to register user: " + e.getMessage()
+            );
+        }
+
         return ExecutionResult.PASSED;
     }
 }

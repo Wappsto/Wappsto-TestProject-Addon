@@ -1,5 +1,6 @@
 package actions;
 
+import actions.session.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

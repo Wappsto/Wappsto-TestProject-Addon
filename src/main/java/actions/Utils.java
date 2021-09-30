@@ -44,7 +44,7 @@ public class Utils {
         } catch (Exception e) {
             throw new FailureException("Unknown error: " + e.getMessage());
         }
-        NetworkService service = new NetworkService(session);
+        RestNetworkService service = new RestNetworkService(session);
         CreatorResponse creator;
         try {
             creator = service.getCreator();
@@ -99,34 +99,5 @@ public class Utils {
             );
         }
         return network;
-    }
-
-    public static RestUser registerNewUser(
-        AdminCredentials adminCredentials,
-        Credentials userCredentials,
-        String serviceUrl
-    ) throws FailureException
-    {
-        Admin admin;
-        try {
-            admin = new Admin(adminCredentials, serviceUrl);
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to create admin session: " + e.getMessage()
-            );
-        }
-
-        RestUser session;
-        try {
-            session = new RestUser.Builder(admin, serviceUrl)
-                .withCredentials(userCredentials)
-                .create();
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to register user: " + e.getMessage()
-            );
-        }
-
-        return session;
     }
 }

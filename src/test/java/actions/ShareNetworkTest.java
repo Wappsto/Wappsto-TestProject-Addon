@@ -1,5 +1,6 @@
 package actions;
 
+import actions.network.*;
 import org.junit.jupiter.api.*;
 import wappsto.rest.network.*;
 import wappsto.rest.request.exceptions.*;
@@ -39,7 +40,7 @@ public class ShareNetworkTest {
         friend = new RestUser.Builder(admin(), serviceUrl)
             .withCredentials(new Credentials(friendUsername, "123"))
             .create();
-        logInBrowser(user.id, appUrl);
+        logInBrowser(user.getId(), appUrl);
     }
 
     @Nested
@@ -55,7 +56,7 @@ public class ShareNetworkTest {
 
         @Test
         public void when_browser_is_not_logged_in() throws Exception {
-            NetworkService service = new NetworkService(user);
+            RestNetworkService service = new RestNetworkService(user);
             String network = service.create().id;
             ShareNetwork action = createNewAction(
                 serviceUrl,
@@ -73,8 +74,8 @@ public class ShareNetworkTest {
 
     @Test
     public void shares_network_with_other_user() throws Exception {
-        NetworkService selfService = new NetworkService(user);
-        NetworkService friendService = new NetworkService(friend);
+        RestNetworkService selfService = new RestNetworkService(user);
+        RestNetworkService friendService = new RestNetworkService(friend);
 
         String network = selfService.create().id;
         ShareNetwork action = createNewAction(

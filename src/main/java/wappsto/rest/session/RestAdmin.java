@@ -1,9 +1,10 @@
 package wappsto.rest.session;
 
 import wappsto.rest.request.*;
+import wappsto.session.*;
 import wappsto.session.model.*;
 
-public class Admin extends Session implements wappsto.session.Admin {
+public class RestAdmin extends RestSession implements Admin {
 
     /**
      * An API session with admin privileges
@@ -14,7 +15,7 @@ public class Admin extends Session implements wappsto.session.Admin {
      *                      URL are invalid
      */
 
-    public Admin(
+    public RestAdmin(
         AdminCredentials credentials,
         String serviceUrl
     ) throws Exception {
@@ -47,5 +48,10 @@ public class Admin extends Session implements wappsto.session.Admin {
             .atEndPoint(API.REGISTER)
             .atEndPoint(username)
             .delete(id);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

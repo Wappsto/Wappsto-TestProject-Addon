@@ -1,5 +1,6 @@
 package actions;
 
+import actions.network.*;
 import org.junit.jupiter.api.*;
 import wappsto.rest.network.*;
 import wappsto.network.model.*;
@@ -41,12 +42,12 @@ public class ClaimNetworkTest {
 
     @Test
     public void claims_network() throws Exception {
-        NetworkService service = new NetworkService(session);
+        RestNetworkService service = new RestNetworkService(session);
         NetworkMeta network = service.create();
 
-        service.share(network, friend.fetchUser());
+        service.share(network, friend.fetchMe());
 
-        logInBrowser(friend.id, appUrl);
+        logInBrowser(friend.getId(), appUrl);
 
         ClaimNetwork action = createAction(
             network.id
@@ -71,14 +72,14 @@ public class ClaimNetworkTest {
 
         @Test
         public void when_network_has_not_been_shared() throws Exception {
-            NetworkService service = new NetworkService(session);
+            RestNetworkService service = new RestNetworkService(session);
             NetworkMeta network = service.create();
 
             ClaimNetwork action = createAction(
                 network.id
             );
 
-            logInBrowser(friend.id, appUrl);
+            logInBrowser(friend.getId(), appUrl);
 
             assertThrows(
                 ExecutionException.class,

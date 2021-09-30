@@ -10,14 +10,14 @@ import java.util.*;
 /**
  * Manages Wapps on a user
  */
-public class WappService implements wappsto.wapps.WappService {
-    private final Session session;
+public class RestWappService implements wappsto.wapps.WappService {
+    private final RestSession session;
 
     /**
      * Instantiate the Wapp service with a user session
      * @param session user session
      */
-    public WappService(Session session) {
+    public RestWappService(RestSession session) {
         this.session = session;
     }
 
@@ -34,7 +34,7 @@ public class WappService implements wappsto.wapps.WappService {
         new Request.Builder(session.service)
             .atEndPoint(API.INSTALLATION)
             .withBody(install)
-            .post(session.id);
+            .post(session.getId());
     }
 
 
@@ -48,7 +48,7 @@ public class WappService implements wappsto.wapps.WappService {
     public Collection<String> fetchInstalled() throws Exception {
         return ((WappsResponse) new Request.Builder(session.service)
             .atEndPoint(API.INSTALLATION)
-            .get(session.id, WappsResponse.class)).id;
+            .get(session.getId(), WappsResponse.class)).id;
 
     }
 

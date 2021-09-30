@@ -1,5 +1,6 @@
 package actions;
 
+import actions.session.*;
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.*;
 

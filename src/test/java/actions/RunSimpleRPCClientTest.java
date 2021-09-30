@@ -1,5 +1,6 @@
 package actions;
 
+import actions.iot.*;
 import io.testproject.java.execution.results.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
@@ -35,7 +36,7 @@ public class RunSimpleRPCClientTest {
     public void reset() throws Exception {
         resetRunner();
         session = createNewUserSession(serviceUrl);
-        logInBrowser(session.id, appUrl);
+        logInBrowser(session.getId(), appUrl);
     }
 
     @Nested

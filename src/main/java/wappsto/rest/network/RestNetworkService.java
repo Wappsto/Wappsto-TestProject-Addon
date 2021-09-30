@@ -7,10 +7,10 @@ import wappsto.session.model.*;
 
 import java.util.*;
 
-public class NetworkService implements wappsto.network.NetworkService {
-    private Session session;
+public class RestNetworkService implements wappsto.network.NetworkService {
+    private RestSession session;
 
-    public NetworkService(Session session) {
+    public RestNetworkService(RestSession session) {
         this.session = session;
     }
 
@@ -26,7 +26,7 @@ public class NetworkService implements wappsto.network.NetworkService {
             .atEndPoint(API.NETWORK)
             .atEndPoint(id)
             .withBody("{}")
-            .post(session.id);
+            .post(session.getId());
     }
 
     /**
@@ -40,7 +40,7 @@ public class NetworkService implements wappsto.network.NetworkService {
             .atEndPoint(API.V2_1)
             .atEndPoint(API.CREATOR)
             .withBody("{}")
-            .post(session.id, CreatorResponse.class));
+            .post(session.getId(), CreatorResponse.class));
         claim(response.network.id);
         return response;
     }
@@ -56,7 +56,7 @@ public class NetworkService implements wappsto.network.NetworkService {
             .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
             .withBody("{}")
-            .post(session.id, NetworkResponse.class))
+            .post(session.getId(), NetworkResponse.class))
             .meta;
     }
 
@@ -72,7 +72,7 @@ public class NetworkService implements wappsto.network.NetworkService {
             .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
             .atEndPoint(id)
-            .get(session.id, NetworkResponse.class)))
+            .get(session.getId(), NetworkResponse.class)))
             .meta;
     }
 
@@ -105,7 +105,7 @@ public class NetworkService implements wappsto.network.NetworkService {
             .atEndPoint(networkId)
             .atEndPoint("permission")
             .withBody(request)
-            .post(session.id);
+            .post(session.getId());
     }
 
     /**
@@ -121,7 +121,7 @@ public class NetworkService implements wappsto.network.NetworkService {
             .atEndPoint(API.STATE)
             .atEndPoint(id.toString())
             .withBody(new UpdateStateRequest(data))
-            .patch(session.id);
+            .patch(session.getId());
     }
 
     /**
@@ -137,7 +137,7 @@ public class NetworkService implements wappsto.network.NetworkService {
             .atEndPoint(API.V2_0)
             .atEndPoint(API.STATE)
             .atEndPoint(id.toString())
-            .get(session.id, StateResponse.class))
+            .get(session.getId(), StateResponse.class))
             .data;
 
 

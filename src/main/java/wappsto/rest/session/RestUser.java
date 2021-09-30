@@ -4,7 +4,7 @@ import wappsto.rest.request.*;
 import wappsto.session.model.*;
 import wappsto.session.*;
 
-public class RestUser extends  Session implements wappsto.session.User {
+public class RestUser extends RestSession implements User {
 
     /**
      * Create an API session with regular user privileges
@@ -28,7 +28,7 @@ public class RestUser extends  Session implements wappsto.session.User {
     public RestUser(String id, String serviceUrl) throws Exception {
         super(id, serviceUrl);
         //Ensure the session token is valid
-        fetchUser();
+        fetchMe();
     }
 
     /**
@@ -37,7 +37,7 @@ public class RestUser extends  Session implements wappsto.session.User {
      * @throws Exception
      */
     @Override
-    public UserResponse fetchUser() throws Exception{
+    public UserResponse fetchMe() throws Exception{
         return (UserResponse) new Request.Builder(service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.USER)
@@ -45,8 +45,17 @@ public class RestUser extends  Session implements wappsto.session.User {
             .get(id, UserResponse.class);
     }
 
+    /**
+     *
+     * @return session id
+     */
+    @Override
+    public String getId() {
+        return id;
+    }
+
     public static class Builder implements UserBuilder {
-        private final Admin admin;
+        private final RestAdmin admin;
         private final String serviceUrl;
         private Credentials credentials;
 
@@ -55,7 +64,7 @@ public class RestUser extends  Session implements wappsto.session.User {
          * @param admin Admin session
          * @param serviceUrl API URL
          */
-        public Builder(Admin admin, String serviceUrl) {
+        public Builder(RestAdmin admin, String serviceUrl) {
             this.admin = admin;
             this.serviceUrl = serviceUrl;
         }

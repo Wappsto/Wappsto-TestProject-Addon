@@ -1,4 +1,4 @@
-package actions;
+package actions.session;
 
 import io.testproject.java.annotations.v2.Parameter;
 

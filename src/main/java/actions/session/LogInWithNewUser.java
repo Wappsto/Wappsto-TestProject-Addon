@@ -1,4 +1,4 @@
-package actions;
+package actions.session;
 
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.WebAction;
@@ -6,7 +6,6 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.*;
-import wappsto.rest.session.RestUser;
 import wappsto.session.model.AdminCredentials;
 import wappsto.session.model.Credentials;
 
@@ -43,14 +42,21 @@ public class LogInWithNewUser
             password
         );
 
-        RestUser session = registerNewUser(
-            adminCredentials,
-            userCredentials,
-            serviceUrl
-        );
+        String sessionId;
+        try {
+            sessionId = new CreateNewUserController(
+                adminCredentials,
+                userCredentials,
+                serviceUrl
+            ).execute();
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to register user: " + e.getMessage()
+            );
+        }
 
         browser.get(appUrl);
-        logIn(browser, session.id);
+        logIn(browser, sessionId);
         return ExecutionResult.PASSED;
     }
 }

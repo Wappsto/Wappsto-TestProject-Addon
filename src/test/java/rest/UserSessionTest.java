@@ -24,7 +24,7 @@ public class UserSessionTest {
     @Test
     public void creates_new_user_session() throws Exception {
         RestUser session = createNewUserSession(serviceUrl);
-        assertNotNull(session.id);
+        assertNotNull(session.getId());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class UserSessionTest {
 
         assertEquals(
             defaultUser().username,
-            session.fetchUser().username
+            session.fetchMe().username
         );
     }
 
