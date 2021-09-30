@@ -26,5 +26,7 @@ TESTPROJECT_DEV_TOKEN : <testproject.io_dev_token>
 WAPPSTO_API_ROOT : <wappsto_api_url>
 WAPPSTO_APP_URL : <wappsto_dashboard_url>
 WAPPSTO_ADMIN_PANEL_URL : <admin_panel_url>
+WAPPSTO_SOCKET_URL : <ssl_socket_address>
+WAPPSTO_SOCKET_PORT : <ssl_socket_port>
 ```
 
