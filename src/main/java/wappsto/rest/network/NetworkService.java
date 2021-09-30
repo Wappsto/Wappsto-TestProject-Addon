@@ -34,12 +34,11 @@ public class NetworkService {
      * @throws Exception
      */
     public CreatorResponse getCreator() throws Exception {
-        CreatorResponse response = new Request.Builder(session.service)
+        CreatorResponse response = ((CreatorResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_1)
             .atEndPoint(API.CREATOR)
             .withBody("{}")
-            .post(session.id)
-            .readEntity(CreatorResponse.class);
+            .post(session.id, CreatorResponse.class));
         claim(response.network.id);
         return response;
     }
@@ -50,12 +49,11 @@ public class NetworkService {
      * @throws Exception
      */
     public NetworkMeta create() throws Exception {
-        return new Request.Builder(session.service)
+        return ((NetworkResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
             .withBody("{}")
-            .post(session.id)
-            .readEntity(NetworkResponse.class)
+            .post(session.id, NetworkResponse.class))
             .meta;
     }
 
@@ -66,12 +64,11 @@ public class NetworkService {
      * @throws Exception
      */
     public NetworkMeta fetch(String id) throws Exception {
-        return new Request.Builder(session.service)
+        return ((NetworkResponse) (new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
             .atEndPoint(id)
-            .get(session.id)
-            .readEntity(NetworkResponse.class)
+            .get(session.id, NetworkResponse.class)))
             .meta;
     }
 
@@ -128,11 +125,14 @@ public class NetworkService {
      * @throws Exception
      */
     public String getState(UUID id) throws Exception {
-        return new Request.Builder(session.service)
+        return ((StateResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.STATE)
             .atEndPoint(id.toString())
-            .get(session.id)
-            .readEntity(StateResponse.class).data;
+            .get(session.id, StateResponse.class))
+            .data;
+
+
+
     }
 }

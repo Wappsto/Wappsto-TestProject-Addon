@@ -23,12 +23,11 @@ public abstract class Session {
         createClient(serviceUrl);
         service = client.target(serviceUrl);
 
-        id = new Request.Builder(service)
+        id = ((SessionResponse) new Request.Builder(service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.SESSION)
             .withBody(credentials)
-            .post()
-            .readEntity(SessionResponse.class).sessionMeta.id;
+            .post(SessionResponse.class)).sessionMeta.id;
     }
 
     /**
@@ -55,12 +54,10 @@ public abstract class Session {
      * @throws Exception
      */
     public UserResponse fetchUser(String username) throws Exception {
-        Response response = new Request.Builder(service)
+        return (UserResponse) new Request.Builder(service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.USER)
             .atEndPoint(username)
-            .get(id);
-        return response
-            .readEntity(UserResponse.class);
+            .get(id, UserResponse.class);
     }
 }

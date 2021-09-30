@@ -36,12 +36,11 @@ public class User extends  Session{
      * @throws Exception
      */
     public UserResponse fetchUser() throws Exception{
-        return new Request.Builder(service)
+        return (UserResponse) new Request.Builder(service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.USER)
             .atEndPoint("me")
-            .get(id)
-            .readEntity(UserResponse.class);
+            .get(id, UserResponse.class);
     }
 
     public static class Builder {

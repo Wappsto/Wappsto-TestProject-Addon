@@ -45,11 +45,10 @@ public class WappService {
      * @throws Exception
      */
     public Collection<String> fetchInstalled() throws Exception {
-        Response response = new Request.Builder(session.service)
+        return ((WappsResponse) new Request.Builder(session.service)
             .atEndPoint(API.INSTALLATION)
-            .get(session.id);
+            .get(session.id, WappsResponse.class)).id;
 
-        return response.readEntity(WappsResponse.class).id;
     }
 
     /**
@@ -58,10 +57,9 @@ public class WappService {
      * @throws Exception
      */
     public Collection<Wapp> fetchAllFromStore() throws Exception {
-        return new Request.Builder(session.service)
+        return ((MarketResponse) new Request.Builder(session.service)
             .atEndPoint(API.MARKET)
-            .get()
-            .readEntity(MarketResponse.class)
+            .get(MarketResponse.class))
             .wapps;
     }
 
