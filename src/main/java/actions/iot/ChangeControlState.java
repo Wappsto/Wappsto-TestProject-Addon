@@ -6,6 +6,7 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
+import wappsto.network.*;
 import wappsto.rest.network.*;
 import wappsto.rest.session.*;
 
@@ -34,7 +35,7 @@ public class ChangeControlState implements WebAction {
             throw new FailureException("Browser not logged in");
         }
         try {
-            new ChangeControlStateController(
+            new Controller(
                 sessionId,
                 serviceUrl,
                 controlState,
@@ -45,5 +46,40 @@ public class ChangeControlState implements WebAction {
         }
 
         return ExecutionResult.PASSED;
+    }
+
+    public static class Controller {
+        private final NetworkService service;
+        private final String controlState;
+        private final String value;
+
+        public Controller(
+            String sessionId,
+            String target,
+            String controlState,
+            String value
+        )
+            throws Exception
+        {
+            this(
+                new RestNetworkService(new RestUser(sessionId, target)),
+                controlState,
+                value
+            );
+        }
+
+        public Controller(
+            NetworkService service,
+            String controlState,
+            String value
+        ) {
+            this.service = service;
+            this.controlState = controlState;
+            this.value = value;
+        }
+
+        public void execute() throws Exception {
+            service.updateState(UUID.fromString(controlState), value);
+        }
     }
 }
