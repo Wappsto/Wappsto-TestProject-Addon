@@ -6,6 +6,7 @@ import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
+
 import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,7 +75,7 @@ public class RunSimpleRPCClientTest {
             RunSimpleRPCClient action = createAction(
                 serviceUrl,
                 socketUrl,
-                "8080",
+                "11006",
                 min,
                 max,
                 stepSize,
@@ -107,7 +108,11 @@ public class RunSimpleRPCClientTest {
         String serviceUrl,
         String socketUrl,
         String socketPort,
-        String min, String max, String stepSize, String type) {
+        String min,
+        String max,
+        String stepSize,
+        String type
+    ) {
         RunSimpleRPCClient action =
             new RunSimpleRPCClient();
 
@@ -118,6 +123,7 @@ public class RunSimpleRPCClientTest {
         action.max = max;
         action.stepSize = stepSize;
         action.type = type;
+        action.name = "Test";
         return action;
     }
 

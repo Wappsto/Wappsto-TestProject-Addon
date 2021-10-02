@@ -52,8 +52,7 @@ public class ValueSchema {
             int stepSize,
             String type
         ) {
-            this.numberSchema = new NumberSchema(min, max, stepSize, type);
-            return this;
+            return withNumberSchema(new NumberSchema(min, max, stepSize, type));
         }
 
         public DeviceSchema.Builder addToDevice() {
@@ -63,6 +62,11 @@ public class ValueSchema {
 
             device.add(new ValueSchema(name, permission, numberSchema));
             return device;
+        }
+
+        public Builder withNumberSchema(NumberSchema numbers) {
+            this.numberSchema = numbers;
+            return this;
         }
     }
 }
