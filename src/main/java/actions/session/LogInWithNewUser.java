@@ -48,7 +48,6 @@ public class LogInWithNewUser
             serviceUrl
         ).execute();
 
-
         browser.get(appUrl);
         logIn(browser, sessionId);
         return ExecutionResult.PASSED;
