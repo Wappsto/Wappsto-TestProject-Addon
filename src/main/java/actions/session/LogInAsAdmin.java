@@ -1,5 +1,6 @@
 package actions.session;
 
+import actions.*;
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.WebAction;
 import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
@@ -9,6 +10,8 @@ import org.openqa.selenium.*;
 import wappsto.session.*;
 import wappsto.session.model.AdminCredentials;
 import wappsto.rest.session.RestAdmin;
+
+import static actions.Utils.createRestAdminSession;
 
 @Action(name = "Log in as admin")
 public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
@@ -21,18 +24,14 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
         WebAddonHelper helper
     ) throws FailureException {
 
-        String sessionId;
-        try {
-            sessionId = new Controller(
-                new AdminCredentials(
-                    adminUsername,
-                    adminPassword
-                ),
-                serviceUrl
-            ).execute();
-        } catch (Exception e) {
-            throw new FailureException("Admin login failed: " + e.getMessage());
-        }
+        String sessionId = new Controller(
+            new AdminCredentials(
+                adminUsername,
+                adminPassword
+            ),
+            serviceUrl
+        ).execute();
+
 
         WebDriver browser = helper.getDriver();
         browser.navigate().to(adminPanel);
@@ -55,9 +54,9 @@ public class LogInAsAdmin extends ActionWithAdminSession implements WebAction {
         private final Admin admin;
 
         public Controller(AdminCredentials credentials, String target)
-            throws Exception
+            throws FailureException
         {
-            this(new RestAdmin(credentials, target));
+            this(createRestAdminSession(credentials, target));
         }
 
         public Controller(Admin admin) {

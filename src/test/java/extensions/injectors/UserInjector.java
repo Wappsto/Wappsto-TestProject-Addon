@@ -2,16 +2,14 @@ package extensions.injectors;
 
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.network.*;
-import wappsto.rest.network.*;
 import wappsto.rest.session.*;
+import wappsto.session.*;
 
-import static util.Env.*;
-import static util.Utils.createNewAdmin;
-import static util.Utils.createNewUserSession;
+import static util.Env.API_ROOT;
+import static util.Env.env;
+import static util.Utils.*;
 
-public class NetworkServiceInjector implements ParameterResolver {
-
+public class UserInjector implements ParameterResolver {
     @Override
     public boolean supportsParameter(
         ParameterContext parameterContext,
@@ -19,10 +17,7 @@ public class NetworkServiceInjector implements ParameterResolver {
     )
         throws ParameterResolutionException
     {
-        return parameterContext
-            .getParameter()
-            .getType()
-            .equals(NetworkService.class);
+        return parameterContext.getParameter().getType().equals(User.class);
     }
 
     @Override
@@ -33,15 +28,10 @@ public class NetworkServiceInjector implements ParameterResolver {
         throws ParameterResolutionException
     {
         if (extensionContext.getTags().contains("unit")) {
-            return new InMemoryNetworkService();
+            return new InMemoryUser(defaultUser(), "ignore");
         } else {
             RestAdmin admin = createNewAdmin();
-            RestUser session = createNewUserSession(
-                env().get(API_ROOT),
-                admin
-            );
-            return new RestNetworkService(session);
-
+            return createNewUserSession(env().get(API_ROOT), admin);
         }
     }
 }

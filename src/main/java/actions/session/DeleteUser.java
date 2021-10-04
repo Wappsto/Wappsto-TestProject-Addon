@@ -9,6 +9,9 @@ import wappsto.session.*;
 import wappsto.session.model.AdminCredentials;
 import wappsto.rest.session.RestAdmin;
 
+import static actions.Utils.createRestAdminSession;
+import static actions.Utils.createRestSession;
+
 @Action(name = "Delete user")
 public class DeleteUser extends ActionWithAdminSession implements WebAction {
 
@@ -17,29 +20,25 @@ public class DeleteUser extends ActionWithAdminSession implements WebAction {
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
-        try {
-            new Controller(
-                new AdminCredentials(adminUsername, adminPassword),
-                serviceUrl,
-                username
-            ).execute();
-        } catch (Exception e) {
-            throw new FailureException("Failed to delete: " + e.getMessage());
-        }
+        new Controller(
+            new AdminCredentials(adminUsername, adminPassword),
+            serviceUrl,
+            username
+        ).execute();
         return ExecutionResult.PASSED;
     }
 
     public static class Controller {
-        private Admin admin;
-        private String username;
+        private final Admin admin;
+        private final String username;
 
         public Controller(
             AdminCredentials credentials,
             String target,
             String username
-        ) throws Exception
+        ) throws FailureException
         {
-            this(new RestAdmin(credentials, target), username);
+            this(createRestAdminSession(credentials, target), username);
         }
 
         public Controller(Admin admin, String username) {
@@ -47,8 +46,14 @@ public class DeleteUser extends ActionWithAdminSession implements WebAction {
             this.username = username;
         }
 
-        public void execute() throws Exception {
-            admin.delete(username);
+        public void execute() throws FailureException {
+            try {
+                admin.delete(username);
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to delete user: " + e.getMessage()
+                );
+            }
         }
     }
 }

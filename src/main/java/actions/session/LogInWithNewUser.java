@@ -42,18 +42,12 @@ public class LogInWithNewUser
             password
         );
 
-        String sessionId;
-        try {
-            sessionId = new CreateNewUserController(
-                adminCredentials,
-                userCredentials,
-                serviceUrl
-            ).execute();
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to register user: " + e.getMessage()
-            );
-        }
+        String sessionId = new CreateNewUserController(
+            adminCredentials,
+            userCredentials,
+            serviceUrl
+        ).execute();
+
 
         browser.get(appUrl);
         logIn(browser, sessionId);

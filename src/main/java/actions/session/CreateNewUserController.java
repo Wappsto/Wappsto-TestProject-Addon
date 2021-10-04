@@ -7,6 +7,8 @@ import wappsto.session.model.*;
 
 import java.lang.reflect.*;
 
+import static actions.Utils.createRestAdminSession;
+
 public class CreateNewUserController {
     private final User user;
 
@@ -22,21 +24,6 @@ public class CreateNewUserController {
             RestUser.class,
             userCredentials,
             target);
-    }
-
-    private static RestAdmin createRestAdminSession(
-        AdminCredentials adminCredentials,
-        String target
-    )
-        throws FailureException
-    {
-        try {
-            return new RestAdmin(adminCredentials, target);
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to create admin session: " + e.getMessage()
-            );
-        }
     }
 
     public CreateNewUserController(

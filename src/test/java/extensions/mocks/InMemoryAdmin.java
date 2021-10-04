@@ -23,6 +23,7 @@ public class InMemoryAdmin implements Admin {
 
     @Override
     public void delete(String username) throws Exception {
+        fetchUser(username);
         users.remove(username);
     }
 

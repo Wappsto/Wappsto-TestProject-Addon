@@ -57,6 +57,20 @@ public class Utils {
     }
 
     public static RestUser createRestSession(
+        Credentials credentials,
+        String target
+    )
+        throws FailureException
+    {
+        try {
+            return new RestUser(credentials, target);
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to create user session: " + e.getMessage()
+            );
+        }
+    }
+    public static RestUser createRestSession(
         String sessionId,
         String target
     )
@@ -67,6 +81,21 @@ public class Utils {
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to create user session: " + e.getMessage()
+            );
+        }
+    }
+
+    public static RestAdmin createRestAdminSession(
+        AdminCredentials adminCredentials,
+        String target
+    )
+        throws FailureException
+    {
+        try {
+            return new RestAdmin(adminCredentials, target);
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to create admin session: " + e.getMessage()
             );
         }
     }

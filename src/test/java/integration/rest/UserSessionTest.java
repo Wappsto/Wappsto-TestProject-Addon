@@ -11,13 +11,11 @@ import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(AdminInjector.class)
+@ExtendWith(UserInjector.class)
 public class UserSessionTest {
-    private static String serviceUrl;
 
     @BeforeAll
     public static void setup(Admin admin) {
-        serviceUrl = env().get(API_ROOT);
-
         try {
             admin.delete(defaultUser().username);
         } catch (Exception ignored) {
@@ -25,15 +23,12 @@ public class UserSessionTest {
     }
 
     @Test
-    public void creates_new_user_session(Admin admin) throws Exception {
-        RestUser session = createNewUserSession(serviceUrl, admin);
+    public void creates_new_user_session(User session) {
         assertNotNull(session.getId());
     }
 
     @Test
-    public void fetches_own_user(Admin admin) throws Exception {
-        RestUser session = createNewUserSession(serviceUrl, admin);
-
+    public void fetches_own_user(User session) throws Exception {
         assertEquals(
             defaultUser().username,
             session.fetchMe().username

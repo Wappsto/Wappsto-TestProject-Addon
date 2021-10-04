@@ -6,7 +6,6 @@ import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
-import wappsto.rest.session.*;
 import wappsto.session.*;
 import wappsto.session.model.Credentials;
 
@@ -33,33 +32,29 @@ public class LogInExistingUser implements WebAction {
     ) throws FailureException {
         WebDriver browser = helper.getDriver();
 
-        String sessionId;
-        try {
-            sessionId = new UserController(
-                new Credentials(username, password),
-                serviceUrl
-            ).execute();
-        } catch (Exception e) {
-            throw new FailureException("Error logging in: " + e.getMessage());
-        }
+        String sessionId = new Controller(
+            new Credentials(username, password),
+            serviceUrl
+        ).execute();
+
         browser.navigate().to(appUrl);
         logIn(browser, sessionId);
         return ExecutionResult.PASSED;
     }
 
-    public static class UserController {
-        private User user;
+    public static class Controller {
+        private final User user;
 
-        public UserController(
+        public Controller(
             Credentials credentials,
             String target
-        ) throws Exception {
+        ) throws FailureException {
             this(
-                new RestUser(credentials, target)
+                createRestSession(credentials, target)
             );
         }
 
-        public UserController(User user) {
+        public Controller(User user) {
             this.user = user;
         }
 

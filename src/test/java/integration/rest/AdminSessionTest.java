@@ -29,7 +29,7 @@ public class AdminSessionTest {
     }
 
     @Test
-    public void creates_a_new_session(Admin admin) throws Exception {
+    public void creates_a_new_session(Admin admin) {
         assertNotNull(admin.getId());
     }
 
@@ -87,8 +87,17 @@ public class AdminSessionTest {
 
     }
 
+    @BeforeAll
+    public static void setup(Admin admin) {
+        deleteUser(admin);
+    }
+
     @AfterEach
     public void tearDown(Admin admin) {
+        deleteUser(admin);
+    }
+
+    private static void deleteUser(Admin admin) {
         try {
             admin.delete(defaultUser().username);
         } catch (Exception ignored) {
