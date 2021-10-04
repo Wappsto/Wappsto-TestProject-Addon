@@ -1,12 +1,15 @@
-package actions;
+package acceptance;
 
 import actions.network.*;
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import wappsto.rest.network.*;
 import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
+import wappsto.rest.session.*;
+import wappsto.session.*;
 import wappsto.session.model.Credentials;
-import wappsto.rest.session.RestUser;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.Env.*;
 import static util.Utils.*;
 
+@ExtendWith(AdminInjector.class)
 public class ClaimNetworkTest {
     public static final String NETWORK_FRIEND = "networkfriend@seluxit.com";
     private static String serviceUrl;
@@ -22,22 +26,22 @@ public class ClaimNetworkTest {
     private RestUser friend;
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
         appUrl = env().get(APP_URL);
         try {
-            admin().delete(defaultUser().username);
-            admin().delete(NETWORK_FRIEND);
+            admin.delete(defaultUser().username);
+            admin.delete(NETWORK_FRIEND);
         } catch (HttpException ignore) {
         }
 
     }
 
     @BeforeEach
-    public void reset() throws Exception {
+    public void reset(Admin admin) throws Exception {
         resetRunner();
-        session = createNewUserSession(serviceUrl);
-        friend = makeAFriend();
+        session = createNewUserSession(serviceUrl, admin);
+        friend = makeAFriend(admin);
     }
 
     @Test
@@ -89,10 +93,10 @@ public class ClaimNetworkTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
-            admin().delete(NETWORK_FRIEND);
+            admin.delete(defaultUser().username);
+            admin.delete(NETWORK_FRIEND);
         } catch (HttpException ignored) {
         }
     }
@@ -104,8 +108,8 @@ public class ClaimNetworkTest {
         return action;
     }
 
-    private RestUser makeAFriend() throws Exception {
-        return new RestUser.Builder(admin(), serviceUrl)
+    private RestUser makeAFriend(Admin admin) throws Exception {
+        return new RestUser.Builder(admin, serviceUrl)
             .withCredentials(
                 new Credentials(NETWORK_FRIEND, "123")
             ).create();

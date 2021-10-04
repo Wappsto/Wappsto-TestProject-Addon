@@ -55,7 +55,7 @@ public class RestUser extends RestSession implements User {
     }
 
     public static class Builder implements UserBuilder {
-        private final RestAdmin admin;
+        private final Admin admin;
         private final String serviceUrl;
         private Credentials credentials;
 
@@ -64,7 +64,7 @@ public class RestUser extends RestSession implements User {
          * @param admin Admin session
          * @param serviceUrl API URL
          */
-        public Builder(RestAdmin admin, String serviceUrl) {
+        public Builder(Admin admin, String serviceUrl) {
             this.admin = admin;
             this.serviceUrl = serviceUrl;
         }

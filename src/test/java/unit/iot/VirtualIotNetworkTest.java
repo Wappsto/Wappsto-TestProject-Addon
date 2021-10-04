@@ -1,28 +1,20 @@
-package iot;
+package unit.iot;
 
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
-import wappsto.network.model.*;
-
 import java.util.*;
 
-import static iot.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(NetworkSchemaInjector.class)
 public class VirtualIotNetworkTest {
-    private static NetworkSchema schema;
     private IoTClientMock client;
 
-    @BeforeAll
-    public static void setup() {
-        CreatorResponse creatorMock = new CreatorResponse();
-        creatorMock.network = new NetworkMeta();
-        creatorMock.network.id = UUID.randomUUID().toString();
-        schema = defaultNetwork(creatorMock);
-    }
 
     @BeforeEach
     public void instantiateClient() {
@@ -32,14 +24,14 @@ public class VirtualIotNetworkTest {
     @Nested
     public class reports_its_state {
         @Test
-        public void on_startup() throws Exception {
+        public void on_startup(NetworkSchema schema) {
 
             VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
             assertTrue(client.state.contains(schema.meta.id.toString()));
         }
 
         @Test
-        public void on_state_change() {
+        public void on_state_change(NetworkSchema schema) {
             VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
 
             UUID state = schema.device.get(0)
@@ -54,7 +46,7 @@ public class VirtualIotNetworkTest {
         }
     }
 
-    private class IoTClientMock implements IoTClient {
+    private static class IoTClientMock implements IoTClient {
 
         public String state;
 

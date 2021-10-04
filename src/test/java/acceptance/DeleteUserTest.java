@@ -1,9 +1,12 @@
-package actions;
+package acceptance;
 
 import actions.session.*;
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import util.Env;
 import wappsto.rest.request.exceptions.HttpException;
+import wappsto.session.*;
 import wappsto.session.model.Credentials;
 
 import java.util.concurrent.ExecutionException;
@@ -12,15 +15,16 @@ import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(AdminInjector.class)
 public class DeleteUserTest {
     private static String serviceUrl;
 
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (HttpException ignored) {
         }
     }
@@ -31,8 +35,8 @@ public class DeleteUserTest {
     }
 
     @Test
-    public void deletes_user() throws Exception {
-        admin().register(new Credentials(
+    public void deletes_user(Admin admin) throws Exception {
+        admin.register(new Credentials(
             defaultUser().username,
             defaultUser().password
         ));
@@ -47,15 +51,15 @@ public class DeleteUserTest {
         runner().run(action);
 
         assertThrows(HttpException.class,
-            () -> admin().fetchUser(defaultUser().username),
+            () -> admin.fetchUser(defaultUser().username),
             "Not Found");
     }
 
     @Nested
     public class fails_to_delete_user {
         @Test
-        public void when_admin_login_is_invalid() throws Exception {
-            admin().register(defaultUser());
+        public void when_admin_login_is_invalid(Admin admin) throws Exception {
+            admin.register(defaultUser());
 
             DeleteUser action = createAction(
                 env().get(API_ROOT),
@@ -68,8 +72,8 @@ public class DeleteUserTest {
         }
 
         @Test
-        public void when_service_url_is_invalid() throws Exception {
-            admin().register(defaultUser());
+        public void when_service_url_is_invalid(Admin admin) throws Exception {
+            admin.register(defaultUser());
 
             DeleteUser action = createAction(
                 "invalid_root",
@@ -98,10 +102,10 @@ public class DeleteUserTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown(Admin admin) throws Exception {
         resetRunner();
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (Exception ignored) {
         }
     }

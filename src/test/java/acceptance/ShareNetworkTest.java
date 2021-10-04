@@ -1,10 +1,13 @@
-package actions;
+package acceptance;
 
 import actions.network.*;
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import wappsto.rest.network.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
+import wappsto.session.*;
 import wappsto.session.model.*;
 
 import java.util.concurrent.*;
@@ -13,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
+@ExtendWith(AdminInjector.class)
 public class ShareNetworkTest {
     private static String serviceUrl;
     private static String appUrl;
@@ -21,23 +25,23 @@ public class ShareNetworkTest {
     private static String friendUsername;
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
         appUrl = env().get(APP_URL);
         friendUsername = "friend123@seluxit.com";
         try {
-            admin().delete(defaultUser().username);
-            admin().delete(friendUsername);
+            admin.delete(defaultUser().username);
+            admin.delete(friendUsername);
         } catch (HttpException ignored) {
         }
     }
 
     @BeforeEach
-    public void reset() throws Exception {
+    public void reset(Admin admin) throws Exception {
         resetRunner();
 
-        user = createNewUserSession(serviceUrl);
-        friend = new RestUser.Builder(admin(), serviceUrl)
+        user = createNewUserSession(serviceUrl, admin);
+        friend = new RestUser.Builder(admin, serviceUrl)
             .withCredentials(new Credentials(friendUsername, "123"))
             .create();
         logInBrowser(user.getId(), appUrl);
@@ -102,10 +106,10 @@ public class ShareNetworkTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
-            admin().delete(friendUsername);
+            admin.delete(defaultUser().username);
+            admin.delete(friendUsername);
         } catch (HttpException ignored) {
         }
     }

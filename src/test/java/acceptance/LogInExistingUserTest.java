@@ -1,11 +1,16 @@
-package actions;
+package acceptance;
 
 import actions.session.*;
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import wappsto.rest.request.exceptions.HttpException;
+import wappsto.rest.session.*;
+import wappsto.session.*;
+
 import java.util.concurrent.ExecutionException;
 
 import static util.Env.*;
@@ -13,12 +18,13 @@ import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
+@ExtendWith(AdminInjector.class)
 public class LogInExistingUserTest {
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (HttpException ignored) {
         }
     }
@@ -29,8 +35,8 @@ public class LogInExistingUserTest {
     }
 
     @Test
-    public void logs_in_user() throws Exception {
-        admin().register(defaultUser());
+    public void logs_in_user(Admin admin) throws Exception {
+        admin.register(defaultUser());
 
         LogInExistingUser action = createAction(
             env().get(API_ROOT),
@@ -74,8 +80,8 @@ public class LogInExistingUserTest {
         }
 
         @Test
-        public void with_invalid_service_url() throws Exception {
-            admin().register(defaultUser());
+        public void with_invalid_service_url(Admin admin) throws Exception {
+            admin.register(defaultUser());
 
             LogInExistingUser action = createAction(
                 "123",
@@ -103,10 +109,7 @@ public class LogInExistingUserTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        try {
-            admin().delete(defaultUser().username);
-        } catch (HttpException ignored) {
-        }
+    public void tearDown(Admin admin) throws Exception {
+        setup(admin);
     }
 }

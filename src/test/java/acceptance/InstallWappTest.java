@@ -1,22 +1,27 @@
-package actions;
+package acceptance;
 
 import actions.wapps.*;
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import wappsto.rest.request.exceptions.HttpException;
+import wappsto.rest.session.*;
 import wappsto.rest.wapps.RestWappService;
-import wappsto.rest.session.RestUser;
+import wappsto.session.*;
+
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
+@ExtendWith(AdminInjector.class)
 public class InstallWappTest {
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (HttpException ignore) {
         }
     }
@@ -24,8 +29,8 @@ public class InstallWappTest {
     @Nested
     public class fails_to_install {
         @Test
-        public void invalid_wapp_name() throws Exception {
-            String sessionId = createNewSession().getId();
+        public void invalid_wapp_name(Admin admin) throws Exception {
+            String sessionId = createNewSession(admin).getId();
             InstallWapp action = createNewAction(
                 env().get(API_ROOT),
                 ""
@@ -50,16 +55,12 @@ public class InstallWappTest {
     @Nested
     public class when_browser_is_logged_in {
         @Test
-        public void installs_wapp_by_name() throws Exception {
+        public void installs_wapp_by_name(Admin admin) throws Exception {
             InstallWapp action = createNewAction(
                 env().get(API_ROOT),
                 "Historical Data"
             );
-            RestUser session = new RestUser.Builder(
-                admin(),
-                env().get(API_ROOT)
-            ).withCredentials(defaultUser())
-                .create();
+            RestUser session = createNewSession(admin);
 
             logInBrowser(session.getId(), env().get(APP_URL));
             runner().run(action);
@@ -70,9 +71,9 @@ public class InstallWappTest {
         }
     }
 
-    private RestUser createNewSession() throws Exception {
+    private RestUser createNewSession(Admin admin) throws Exception {
         return new RestUser.Builder(
-            admin(),
+            admin,
             env().get(API_ROOT)
         ).withCredentials(defaultUser())
             .create();
@@ -87,11 +88,8 @@ public class InstallWappTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        try {
-            admin().delete(defaultUser().username);
-        } catch (HttpException ignore) {
-        }
+    public void tearDown(Admin admin) throws Exception {
+        setup(admin);
         resetRunner();
     }
 }

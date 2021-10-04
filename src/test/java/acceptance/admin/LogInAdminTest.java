@@ -1,4 +1,4 @@
-package actions.admin;
+package acceptance.admin;
 
 import actions.session.LogInAsAdmin;
 import org.junit.jupiter.api.*;

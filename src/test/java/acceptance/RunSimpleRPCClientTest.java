@@ -1,11 +1,14 @@
-package actions;
+package acceptance;
 
 import actions.iot.*;
+import extensions.*;
 import io.testproject.java.execution.results.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
+import wappsto.session.*;
 
 import java.util.concurrent.*;
 
@@ -13,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
+
+@ExtendWith(AdminInjector.class)
 public class RunSimpleRPCClientTest {
     private static String serviceUrl;
     private static String appUrl;
@@ -25,18 +30,18 @@ public class RunSimpleRPCClientTest {
     private static final String type = "Boolean";
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
         appUrl = env().get(APP_URL);
         socketUrl = env().get(SOCKET_URL);
         socketPort = env().get(SOCKET_PORT);
-        resetUser();
+        resetUser(admin);
     }
 
     @BeforeEach
-    public void reset() throws Exception {
+    public void reset(Admin admin) throws Exception {
         resetRunner();
-        session = createNewUserSession(serviceUrl);
+        session = createNewUserSession(serviceUrl, admin);
         logInBrowser(session.getId(), appUrl);
     }
 
@@ -128,13 +133,13 @@ public class RunSimpleRPCClientTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        resetUser();
+    public void tearDown(Admin admin) throws Exception {
+        resetUser(admin);
     }
 
-    private static void resetUser() throws Exception {
+    private static void resetUser(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (HttpException ignored) {
         }
     }

@@ -1,4 +1,4 @@
-package iot;
+package unit.iot;
 
 import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;

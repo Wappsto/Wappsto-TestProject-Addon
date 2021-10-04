@@ -1,9 +1,12 @@
-package actions;
+package acceptance;
 
 import actions.network.*;
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
+import wappsto.session.*;
 
 import java.util.concurrent.*;
 
@@ -12,22 +15,23 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.Env.*;
 import static util.Utils.*;
 
+@ExtendWith(AdminInjector.class)
 public class CreateNetworkTest {
     private static String serviceUrl;
     private static String appUrl;
     private RestUser session;
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
         appUrl = env().get(APP_URL);
-        resetUser();
+        resetUser(admin);
     }
 
     @BeforeEach
-    public void reset() throws Exception {
+    public void reset(Admin admin) throws Exception {
         resetRunner();
-        session = createNewUserSession(serviceUrl);
+        session = createNewUserSession(serviceUrl, admin);
         logInBrowser(session.getId(), appUrl);
     }
 
@@ -46,8 +50,8 @@ public class CreateNetworkTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        resetUser();
+    public void tearDown(Admin admin) throws Exception {
+        resetUser(admin);
     }
 
     private CreateNetwork createNewAction(String serviceUrl) {
@@ -56,9 +60,9 @@ public class CreateNetworkTest {
         return action;
     }
 
-    private static void resetUser() throws Exception {
+    private static void resetUser(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (HttpException ignored) {
         }
     }

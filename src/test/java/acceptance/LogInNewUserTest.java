@@ -1,11 +1,15 @@
-package actions;
+package acceptance;
 
 import actions.session.*;
+import extensions.*;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.Env;
 import wappsto.rest.request.exceptions.HttpException;
+import wappsto.session.*;
+
 import java.util.concurrent.ExecutionException;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
@@ -13,12 +17,13 @@ import static util.Env.*;
 import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(AdminInjector.class)
 public class LogInNewUserTest {
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (HttpException ignored) {
         }
     }
@@ -125,9 +130,9 @@ public class LogInNewUserTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown(Admin admin) throws Exception {
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (HttpException ignored) {
         }
     }

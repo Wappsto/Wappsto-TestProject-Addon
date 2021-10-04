@@ -1,16 +1,20 @@
-package rest;
+package integration.rest;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
+import extensions.*;
 import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.network.RestNetworkService;
 import wappsto.rest.session.RestUser;
+import wappsto.session.*;
 import wappsto.session.model.Credentials;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
+@ExtendWith(AdminInjector.class)
 public class NetworkTest {
     public static final String NETWORK_FRIEND = "networkfriend@seluxit.com";
     private static String serviceUrl;
@@ -18,22 +22,22 @@ public class NetworkTest {
     private RestUser friend;
 
     @BeforeAll
-    public static void setup() throws Exception {
+    public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
 
         try {
-            admin().delete(defaultUser().username);
-            admin().delete(NETWORK_FRIEND);
+            admin.delete(defaultUser().username);
+            admin.delete(NETWORK_FRIEND);
         } catch (HttpException ignored) {
         }
     }
 
     @BeforeEach
-    public void registerUser() throws Exception {
+    public void registerUser(Admin admin) throws Exception {
         session = createNewUserSession(
-            serviceUrl
+            serviceUrl, admin
         );
-        friend = new RestUser.Builder(admin(), serviceUrl)
+        friend = new RestUser.Builder(admin, serviceUrl)
             .withCredentials(
                 new Credentials(
                     NETWORK_FRIEND,
@@ -105,10 +109,10 @@ public class NetworkTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown(Admin admin) {
         try {
-            admin().delete(defaultUser().username);
-            admin().delete(NETWORK_FRIEND);
+            admin.delete(defaultUser().username);
+            admin.delete(NETWORK_FRIEND);
         } catch (Exception ignored) {
         }
     }

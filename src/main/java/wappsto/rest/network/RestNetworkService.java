@@ -1,5 +1,6 @@
 package wappsto.rest.network;
 
+import wappsto.network.*;
 import wappsto.network.model.*;
 import wappsto.rest.request.*;
 import wappsto.rest.session.*;
@@ -7,8 +8,8 @@ import wappsto.session.model.*;
 
 import java.util.*;
 
-public class RestNetworkService implements wappsto.network.NetworkService {
-    private RestSession session;
+public class RestNetworkService implements NetworkService {
+    private final RestSession session;
 
     public RestNetworkService(RestSession session) {
         this.session = session;

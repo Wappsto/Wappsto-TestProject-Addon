@@ -6,6 +6,7 @@ import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import wappsto.rest.session.RestAdmin;
 import wappsto.rest.session.RestUser;
+import wappsto.session.*;
 import wappsto.session.model.AdminCredentials;
 import wappsto.session.model.Credentials;
 
@@ -22,22 +23,10 @@ public class Utils {
             "123"
         );
     }
-
-    public static RestAdmin admin() throws Exception {
-        if (admin == null) {
-            admin = new RestAdmin(
-                new AdminCredentials(
-                    env().get(Env.ADMIN_USERNAME),
-                    env().get(Env.ADMIN_PASSWORD)
-                ),
-                env().get(API_ROOT)
-            );
-        }
-        return admin;
-    }
-
-    public static RestUser createNewUserSession(String serviceUrl) throws Exception {
-        return new RestUser.Builder(admin(), serviceUrl)
+    public static RestUser createNewUserSession(String serviceUrl, Admin admin)
+        throws Exception
+    {
+        return new RestUser.Builder(admin, serviceUrl)
             .withCredentials(defaultUser())
             .create();
     }

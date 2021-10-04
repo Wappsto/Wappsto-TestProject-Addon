@@ -1,4 +1,4 @@
-package iot;
+package unit.iot;
 
 import org.junit.Ignore;
 import org.junit.jupiter.api.*;

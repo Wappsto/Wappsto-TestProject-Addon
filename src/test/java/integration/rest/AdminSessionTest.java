@@ -1,8 +1,11 @@
-package rest;
+package integration.rest;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.*;
+import extensions.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.RestAdmin;
+import wappsto.session.*;
 import wappsto.session.model.AdminCredentials;
 import wappsto.session.model.Credentials;
 
@@ -11,8 +14,8 @@ import static util.Env.API_ROOT;
 import static util.Env.env;
 import static util.Utils.*;
 
+@ExtendWith(AdminInjector.class)
 public class AdminSessionTest {
-
 
     @Nested
     public class fails_to_create {
@@ -26,16 +29,16 @@ public class AdminSessionTest {
     }
 
     @Test
-    public void creates_a_new_session() throws Exception {
-        assertNotNull(admin().getId());
+    public void creates_a_new_session(Admin admin) throws Exception {
+        assertNotNull(admin.getId());
     }
 
     @Test
-    public void registers_new_user() throws Exception {
-        admin().register(defaultUser());
+    public void registers_new_user(Admin admin) throws Exception {
+        admin.register(defaultUser());
 
         String expected = defaultUser().username;
-        String actual =  admin().fetchUser(defaultUser().username).username;
+        String actual =  admin.fetchUser(defaultUser().username).username;
 
         assertEquals(expected, actual);
     }
@@ -43,7 +46,7 @@ public class AdminSessionTest {
     @Nested
     public class fails_to_register_new_user {
         @Test
-        public void with_missing_credentials () {
+        public void with_missing_credentials (Admin admin) {
             Credentials credentials = new Credentials(
                 null,
                 null
@@ -51,13 +54,13 @@ public class AdminSessionTest {
 
             assertThrows(
                 HttpException.class,
-                () -> admin().register(credentials),
+                () -> admin.register(credentials),
                 "Bad Request"
             );
         }
 
         @Test
-        public void with_malformed_username() {
+        public void with_malformed_username(Admin admin) {
             Credentials credentials = new Credentials(
                 "123",
                 "123"
@@ -65,29 +68,29 @@ public class AdminSessionTest {
 
             assertThrows(
                 HttpException.class,
-                () -> admin().register(credentials),
+                () -> admin.register(credentials),
                 "Bad Request"
             );
         }
     }
 
     @Test
-    public void deletes_existing_user() throws Exception {
-        admin().register(defaultUser());
-        admin().delete(defaultUser().username);
+    public void deletes_existing_user(Admin admin) throws Exception {
+        admin.register(defaultUser());
+        admin.delete(defaultUser().username);
 
         assertThrows(
             HttpException.class,
-            () -> admin().fetchUser(defaultUser().username),
+            () -> admin.fetchUser(defaultUser().username),
             "Not Found"
         );
 
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown(Admin admin) {
         try {
-            admin().delete(defaultUser().username);
+            admin.delete(defaultUser().username);
         } catch (Exception ignored) {
         }
     }
