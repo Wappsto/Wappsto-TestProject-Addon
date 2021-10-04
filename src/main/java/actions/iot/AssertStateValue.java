@@ -29,10 +29,10 @@ public class AssertStateValue implements WebAction {
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
         WebDriver browser = helper.getDriver();
         String sessionId;
-        Controller presenter;
+        Controller controller;
         try {
             sessionId = getSessionFrom(browser);
-            presenter = new Controller(
+            controller = new Controller(
                 sessionId,
                 serviceUrl,
                 state,
@@ -45,13 +45,7 @@ public class AssertStateValue implements WebAction {
                 "Failed to create session: " + e.getMessage()
             );
         }
-
-        try {
-             presenter.execute();
-        } catch (Exception e) {
-            throw new FailureException(e.getMessage());
-        }
-
+        controller.execute();
         return ExecutionResult.PASSED;
     }
 
@@ -85,10 +79,18 @@ public class AssertStateValue implements WebAction {
             this.expected = expected;
         }
 
-        public void execute() throws Exception {
-            assert service
-                .getState(UUID.fromString(state))
-                .equals(expected) : "State did not match expected value";
+        public void execute() throws FailureException {
+            try {
+                assert service
+                    .getState(UUID.fromString(state))
+                    .equals(expected) : "State did not match expected value";
+            } catch (AssertionError e) {
+                throw new FailureException("Assertion error: " + e.getMessage());
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Error reading state: " + e.getMessage()
+                );
+            }
         }
     }
 }

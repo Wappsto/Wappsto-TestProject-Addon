@@ -56,48 +56,19 @@ public class Utils {
         return creator;
     }
 
-    public static VirtualIoTNetwork createVirtualIoTNetwork(
-        CreatorResponse creator,
-        int min,
-        int max,
-        int stepSize,
-        String type,
-        String port,
-        String socketUrl
+    public static RestUser createRestSession(
+        String sessionId,
+        String target
     )
         throws FailureException
     {
-        int socketPort = Integer.parseInt(port);
-
-        RPCClient client;
         try {
-            client = new RPCClient.Builder(creator)
-                .connectingTo(socketUrl, socketPort)
-                .build();
+            return new RestUser(sessionId, target);
         } catch (Exception e) {
             throw new FailureException(
-                "Failed to connect to socket: " + e.getMessage()
+                "Failed to create user session: " + e.getMessage()
             );
         }
-
-        NetworkSchema schema = new NetworkSchema.Builder(
-            "Test",
-            creator.network.id
-        ).addDevice("Test")
-            .addValue("Test", ValuePermission.RW)
-            .withNumberSchema(min, max, stepSize, type)
-            .addToDevice()
-            .addToNetwork()
-            .build();
-
-        VirtualIoTNetwork network;
-        try {
-            network = new VirtualIoTNetwork(schema, client);
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to start client: " + e.getMessage()
-            );
-        }
-        return network;
     }
+
 }

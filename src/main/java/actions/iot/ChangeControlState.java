@@ -12,6 +12,7 @@ import wappsto.rest.session.*;
 
 import java.util.*;
 
+import static actions.Utils.createRestSession;
 import static actions.Utils.getSessionFrom;
 
 @Action(name = "Change value of control state")
@@ -34,16 +35,12 @@ public class ChangeControlState implements WebAction {
         } catch (NoSuchCookieException e) {
             throw new FailureException("Browser not logged in");
         }
-        try {
-            new Controller(
-                sessionId,
-                serviceUrl,
-                controlState,
-                value
-            ).execute();
-        } catch (Exception e) {
-            throw new FailureException("Error updating state: " + e.getMessage());
-        }
+        new Controller(
+            sessionId,
+            serviceUrl,
+            controlState,
+            value
+        ).execute();
 
         return ExecutionResult.PASSED;
     }
@@ -59,10 +56,10 @@ public class ChangeControlState implements WebAction {
             String controlState,
             String value
         )
-            throws Exception
+            throws FailureException
         {
             this(
-                new RestNetworkService(new RestUser(sessionId, target)),
+                new RestNetworkService(createRestSession(sessionId, target)),
                 controlState,
                 value
             );
@@ -78,8 +75,14 @@ public class ChangeControlState implements WebAction {
             this.value = value;
         }
 
-        public void execute() throws Exception {
-            service.updateState(UUID.fromString(controlState), value);
+        public void execute() throws FailureException {
+            try {
+                service.updateState(UUID.fromString(controlState), value);
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Error updating state: " + e.getMessage()
+                );
+            }
         }
     }
 }

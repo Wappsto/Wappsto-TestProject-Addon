@@ -11,6 +11,7 @@ import wappsto.network.*;
 import wappsto.rest.network.RestNetworkService;
 import wappsto.rest.session.RestUser;
 
+import static actions.Utils.createRestSession;
 import static actions.Utils.getSessionFrom;
 
 @Action(name = "Claim Network")
@@ -32,15 +33,8 @@ public class ClaimNetwork implements WebAction {
             throw new FailureException("Browser not logged in");
         }
 
-        try {
-            new Controller(sessionId, serviceUrl, networkId)
-                .execute();
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to claim network with Id: " + networkId + "\n" +
-                    e.getMessage()
-            );
-        }
+        new Controller(sessionId, serviceUrl, networkId).execute();
+
 
         return ExecutionResult.PASSED;
     }
@@ -54,20 +48,26 @@ public class ClaimNetwork implements WebAction {
             String sessionId,
             String target,
             String network
-        ) throws Exception {
+        ) throws FailureException {
             this(
-                new RestNetworkService(new RestUser(sessionId, target)),
+                new RestNetworkService(createRestSession(sessionId, target)),
                 network
             );
         }
-
         public Controller(NetworkService service, String network) {
             this.service = service;
             this.network = network;
         }
 
-        public void execute() throws Exception {
-            service.claim(network);
+        public void execute() throws FailureException {
+            try {
+                service.claim(network);
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to claim network with ID: " + network + "\n" +
+                        e.getMessage()
+                );
+            }
         }
     }
 }
