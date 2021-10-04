@@ -1,4 +1,4 @@
-package extensions;
+package extensions.injectors;
 
 import org.junit.jupiter.api.extension.*;
 import wappsto.iot.network.model.*;

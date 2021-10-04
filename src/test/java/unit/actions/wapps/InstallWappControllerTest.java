@@ -1,7 +1,7 @@
 package unit.actions.wapps;
 
 import actions.wapps.*;
-import extensions.*;
+import extensions.injectors.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;

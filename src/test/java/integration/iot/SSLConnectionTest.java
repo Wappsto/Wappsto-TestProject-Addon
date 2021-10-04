@@ -1,6 +1,6 @@
 package integration.iot;
 
-import extensions.*;
+import extensions.injectors.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.*;

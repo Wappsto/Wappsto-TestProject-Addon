@@ -1,13 +1,12 @@
 package unit.actions.network;
 
 import actions.network.*;
-import extensions.*;
+import extensions.injectors.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.network.*;
 
-import javax.security.auth.login.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

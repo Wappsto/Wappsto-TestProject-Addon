@@ -1,14 +1,13 @@
 package acceptance;
 
 import actions.session.*;
-import extensions.*;
+import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.session.*;
 import wappsto.session.*;
 
 import java.util.concurrent.ExecutionException;

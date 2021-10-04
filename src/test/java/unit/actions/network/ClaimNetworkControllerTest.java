@@ -1,12 +1,11 @@
 package unit.actions.network;
 
 import actions.network.*;
-import extensions.*;
+import extensions.injectors.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.network.*;
-import wappsto.network.model.*;
 
 import java.util.*;
 

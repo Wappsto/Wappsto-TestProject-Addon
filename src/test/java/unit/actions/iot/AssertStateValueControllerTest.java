@@ -1,11 +1,10 @@
 package unit.actions.iot;
 
 import actions.iot.*;
-import extensions.*;
+import extensions.injectors.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import org.opentest4j.*;
 import wappsto.network.*;
 
 import java.util.*;

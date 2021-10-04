@@ -1,7 +1,7 @@
 package acceptance;
 
 import actions.wapps.*;
-import extensions.*;
+import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.rest.request.exceptions.HttpException;

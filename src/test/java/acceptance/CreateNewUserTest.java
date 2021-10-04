@@ -1,11 +1,10 @@
 package acceptance;
 
 import actions.session.*;
-import extensions.*;
+import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.*;
 import wappsto.session.*;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;

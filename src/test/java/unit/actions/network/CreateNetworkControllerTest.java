@@ -1,7 +1,7 @@
 package unit.actions.network;
 
 import actions.network.*;
-import extensions.*;
+import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.network.*;

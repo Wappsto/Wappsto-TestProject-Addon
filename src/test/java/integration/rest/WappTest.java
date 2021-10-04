@@ -1,14 +1,12 @@
 package integration.rest;
 
+import extensions.injectors.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.*;
-import extensions.*;
 import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.wapps.RestWappService;
-import wappsto.rest.session.RestUser;
 import wappsto.session.*;
 import wappsto.wapps.*;
 

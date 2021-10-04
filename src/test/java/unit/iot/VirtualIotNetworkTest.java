@@ -1,6 +1,6 @@
 package unit.iot;
 
-import extensions.*;
+import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.iot.network.*;

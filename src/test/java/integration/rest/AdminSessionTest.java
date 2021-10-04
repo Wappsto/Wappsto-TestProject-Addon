@@ -1,8 +1,8 @@
 package integration.rest;
 
+import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import extensions.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.RestAdmin;
 import wappsto.session.*;

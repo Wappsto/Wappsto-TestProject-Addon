@@ -1,7 +1,7 @@
 package acceptance;
 
 import actions.iot.*;
-import extensions.*;
+import extensions.injectors.*;
 import io.testproject.java.execution.results.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
