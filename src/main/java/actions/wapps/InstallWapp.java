@@ -8,7 +8,10 @@ import io.testproject.java.sdk.v2.exceptions.FailureException;
 import org.openqa.selenium.WebDriver;
 import wappsto.rest.wapps.RestWappService;
 import wappsto.rest.session.RestUser;
+import wappsto.session.*;
+import wappsto.wapps.*;
 
+import static actions.Utils.createRestSession;
 import static actions.Utils.getSessionFrom;
 
 @Action(name = "Install wapp")
@@ -27,22 +30,41 @@ public class InstallWapp implements WebAction {
         WebDriver browser = helper.getDriver();
         String sessionId = getSessionFrom(browser);
 
-        RestUser session;
-        try {
-            session = new RestUser(
-                sessionId,
-                serviceUrl
-            );
-            RestWappService wapp = new RestWappService(session);
-            wapp.install(nameOfWapp);
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to install wapp named: "
-                    + nameOfWapp + ". "
-                    + e.getMessage()
+        new Controller(sessionId, serviceUrl, nameOfWapp).execute();
+
+        return ExecutionResult.PASSED;
+    }
+
+    public static class Controller {
+        private WappService service;
+        private String nameOfWapp;
+
+        public Controller(
+            String sessionId,
+            String serviceUrl,
+            String nameOfWapp
+        )
+            throws FailureException
+        {
+            this(
+                new RestWappService(createRestSession(sessionId, serviceUrl)),
+                nameOfWapp
             );
         }
 
-        return ExecutionResult.PASSED;
+        public Controller(WappService service, String nameOfWapp) {
+            this.service = service;
+            this.nameOfWapp = nameOfWapp;
+        }
+
+        public void execute() throws FailureException {
+            try {
+                service.install(nameOfWapp);
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to install Wapp: " + e.getMessage()
+                );
+            }
+        }
     }
 }

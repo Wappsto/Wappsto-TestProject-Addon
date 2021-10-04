@@ -1,8 +1,11 @@
 package actions.session;
 
+import io.testproject.java.sdk.v2.exceptions.*;
 import wappsto.rest.session.*;
 import wappsto.session.*;
 import wappsto.session.model.*;
+
+import java.lang.reflect.*;
 
 public class CreateNewUserController {
     private final User user;
@@ -12,13 +15,28 @@ public class CreateNewUserController {
         Credentials userCredentials,
         String target
     )
-        throws Exception
+        throws FailureException
     {
         this(
-            new RestAdmin(adminCredentials, target),
+            createRestAdminSession(adminCredentials, target),
             RestUser.class,
             userCredentials,
             target);
+    }
+
+    private static RestAdmin createRestAdminSession(
+        AdminCredentials adminCredentials,
+        String target
+    )
+        throws FailureException
+    {
+        try {
+            return new RestAdmin(adminCredentials, target);
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to create admin session: " + e.getMessage()
+            );
+        }
     }
 
     public CreateNewUserController(
@@ -27,12 +45,25 @@ public class CreateNewUserController {
         Credentials credentials,
         String target
     )
-        throws Exception
+        throws FailureException
     {
-        admin.register(credentials);
-        //evil dependencty injection hack using reflection
-        user = U.getConstructor(Credentials.class, String.class)
-            .newInstance(credentials, target);
+        try {
+            admin.register(credentials);
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to register user: " + e.getMessage()
+            );
+        }
+        //evil dependency injection hack using reflection
+        try {
+            user = U.getConstructor(Credentials.class, String.class)
+                .newInstance(credentials, target);
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to create user session: " + e.getMessage() + "\n" +
+                    "Have you implemented the constructor '(Credentials, String)'?"
+            );
+        }
     }
 
     public String execute() {

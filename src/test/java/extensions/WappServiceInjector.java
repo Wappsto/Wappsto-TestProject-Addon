@@ -49,14 +49,16 @@ public class WappServiceInjector implements ParameterResolver {
         public InMemoryWappService() {
             available = new LinkedList<>();
             Wapp wapp = new Wapp();
-            wapp.name = "available";
+            wapp.name = "wapp";
             available.add(wapp);
             installed = new LinkedList<>();
         }
 
         @Override
         public void install(String name) throws Exception {
-            if (available.contains(name)) installed.add(name);
+            if (available.stream().anyMatch(wapp -> wapp.name.equals(name))) {
+                installed.add(name);
+            }
             else throw new Exception("Not found");
         }
 

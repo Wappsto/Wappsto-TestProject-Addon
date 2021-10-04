@@ -29,7 +29,11 @@ public class CreateNewUser extends ActionWithAdminSession implements WebAction {
         );
 
         try {
-            new CreateNewUserController(adminCredentials, userCredentials, serviceUrl).execute();
+            new CreateNewUserController(
+                adminCredentials,
+                userCredentials,
+                serviceUrl
+            ).execute();
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to register user: " + e.getMessage()
