@@ -4,6 +4,7 @@ import actions.network.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.network.*;
 import wappsto.rest.network.*;
 import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.HttpException;
@@ -18,35 +19,40 @@ import static util.Env.*;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
+@ExtendWith(NetworkServiceInjector.class)
 public class ClaimNetworkTest {
     public static final String NETWORK_FRIEND = "networkfriend@seluxit.com";
     private static String serviceUrl;
     private static String appUrl;
-    private RestUser session;
     private RestUser friend;
 
     @BeforeAll
     public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
         appUrl = env().get(APP_URL);
+        deleteUsers(admin);
+
+    }
+
+    private static void deleteUsers(Admin admin) throws Exception {
         try {
             admin.delete(defaultUser().username);
+        } catch (HttpException ignore) {
+        }
+        try {
             admin.delete(NETWORK_FRIEND);
         } catch (HttpException ignore) {
         }
-
     }
 
     @BeforeEach
     public void reset(Admin admin) throws Exception {
         resetRunner();
-        session = createNewUserSession(serviceUrl, admin);
         friend = makeAFriend(admin);
     }
 
     @Test
-    public void claims_network() throws Exception {
-        RestNetworkService service = new RestNetworkService(session);
+    public void claims_network(NetworkService service) throws Exception {
         NetworkMeta network = service.create();
 
         service.share(network, friend.fetchMe());
@@ -75,10 +81,10 @@ public class ClaimNetworkTest {
         }
 
         @Test
-        public void when_network_has_not_been_shared() throws Exception {
-            RestNetworkService service = new RestNetworkService(session);
+        public void when_network_has_not_been_shared(NetworkService service)
+            throws Exception
+        {
             NetworkMeta network = service.create();
-
             ClaimNetwork action = createAction(
                 network.id
             );
@@ -94,11 +100,7 @@ public class ClaimNetworkTest {
 
     @AfterEach
     public void tearDown(Admin admin) throws Exception {
-        try {
-            admin.delete(defaultUser().username);
-            admin.delete(NETWORK_FRIEND);
-        } catch (HttpException ignored) {
-        }
+        deleteUsers(admin);
     }
 
     private ClaimNetwork createAction(String network) {

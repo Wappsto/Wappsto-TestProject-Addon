@@ -16,10 +16,10 @@ import static util.Env.*;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
+@ExtendWith(UserInjector.class)
 public class CreateNetworkTest {
     private static String serviceUrl;
     private static String appUrl;
-    private RestUser session;
 
     @BeforeAll
     public static void setup(Admin admin) throws Exception {
@@ -29,9 +29,8 @@ public class CreateNetworkTest {
     }
 
     @BeforeEach
-    public void reset(Admin admin) throws Exception {
+    public void reset(User session) throws Exception {
         resetRunner();
-        session = createNewUserSession(serviceUrl, admin);
         logInBrowser(session.getId(), appUrl);
     }
 

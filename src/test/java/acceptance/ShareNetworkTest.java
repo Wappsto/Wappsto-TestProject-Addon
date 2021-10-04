@@ -4,6 +4,7 @@ import actions.network.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.network.*;
 import wappsto.rest.network.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
@@ -29,8 +30,15 @@ public class ShareNetworkTest {
         serviceUrl = env().get(API_ROOT);
         appUrl = env().get(APP_URL);
         friendUsername = "friend123@seluxit.com";
+        deleteUsers(admin);
+    }
+
+    private static void deleteUsers(Admin admin) throws Exception {
         try {
             admin.delete(defaultUser().username);
+        } catch (HttpException ignored) {
+        }
+        try {
             admin.delete(friendUsername);
         } catch (HttpException ignored) {
         }
@@ -60,7 +68,7 @@ public class ShareNetworkTest {
 
         @Test
         public void when_browser_is_not_logged_in() throws Exception {
-            RestNetworkService service = new RestNetworkService(user);
+            NetworkService service = new RestNetworkService(user);
             String network = service.create().id;
             ShareNetwork action = createNewAction(
                 serviceUrl,
@@ -107,10 +115,6 @@ public class ShareNetworkTest {
 
     @AfterEach
     public void tearDown(Admin admin) throws Exception {
-        try {
-            admin.delete(defaultUser().username);
-            admin.delete(friendUsername);
-        } catch (HttpException ignored) {
-        }
+        deleteUsers(admin);
     }
 }
