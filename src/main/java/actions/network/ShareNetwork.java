@@ -37,36 +37,30 @@ public class ShareNetwork implements WebAction {
                 "Browser not logged in: " + e.getMessage()
             );
         }
-        try {
-            new Controller(
-                sessionId,
-                serviceUrl,
-                network,
-                other
-            ).execute();
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to share network: " + e.getMessage()
-            );
-        }
+        new Controller(
+            sessionId,
+            serviceUrl,
+            network,
+            other
+        ).execute();
 
         return ExecutionResult.PASSED;
     }
 
     public static class Controller {
 
-        private NetworkService service;
-        private String network;
-        private String other;
+        private final NetworkService service;
+        private final String network;
+        private final String other;
 
         public Controller(
             String sessionId,
             String target,
             String network,
             String other
-        ) throws Exception {
+        ) throws FailureException {
             this(
-                new RestNetworkService(new RestUser(sessionId, target)),
+                new RestNetworkService(createRestSession(sessionId, target)),
                 network,
                 other
             );
@@ -83,8 +77,14 @@ public class ShareNetwork implements WebAction {
             this.other = other;
         }
 
-        public void execute() throws Exception {
-            service.share(network, other);
+        public void execute() throws FailureException {
+            try {
+                service.share(network, other);
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to share network: " + e.getMessage()
+                );
+            }
         }
     }
 }

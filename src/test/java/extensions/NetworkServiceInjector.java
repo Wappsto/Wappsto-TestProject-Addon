@@ -10,8 +10,8 @@ import wappsto.session.model.*;
 import java.util.*;
 
 import static util.Env.*;
+import static util.Utils.createNewAdmin;
 import static util.Utils.createNewUserSession;
-import static util.Utils.defaultUser;
 
 public class NetworkServiceInjector implements ParameterResolver {
 
@@ -38,24 +38,13 @@ public class NetworkServiceInjector implements ParameterResolver {
         if (extensionContext.getTags().contains("unit")) {
             return new InMemoryNetworkService();
         } else {
-            try {
-                RestAdmin admin = new RestAdmin(
-                    new AdminCredentials(
-                        env().get(ADMIN_USERNAME),
-                        env().get(ADMIN_PASSWORD)
-                    ),
-                    env().get(API_ROOT)
-                );
-                RestUser session = createNewUserSession(
-                    env().get(API_ROOT),
-                    admin
-                );
-                return new RestNetworkService(session);
-            } catch (Exception e) {
-                throw new RuntimeException(
-                    "Failed to register user: " + e.getMessage()
-                );
-            }
+            RestAdmin admin = createNewAdmin();
+            RestUser session = createNewUserSession(
+                env().get(API_ROOT),
+                admin
+            );
+            return new RestNetworkService(session);
+
         }
     }
 
@@ -101,7 +90,9 @@ public class NetworkServiceInjector implements ParameterResolver {
 
         @Override
         public void share(String networkId, String friendUsername) throws Exception {
-
+            if(networks.get(UUID.fromString(networkId)) == null) {
+                throw new Exception("Network not found");
+            }
         }
 
         @Override

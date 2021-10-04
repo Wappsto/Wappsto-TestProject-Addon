@@ -12,6 +12,7 @@ import wappsto.network.*;
 import wappsto.rest.network.*;
 import wappsto.rest.session.*;
 
+import static actions.Utils.createRestSession;
 import static actions.Utils.getSessionFrom;
 
 @Action(name = "Create new network")
@@ -34,15 +35,7 @@ public class CreateNetwork implements WebAction {
             throw new FailureException("Browser not logged in");
         }
 
-        RestUser session;
-        try {
-            network = new Controller(sessionId, serviceUrl)
-                .execute();
-        } catch (Exception e) {
-            throw new FailureException(
-                "Failed to create network: " + e.getMessage()
-            );
-        }
+        network = new Controller(sessionId, serviceUrl).execute();
         return ExecutionResult.PASSED;
     }
 
@@ -52,17 +45,23 @@ public class CreateNetwork implements WebAction {
         public Controller(
             String sessionId,
             String target
-        ) throws Exception
+        ) throws FailureException
         {
-            this(new RestNetworkService(new RestUser(sessionId, target)));
+            this(new RestNetworkService(createRestSession(sessionId, target)));
         }
 
         public Controller(NetworkService service) {
             this.service = service;
         }
 
-        public String execute() throws Exception {
-            return service.create().id;
+        public String execute() throws FailureException {
+            try {
+                return service.create().id;
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to create network: " + e.getMessage()
+                );
+            }
         }
     }
 }

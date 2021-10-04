@@ -10,6 +10,7 @@ import wappsto.rest.request.exceptions.HttpException;
 import wappsto.rest.wapps.RestWappService;
 import wappsto.rest.session.RestUser;
 import wappsto.session.*;
+import wappsto.wapps.*;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,6 +19,7 @@ import static util.Env.env;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
+@ExtendWith(WappServiceInjector.class)
 public class WappTest {
     private static String serviceUrl;
 
@@ -32,34 +34,26 @@ public class WappTest {
     }
 
     @Test
-    public void fetches_all_wapps(Admin admin) throws Exception {
-        RestUser session = createNewUserSession(serviceUrl, admin);
-        RestWappService wapp = new RestWappService(session);
-
-        assertTrue(wapp.fetchAllFromStore().size() >= 1);
+    public void fetches_all_wapps(WappService service) throws Exception {
+        assertTrue(service.fetchAllFromStore().size() >= 1);
     }
 
     @Nested
     public class installs_wapp {
 
         @Test
-        public void from_name(Admin admin) throws Exception {
-            RestUser session = createNewUserSession(serviceUrl, admin);
-            RestWappService wapp = new RestWappService(session);
-
-            wapp.install("Historical Data");
-            assert wapp.fetchInstalled().size() == 1
+        public void from_name(WappService service) throws Exception {
+            service.install("Historical Data");
+            assert service.fetchInstalled().size() == 1
                 : "Incorrect number of wapps found";
         }
     }
 
     @Test
-    public void fails_to_install_wapp_from_invalid_name(Admin admin) throws Exception {
-        RestUser session = createNewUserSession(serviceUrl, admin);
-
+    public void fails_to_install_wapp_from_invalid_name(WappService service) throws Exception {
         assertThrows(
             Exception.class,
-            () -> new RestWappService(session).install(""),
+            () -> service.install(""),
             "Wapp not found"
         );
     }

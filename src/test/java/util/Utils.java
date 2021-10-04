@@ -23,12 +23,35 @@ public class Utils {
             "123"
         );
     }
-    public static RestUser createNewUserSession(String serviceUrl, Admin admin)
-        throws Exception
-    {
-        return new RestUser.Builder(admin, serviceUrl)
-            .withCredentials(defaultUser())
-            .create();
+    public static RestUser createNewUserSession(
+        String serviceUrl,
+        Admin admin
+    ) {
+        try {
+            return new RestUser.Builder(admin, serviceUrl)
+                .withCredentials(defaultUser())
+                .create();
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Failed to create new user session: " + e.getMessage()
+            );
+        }
+    }
+
+    public static RestAdmin createNewAdmin() {
+        try {
+            return new RestAdmin(
+                new AdminCredentials(
+                    env().get(ADMIN_USERNAME),
+                    env().get(ADMIN_PASSWORD)
+                ),
+                env().get(API_ROOT)
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Failed to log in admin: " + e.getMessage()
+            );
+        }
     }
 
     public static Runner runner() throws Exception {
