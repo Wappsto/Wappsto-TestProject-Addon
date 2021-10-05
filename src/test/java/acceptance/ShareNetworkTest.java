@@ -33,17 +33,6 @@ public class ShareNetworkTest {
         deleteUsers(admin);
     }
 
-    private static void deleteUsers(Admin admin) throws Exception {
-        try {
-            admin.delete(defaultUser().username);
-        } catch (HttpException ignored) {
-        }
-        try {
-            admin.delete(friendUsername);
-        } catch (HttpException ignored) {
-        }
-    }
-
     @BeforeEach
     public void reset(Admin admin) throws Exception {
         resetRunner();
@@ -100,6 +89,21 @@ public class ShareNetworkTest {
         assertDoesNotThrow(() -> friendService.claim(network));
     }
 
+    @AfterEach
+    public void tearDown(Admin admin) throws Exception {
+        deleteUsers(admin);
+    }
+
+    private static void deleteUsers(Admin admin) throws Exception {
+        try {
+            admin.delete(defaultUser().username);
+        } catch (HttpException ignored) {
+        }
+        try {
+            admin.delete(friendUsername);
+        } catch (HttpException ignored) {
+        }
+    }
 
     private ShareNetwork createNewAction(
         String serviceUrl,
@@ -113,8 +117,4 @@ public class ShareNetworkTest {
         return action;
     }
 
-    @AfterEach
-    public void tearDown(Admin admin) throws Exception {
-        deleteUsers(admin);
-    }
 }
