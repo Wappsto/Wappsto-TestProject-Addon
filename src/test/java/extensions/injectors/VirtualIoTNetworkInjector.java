@@ -1,5 +1,6 @@
 package extensions.injectors;
 
+import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
@@ -34,31 +35,39 @@ public class VirtualIoTNetworkInjector implements ParameterResolver {
     )
         throws ParameterResolutionException
     {
-        RestAdmin admin = createNewAdmin();
-        RestUser user = createNewUserSession(env().get(API_ROOT), admin);
-        RestNetworkService service = new RestNetworkService(user);
-        CreatorResponse creator;
-        try {
-             creator = service.getCreator();
-        } catch (Exception e) {
-            throw new RuntimeException(
-                "Failed to get creator: " + e.getMessage()
-            );
-        }
         NetworkSchema schema = createNetworkSchema();
-        schema.meta.id = UUID.fromString(creator.network.id);
-        RPCClient client;
-        try {
-            client = new RPCClient.Builder(creator)
-                .connectingTo(
-                    env().get(SOCKET_URL),
-                    Integer.parseInt(env().get(SOCKET_PORT))
-                ).build();
-        } catch (Exception e) {
-            throw new RuntimeException(
-                "Failed to establish SSL connection" + e.getMessage()
-            );
+        if (extensionContext.getTags().contains("unit")) {
+            Connection connection = new ConnectionMock();
+            RPCClient client = new RPCClient(connection);
+            return new VirtualIoTNetwork(schema, client);
+        } else {
+            RestAdmin admin = createNewAdmin();
+            RestUser user = createNewUserSession(env().get(API_ROOT), admin);
+            RestNetworkService service = new RestNetworkService(user);
+            CreatorResponse creator;
+            try {
+                creator = service.getCreator();
+            } catch (Exception e) {
+                throw new RuntimeException(
+                    "Failed to get creator: " + e.getMessage()
+                );
+            }
+            schema.meta.id = UUID.fromString(creator.network.id);
+            RPCClient client;
+            try {
+                client = new RPCClient.Builder(creator)
+                    .connectingTo(
+                        env().get(SOCKET_URL),
+                        Integer.parseInt(env().get(SOCKET_PORT))
+                    ).build();
+            } catch (Exception e) {
+                throw new RuntimeException(
+                    "Failed to establish SSL connection" + e.getMessage()
+                );
+            }
+            return new VirtualIoTNetwork(schema, client);
         }
-        return new VirtualIoTNetwork(schema, client);
+
+
     }
 }

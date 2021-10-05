@@ -3,15 +3,18 @@ package unit.iot;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.iot.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(NetworkSchemaInjector.class)
+@ExtendWith(VirtualIoTNetworkInjector.class)
 public class VirtualIotNetworkTest {
     private IoTClientMock client;
 
@@ -44,6 +47,13 @@ public class VirtualIotNetworkTest {
             network.update(request);
             assertTrue(client.state.contains("\"data\":\"1\""));
         }
+    }
+
+    @Test
+    public void adds_itself_to_persistence(VirtualIoTNetwork network) {
+        assertNotNull(
+            VirtualIoTNetworkStore.getInstance().getBy(network.schema.meta.id)
+        );
     }
 
     private static class IoTClientMock implements IoTClient {

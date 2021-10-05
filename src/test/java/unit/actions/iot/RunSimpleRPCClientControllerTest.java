@@ -1,13 +1,14 @@
 package unit.actions.iot;
 
 import actions.iot.*;
+import extensions.mocks.*;
 import org.junit.jupiter.api.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 
-import java.io.*;
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RunSimpleRPCClientControllerTest {
@@ -24,23 +25,5 @@ public class RunSimpleRPCClientControllerTest {
             );
         VirtualIoTNetwork network = controller.execute();
         assertEquals(networkId, network.schema.meta.id);
-    }
-
-    private class ConnectionMock implements Connection {
-
-        @Override
-        public void start(Callback messageCallback, Callback errorCallback) {
-
-        }
-
-        @Override
-        public void disconnect() throws IOException {
-
-        }
-
-        @Override
-        public void send(String message) throws IOException {
-
-        }
     }
 }

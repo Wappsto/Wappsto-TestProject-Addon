@@ -28,15 +28,13 @@ public class VirtualIoTNetworkStore {
         return networks.get(id);
     }
 
-    public void stopAll() {
-        networks.forEach((name, network) -> {
-            network.stop();
-            networks.remove(name);
-        });
-    }
+    public void stop(UUID network) throws Exception {
+        try {
+            networks.get(network).stop();
+            networks.remove(network);
+        } catch (NullPointerException e) {
+            throw new Exception("Network not found");
+        }
 
-    public void removeBy(UUID id) {
-        networks.remove(id);
     }
-
 }

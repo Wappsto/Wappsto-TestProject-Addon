@@ -1,11 +1,10 @@
 package wappsto.iot.network;
 
-import com.fasterxml.jackson.core.*;
+import wappsto.iot.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
 
-import java.io.*;
 import java.util.*;
 
 import static wappsto.iot.rpc.Utils.*;
@@ -23,24 +22,7 @@ public class VirtualIoTNetwork {
         values = new HashMap<>();
         controlStates = new LinkedList<>();
         reportStates = new LinkedList<>();
-        for (DeviceSchema d : schema.device) {
-            for (ValueSchema v : d.value) {
-                StateSchema control = v.state.stream()
-                    .filter(s -> s.type.equals("Control"))
-                    .findAny()
-                    .orElseThrow();
-                StateSchema report = v.state.stream()
-                    .filter(s -> s.type.equals("Report"))
-                    .findAny()
-                    .orElseThrow();
-                controlStates.add(control.meta.id);
-                reportStates.add(report.meta.id);
-                values.put(
-                    control.meta.id,
-                    new Value(report.meta.id, report.data)
-                );
-            }
-        }
+        addStatesAndValues(schema);
 
         client.start(new JsonRPCParser(
             data -> {},
@@ -50,7 +32,7 @@ public class VirtualIoTNetwork {
         client.send(toJson(
             new RPCRequest(new Params("/network", schema), Methods.POST))
         );
-
+        VirtualIoTNetworkStore.getInstance().addNetwork(this);
     }
 
     public void update(ControlStateData request) {
@@ -73,5 +55,26 @@ public class VirtualIoTNetwork {
 
     public void stop() {
         client.stop();
+    }
+
+    private void addStatesAndValues(NetworkSchema schema) {
+        for (DeviceSchema d : schema.device) {
+            for (ValueSchema v : d.value) {
+                StateSchema control = v.state.stream()
+                    .filter(s -> s.type.equals("Control"))
+                    .findAny()
+                    .orElseThrow();
+                StateSchema report = v.state.stream()
+                    .filter(s -> s.type.equals("Report"))
+                    .findAny()
+                    .orElseThrow();
+                controlStates.add(control.meta.id);
+                reportStates.add(report.meta.id);
+                values.put(
+                    control.meta.id,
+                    new Value(report.meta.id, report.data)
+                );
+            }
+        }
     }
 }
