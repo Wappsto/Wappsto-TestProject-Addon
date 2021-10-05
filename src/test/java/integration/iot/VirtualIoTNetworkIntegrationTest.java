@@ -4,30 +4,23 @@ import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.iot.network.*;
-import wappsto.iot.network.model.*;
-import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
-import wappsto.rest.network.*;
-import wappsto.network.model.*;
+import wappsto.network.*;
 import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.*;
 import wappsto.session.*;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static util.Env.*;
 import static util.Utils.*;
 
-@ExtendWith(NetworkSchemaInjector.class)
 @ExtendWith(AdminInjector.class)
+@ExtendWith(VirtualIoTNetworkInjector.class)
+@ExtendWith(NetworkServiceInjector.class)
 public class VirtualIoTNetworkIntegrationTest {
-    private static String serviceUrl;
-    private RestUser session;
 
     @BeforeAll
     public static void setup(Admin admin) throws Exception {
-        serviceUrl = env().get(API_ROOT);
         resetUser(admin);
     }
 
@@ -38,24 +31,17 @@ public class VirtualIoTNetworkIntegrationTest {
         }
     }
 
-    @BeforeEach
-    public void newUser(Admin admin) throws Exception {
-        session = createNewUserSession(serviceUrl, admin);
-    }
-
     @Test
-    public void sends_state_change_to_dashboard(NetworkSchema schema) throws Exception {
-        //TODO: There's an object or three missing in here
-        RestNetworkService service = new RestNetworkService(session);
-        CreatorResponse creator = service.getCreator();
-
-        RPCClient client = createClient(creator);
-        schema.meta.id = UUID.fromString(creator.network.id);
-        VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
+    public void sends_state_change_to_dashboard(
+        VirtualIoTNetwork network,
+        NetworkService service
+    )
+        throws Exception
+    {
 
         network.update(
             new ControlStateData(
-                schema.device.get(0).value.get(0).state.stream()
+                network.schema.device.get(0).value.get(0).state.stream()
                     .filter(s -> s.type.equals("Control"))
                     .findAny()
                     .orElseThrow().meta.id,
@@ -66,26 +52,31 @@ public class VirtualIoTNetworkIntegrationTest {
         assertEquals(
             "1",
             service.getState(
-                schema.device.get(0).value.get(0).state.stream()
+                network.schema.device.get(0).value.get(0).state.stream()
                     .filter(s -> s.type.equals("Report"))
                     .findAny()
                     .orElseThrow().meta.id
             )
         );
-        client.stop();
+        network.stop();
     }
 
     @Test
-    public void retrieves_data_from_dashboard(NetworkSchema schema) throws Exception {
-        VirtualIoTNetwork network = createVirtualIoTClient(session, schema);
-        RestNetworkService service = new RestNetworkService(session);
+    public void retrieves_data_from_dashboard(
+        VirtualIoTNetwork network,
+        NetworkService service
+    )
+        throws Exception
+    {
 
-        UUID controlState = schema.device.get(0).value.get(0).state.stream()
+        UUID controlState = network.schema.device.get(0).value.get(0).state
+            .stream()
             .filter(s -> s.type.equals("Control"))
             .findAny()
             .orElseThrow().meta.id;
 
-        UUID reportState = schema.device.get(0).value.get(0).state.stream()
+        UUID reportState = network.schema.device.get(0).value.get(0).state
+            .stream()
             .filter(s -> s.type.equals("Report"))
             .findAny()
             .orElseThrow().meta.id;
@@ -93,31 +84,7 @@ public class VirtualIoTNetworkIntegrationTest {
         service.updateState(controlState, "1");
         Thread.sleep(500);
         assertEquals("1", service.getState(reportState));
-        network.client.stop();
-    }
-
-    private VirtualIoTNetwork createVirtualIoTClient(
-        RestUser session,
-        NetworkSchema schema
-    )
-        throws Exception
-    {
-        RestNetworkService service = new RestNetworkService(session);
-        CreatorResponse creator = service.getCreator();
-
-        RPCClient client = createClient(creator);
-        schema.meta.id = UUID.fromString(creator.network.id);
-        return new VirtualIoTNetwork(schema, client);
-    }
-
-    private RPCClient createClient(CreatorResponse creator)
-        throws Exception
-    {
-        return new RPCClient.Builder(creator)
-            .connectingTo(
-                env().get(SOCKET_URL),
-                Integer.parseInt(env().get(SOCKET_PORT))
-            ).build();
+        network.stop();
     }
 
     @AfterEach

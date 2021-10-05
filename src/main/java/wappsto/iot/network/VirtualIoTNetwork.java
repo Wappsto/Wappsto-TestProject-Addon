@@ -70,4 +70,8 @@ public class VirtualIoTNetwork {
     public UUID getReportState(int index) {
         return reportStates.get(index);
     }
+
+    public void stop() {
+        client.stop();
+    }
 }

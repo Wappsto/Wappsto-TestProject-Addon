@@ -1,25 +1,24 @@
 package util;
 
-import io.testproject.java.enums.AutomatedBrowserType;
-import io.testproject.java.sdk.v2.Runner;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import wappsto.rest.session.RestAdmin;
-import wappsto.rest.session.RestUser;
+import io.testproject.java.enums.*;
+import io.testproject.java.sdk.v2.*;
+import org.openqa.selenium.*;
+import wappsto.iot.network.model.*;
+import wappsto.rest.session.*;
 import wappsto.session.*;
-import wappsto.session.model.AdminCredentials;
-import wappsto.session.model.Credentials;
+import wappsto.session.model.*;
+
+import java.util.*;
 
 import static util.Env.*;
 
 
 public class Utils {
-    private static RestAdmin admin;
     private static Runner runner;
 
     public static Credentials defaultUser() {
         return new Credentials(
-            "test123123@seluxit.com",
+            "test_123123@seluxit.com",
             "123"
         );
     }
@@ -32,9 +31,11 @@ public class Utils {
                 .withCredentials(defaultUser())
                 .create();
         } catch (Exception e) {
-            throw new RuntimeException(
-                "Failed to create new user session: " + e.getMessage()
-            );
+            try {
+                return new RestUser(defaultUser(), serviceUrl);
+            } catch (Exception exception) {
+                throw new RuntimeException("Failed to create user session");
+            }
         }
     }
 
@@ -83,6 +84,18 @@ public class Utils {
     public static void logBrowserOut() throws Exception {
         WebDriver browser = runner().getDriver();
         browser.manage().deleteAllCookies();
+    }
+
+    public static NetworkSchema createNetworkSchema() {
+        return new NetworkSchema.Builder(
+            "On/off switch",
+            UUID.randomUUID().toString()
+        ).addDevice("Switch")
+            .addValue("On/off", ValuePermission.RW)
+            .withNumberSchema(0, 1, 1, "Boolean")
+            .addToDevice()
+            .addToNetwork()
+            .build();
     }
 
 }

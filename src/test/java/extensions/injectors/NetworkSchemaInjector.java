@@ -3,7 +3,7 @@ package extensions.injectors;
 import org.junit.jupiter.api.extension.*;
 import wappsto.iot.network.model.*;
 
-import java.util.*;
+import static util.Utils.*;
 
 public class NetworkSchemaInjector implements ParameterResolver {
 
@@ -27,14 +27,6 @@ public class NetworkSchemaInjector implements ParameterResolver {
     )
         throws ParameterResolutionException
     {
-        return new NetworkSchema.Builder(
-            "On/off switch",
-            UUID.randomUUID().toString()
-        ).addDevice("Switch")
-            .addValue("On/off", ValuePermission.RW)
-            .withNumberSchema(0, 1, 1, "Boolean")
-            .addToDevice()
-            .addToNetwork()
-            .build();
+        return createNetworkSchema();
     }
 }
