@@ -9,7 +9,7 @@ import wappsto.iot.*;
 
 import java.util.*;
 
-
+@Action(name = "Stop a currently running RPC client")
 public class StopClient implements GenericAction {
     @Parameter(description = "Network UUID")
     public String network;
