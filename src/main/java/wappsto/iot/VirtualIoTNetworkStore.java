@@ -31,10 +31,13 @@ public class VirtualIoTNetworkStore {
     public void stop(UUID network) throws Exception {
         try {
             networks.get(network).stop();
-            networks.remove(network);
         } catch (NullPointerException e) {
             throw new Exception("Network not found");
         }
 
+    }
+
+    public List<UUID> getAll() {
+        return new ArrayList<>(networks.keySet());
     }
 }

@@ -38,7 +38,7 @@ public class VirtualIoTNetworkIntegrationTest {
     )
         throws Exception
     {
-
+        service.claim(network.schema.meta.id.toString());
         network.update(
             new ControlStateData(
                 network.schema.device.get(0).value.get(0).state.stream()
@@ -68,7 +68,7 @@ public class VirtualIoTNetworkIntegrationTest {
     )
         throws Exception
     {
-
+        service.claim(network.schema.meta.id.toString());
         UUID controlState = network.schema.device.get(0).value.get(0).state
             .stream()
             .filter(s -> s.type.equals("Control"))

@@ -7,7 +7,6 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
-import wappsto.iot.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
@@ -92,6 +91,7 @@ public class RunSimpleRPCClient implements WebAction {
         VirtualIoTNetwork network = controller.execute();
 
 
+
         reportState = network.getReportState(0).toString();
         controlState = network.getControlState(0).toString();
         networkId = creator.network.id;
@@ -135,12 +135,10 @@ public class RunSimpleRPCClient implements WebAction {
         }
 
         public VirtualIoTNetwork execute() {
-            VirtualIoTNetwork network = new VirtualIoTNetwork(
+            return new VirtualIoTNetwork(
                 schema,
                 new RPCClient(connection)
             );
-            VirtualIoTNetworkStore.getInstance().addNetwork(network);
-            return network;
         }
     }
 }

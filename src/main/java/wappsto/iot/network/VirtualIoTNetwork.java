@@ -1,6 +1,5 @@
 package wappsto.iot.network;
 
-import wappsto.iot.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
@@ -32,7 +31,6 @@ public class VirtualIoTNetwork {
         client.send(toJson(
             new RPCRequest(new Params("/network", schema), Methods.POST))
         );
-        VirtualIoTNetworkStore.getInstance().addNetwork(this);
     }
 
     public void update(ControlStateData request) {

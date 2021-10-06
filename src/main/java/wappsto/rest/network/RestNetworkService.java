@@ -37,13 +37,11 @@ public class RestNetworkService implements NetworkService {
      */
     @Override
     public CreatorResponse getCreator() throws Exception {
-        CreatorResponse response = ((CreatorResponse) new Request.Builder(session.service)
+        return ((CreatorResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_1)
             .atEndPoint(API.CREATOR)
             .withBody("{}")
             .post(session.getId(), CreatorResponse.class));
-        claim(response.network.id);
-        return response;
     }
 
     /**
