@@ -1,5 +1,6 @@
 package actions.iot;
 
+import actions.*;
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
@@ -8,12 +9,10 @@ import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
 import wappsto.network.*;
 import wappsto.rest.network.*;
-import wappsto.rest.session.*;
 
 import java.util.*;
 
-import static actions.Utils.createRestSession;
-import static actions.Utils.getSessionFrom;
+import static actions.Utils.*;
 
 @Action(name = "Change value of control state")
 public class ChangeControlState implements WebAction {
@@ -23,7 +22,10 @@ public class ChangeControlState implements WebAction {
     @Parameter(description = "Value")
     public String value;
 
-    @Parameter(description = "Service API Root")
+    @Parameter(
+        description = "Service API Root",
+        defaultValue = Defaults.SERVICE_URL
+    )
     public String serviceUrl;
 
     @Override

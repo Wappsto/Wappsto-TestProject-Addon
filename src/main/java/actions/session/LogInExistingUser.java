@@ -1,13 +1,14 @@
 package actions.session;
 
+import actions.*;
 import io.testproject.java.annotations.v2.*;
-import io.testproject.java.sdk.v2.addons.WebAction;
-import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
-import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
-import org.openqa.selenium.WebDriver;
+import io.testproject.java.sdk.v2.addons.*;
+import io.testproject.java.sdk.v2.addons.helpers.*;
+import io.testproject.java.sdk.v2.enums.*;
+import io.testproject.java.sdk.v2.exceptions.*;
+import org.openqa.selenium.*;
 import wappsto.session.*;
-import wappsto.session.model.Credentials;
+import wappsto.session.model.*;
 
 import static actions.Utils.*;
 
@@ -19,10 +20,16 @@ public class LogInExistingUser implements WebAction {
     @Parameter(description = "Password")
     public String password;
 
-    @Parameter(description = "Application URL")
+    @Parameter(
+        description = "Application URL",
+        defaultValue = Defaults.APPLICATION_URL
+    )
     public String appUrl;
 
-    @Parameter(description = "Application API URL")
+    @Parameter(
+        description = "Service API URL",
+        defaultValue = Defaults.SERVICE_URL
+    )
     public String serviceUrl;
 
 

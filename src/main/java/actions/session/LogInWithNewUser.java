@@ -1,13 +1,13 @@
 package actions.session;
 
+import actions.*;
 import io.testproject.java.annotations.v2.*;
-import io.testproject.java.sdk.v2.addons.WebAction;
-import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
-import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
+import io.testproject.java.sdk.v2.addons.*;
+import io.testproject.java.sdk.v2.addons.helpers.*;
+import io.testproject.java.sdk.v2.enums.*;
+import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
-import wappsto.session.model.AdminCredentials;
-import wappsto.session.model.Credentials;
+import wappsto.session.model.*;
 
 import static actions.Utils.*;
 
@@ -17,7 +17,7 @@ public class LogInWithNewUser
 {
     @Parameter(
         description = "Application URL",
-        defaultValue = "https://qa.wappsto.com/"
+        defaultValue = Defaults.APPLICATION_URL
     )
     public String appUrl;
 

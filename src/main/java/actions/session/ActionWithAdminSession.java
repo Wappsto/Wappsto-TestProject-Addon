@@ -1,11 +1,12 @@
 package actions.session;
 
-import io.testproject.java.annotations.v2.Parameter;
+import actions.*;
+import io.testproject.java.annotations.v2.*;
 
 public abstract class ActionWithAdminSession {
     @Parameter(
         description = "Service API URL",
-        defaultValue = "https://qa.wappsto.com/services"
+        defaultValue = Defaults.SERVICE_URL
     )
     public String serviceUrl;
 

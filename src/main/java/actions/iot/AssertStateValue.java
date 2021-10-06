@@ -1,5 +1,6 @@
 package actions.iot;
 
+import actions.*;
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
@@ -22,7 +23,10 @@ public class AssertStateValue implements WebAction {
     @Parameter(description = "Expected value")
     public String expected;
 
-    @Parameter(description = "Service API Root")
+    @Parameter(
+        description = "Service API Root",
+        defaultValue = Defaults.SERVICE_URL
+    )
     public String serviceUrl;
 
     @Override

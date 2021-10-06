@@ -1,5 +1,6 @@
 package actions.network;
 
+import actions.*;
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
@@ -9,7 +10,6 @@ import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
 import wappsto.network.*;
 import wappsto.rest.network.*;
-import wappsto.rest.session.*;
 
 import static actions.Utils.*;
 
@@ -18,7 +18,10 @@ public class ShareNetwork implements WebAction {
     @Parameter(description = "Network UUID")
     public String network;
 
-    @Parameter(description = "Application API URL")
+    @Parameter(
+        description = "Application API URL",
+        defaultValue = Defaults.APPLICATION_URL
+    )
     public String serviceUrl;
 
     @Parameter(description = "Other username")

@@ -1,5 +1,6 @@
 package actions.network;
 
+import actions.*;
 import io.testproject.java.annotations.v2.*;
 import io.testproject.java.enums.*;
 import io.testproject.java.sdk.v2.addons.*;
@@ -15,7 +16,10 @@ import static actions.Utils.*;
 
 @Action(name = "Create new network")
 public class CreateNetwork implements WebAction {
-    @Parameter(description = "Service API root")
+    @Parameter(
+        description = "Service API root",
+        defaultValue = Defaults.SERVICE_URL
+    )
     public String serviceUrl;
 
     @Parameter(
