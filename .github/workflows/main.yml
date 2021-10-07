@@ -66,3 +66,4 @@ jobs:
           mvn test --batch-mode --fail-at-end
       - name: Publish Surefire report
         uses: scacap/action-surefire-report@v1
+        if: always()
