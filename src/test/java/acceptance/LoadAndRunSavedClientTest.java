@@ -6,9 +6,12 @@ import io.testproject.java.execution.results.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import util.*;
+import util.Utils;
 import wappsto.iot.*;
+import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
+import wappsto.iot.rpc.*;
+import wappsto.iot.ssl.*;
 import wappsto.iot.ssl.model.*;
 import wappsto.network.model.*;
 import wappsto.rest.network.*;
@@ -62,6 +65,43 @@ public class LoadAndRunSavedClientTest {
             schema
         );
         store.save(networkId, instance);
+        LoadAndRunSavedClient action = new LoadAndRunSavedClient();
+        action.networkId = networkId;
+        action.socketUrl = socketUrl;
+        action.port = socketPort;
+        StepExecutionResult run = runner().run(action);
+        assertEquals(
+            ExecutionResult.PASSED.name().toUpperCase(),
+            run.getResultType().name().toUpperCase()
+        );
+    }
+
+    @Test
+    public void runs_new_client_when_other_client_is_connected(
+        User session,
+        NetworkSchema schema,
+        DataStore store
+    )
+        throws Exception
+    {
+        logInBrowser(session.getId(), appUrl);
+        RestNetworkService service = new RestNetworkService((RestSession) session);
+        CreatorResponse creator = service.getCreator();
+        String networkId = creator.network.id;
+        schema.meta.id = UUID.fromString(networkId);
+        NetworkInstance instance = new NetworkInstance(
+            new WappstoCerts(creator),
+            schema
+        );
+        VirtualIoTNetwork other = new VirtualIoTNetwork(
+            schema,
+            new RPCClient(new SSLConnection(
+                socketUrl,
+                Integer.parseInt(socketPort),
+                new WappstoCerts(creator)))
+        );
+        store.save(networkId, instance);
+
         LoadAndRunSavedClient action = new LoadAndRunSavedClient();
         action.networkId = networkId;
         action.socketUrl = socketUrl;

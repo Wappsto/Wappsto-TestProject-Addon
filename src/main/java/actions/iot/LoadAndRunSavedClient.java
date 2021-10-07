@@ -12,6 +12,12 @@ import wappsto.iot.rpc.*;
 import wappsto.iot.ssl.*;
 import wappsto.network.model.*;
 
+@Action(
+    name = "Load and run saved client",
+    description = "This action may be removed in the future: it simply exists to" +
+        "verify whether loading an IoT network this way is possible in " +
+        "TestProject.io"
+)
 public class LoadAndRunSavedClient
     extends ActionWithSSLSocket implements WebAction
 {
