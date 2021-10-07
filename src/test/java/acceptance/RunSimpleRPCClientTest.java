@@ -124,8 +124,8 @@ public class RunSimpleRPCClientTest {
         );
         runner().run(action);
 
-        String uuidFromFile = ((NetworkInstance) new FileSystemDataStore(
-            "./saved_instance/", "json"
+        String uuidFromFile = ((NetworkInstance) new FileSystemJsonDataStore(
+            "./saved_instance/"
         ).load(action.networkId, NetworkInstance.class))
             .schema.meta.id.toString();
         assertEquals(

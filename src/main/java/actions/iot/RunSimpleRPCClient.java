@@ -116,7 +116,7 @@ public class RunSimpleRPCClient implements WebAction {
                 creator,
                 numbers,
                 new SSLConnection(socketUrl, port, new WappstoCerts(creator)),
-                new FileSystemDataStore("./saved_instance/", "json")
+                new FileSystemJsonDataStore("./saved_instance/")
             );
         }
 

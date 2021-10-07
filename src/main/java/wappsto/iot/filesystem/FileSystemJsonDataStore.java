@@ -6,14 +6,13 @@ import wappsto.iot.*;
 
 import java.io.*;
 
-public class FileSystemDataStore implements DataStore {
+public class FileSystemJsonDataStore implements DataStore {
     private final String path;
-    private final String fileExtension;
+    private static final String FILE_EXTENSION = "json";
 
-    public FileSystemDataStore(String path, String fileExtension) {
+    public FileSystemJsonDataStore(String path) {
         this.path = path;
         new File(path).mkdirs();
-        this.fileExtension = fileExtension;
     }
 
     @Override
@@ -43,7 +42,7 @@ public class FileSystemDataStore implements DataStore {
     }
 
     private String pathToFile(String identifier) {
-        return path.concat(identifier).concat(".").concat(fileExtension);
+        return path.concat(identifier).concat(".").concat(FILE_EXTENSION);
     }
 
     public void delete(String identifier) {
