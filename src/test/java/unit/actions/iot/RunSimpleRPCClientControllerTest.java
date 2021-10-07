@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.*;
 import wappsto.iot.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
-import wappsto.iot.rpc.*;
 import wappsto.network.model.*;
 
 import static org.junit.jupiter.api.Assertions.*;

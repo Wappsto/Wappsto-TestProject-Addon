@@ -2,7 +2,7 @@ package extensions.injectors;
 
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.iot.rpc.*;
+import wappsto.iot.*;
 
 public class ConnectionInjector implements ParameterResolver {
     @Override

@@ -1,10 +1,10 @@
 package wappsto.iot.filesystem;
 
 import com.fasterxml.jackson.databind.*;
+import org.aspectj.util.*;
 import wappsto.iot.*;
 
 import java.io.*;
-import java.util.*;
 
 public class FileSystemDataStore implements DataStore {
     private final String path;
@@ -38,11 +38,7 @@ public class FileSystemDataStore implements DataStore {
         File file = new File(
             pathToFile(identifier)
         );
-        Scanner reader = new Scanner(file);
-        String data = "";
-        while (reader.hasNextLine()) {
-            data.concat(reader.nextLine());
-        }
+        String data = FileUtil.readAsString(file);
         return new ObjectMapper().readValue(data, type);
     }
 

@@ -1,6 +1,6 @@
-package wappsto.iot.rpc;
+package wappsto.iot;
 
-import java.io.*;
+import wappsto.iot.rpc.*;
 
 public interface IoTClient {
     void start(JsonRPCParser parser);

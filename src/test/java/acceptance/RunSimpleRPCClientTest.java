@@ -6,6 +6,8 @@ import io.testproject.java.execution.results.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.iot.filesystem.*;
+import wappsto.network.model.*;
 import wappsto.rest.request.exceptions.*;
 import wappsto.rest.session.*;
 import wappsto.session.*;
@@ -121,15 +123,16 @@ public class RunSimpleRPCClientTest {
             type
         );
         runner().run(action);
-        /*
+
+        String uuidFromFile = ((NetworkInstance) new FileSystemDataStore(
+            "./saved_instance/", "json"
+        ).load(action.networkId, NetworkInstance.class))
+            .schema.meta.id.toString();
         assertEquals(
             action.networkId,
-            ((NetworkInstance) new FileSystemDataStore(
-                "./saved_instances/", "json"
-            ).load(action.networkId, NetworkInstance.class))
-                .schema.meta.id
+            uuidFromFile
         );
-        */
+
     }
 
     private RunSimpleRPCClient createAction(

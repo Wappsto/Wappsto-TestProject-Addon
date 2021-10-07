@@ -1,6 +1,6 @@
-package wappsto.iot.rpc;
+package wappsto.iot;
 
-import java.io.IOException;
+import java.io.*;
 
 public interface Connection {
     void start(Callback messageCallback, Callback errorCallback);

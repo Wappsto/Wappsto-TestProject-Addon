@@ -1,6 +1,6 @@
 package extensions.mocks;
 
-import wappsto.iot.rpc.*;
+import wappsto.iot.*;
 
 import java.io.*;
 

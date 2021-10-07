@@ -41,7 +41,7 @@ public class CertProvider {
 
     private PrivateKey generatePrivateKey(WappstoCerts certs) throws Exception {
 
-        //Otherwise generating the keyspec throws an error
+        //Otherwise, generating the keyspec throws an error
         //Don't ask
         if (java.security.Security.getProvider("BC") == null) {
             java.security.Security.addProvider(

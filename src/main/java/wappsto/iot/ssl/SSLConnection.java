@@ -1,6 +1,6 @@
 package wappsto.iot.ssl;
 
-import wappsto.iot.rpc.*;
+import wappsto.iot.*;
 import wappsto.iot.ssl.model.*;
 
 import javax.net.ssl.*;

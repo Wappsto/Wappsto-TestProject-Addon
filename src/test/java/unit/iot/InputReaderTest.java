@@ -3,7 +3,7 @@ package unit.iot;
 import org.junit.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
-import wappsto.iot.rpc.*;
+import wappsto.iot.*;
 import wappsto.iot.ssl.*;
 
 import java.io.*;
