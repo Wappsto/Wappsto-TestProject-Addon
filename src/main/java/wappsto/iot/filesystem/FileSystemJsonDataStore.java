@@ -33,12 +33,12 @@ public class FileSystemJsonDataStore implements DataStore {
     }
 
     @Override
-    public Object load(String identifier, Class<?> type) throws Exception {
+    public Object load(String identifier, Class<?> T) throws Exception {
         File file = new File(
             pathToFile(identifier)
         );
         String data = FileUtil.readAsString(file);
-        return new ObjectMapper().readValue(data, type);
+        return new ObjectMapper().readValue(data, T);
     }
 
     private String pathToFile(String identifier) {

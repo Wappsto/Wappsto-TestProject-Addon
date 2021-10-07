@@ -1,24 +1,47 @@
 package actions.iot;
 
+import io.testproject.java.annotations.v2.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import wappsto.iot.*;
+import wappsto.iot.filesystem.*;
 import wappsto.iot.network.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.ssl.*;
 import wappsto.network.model.*;
 
-public class LoadAndRunSavedClient implements GenericAction {
+public class LoadAndRunSavedClient
+    extends ActionWithSSLSocket implements WebAction
+{
+    @Parameter(description = "Network UUID")
+    public String networkId;
+
     @Override
-    public ExecutionResult execute(AddonHelper helper) throws FailureException {
-        return null;
+    public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+        new Controller(
+            socketUrl,
+            port,
+            networkId
+        ).execute();
+        return ExecutionResult.PASSED;
     }
 
     public static class Controller {
         private final DataStore store;
         private final String networkId;
         private final Connection connection;
+
+        public Controller(String socketUrl, String port, String networkId)
+            throws FailureException
+        {
+            this(
+                new FileSystemJsonDataStore("./saved_instance/"),
+                networkId,
+                createSSLConnection(socketUrl, port, networkId)
+            );
+        }
 
         public Controller(
             DataStore store,
@@ -28,6 +51,26 @@ public class LoadAndRunSavedClient implements GenericAction {
             this.store = store;
             this.networkId = networkId;
             this.connection = connection;
+        }
+
+        private static SSLConnection createSSLConnection(
+            String socketUrl,
+            String port,
+            String networkId
+        )
+            throws FailureException
+        {
+            try {
+                return new SSLConnection(
+                    socketUrl,
+                    Integer.parseInt(port),
+                    ((NetworkInstance) new FileSystemJsonDataStore("./saved_instance/")
+                        .load(networkId, NetworkInstance.class)).certs
+                );
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to establish socket connection: " + e.getMessage());
+            }
         }
 
         public String execute() throws FailureException {

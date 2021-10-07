@@ -3,6 +3,7 @@ package extensions.injectors;
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.iot.*;
+import wappsto.iot.filesystem.*;
 
 public class DataStoreInjector implements ParameterResolver {
     @Override
@@ -22,6 +23,10 @@ public class DataStoreInjector implements ParameterResolver {
     )
         throws ParameterResolutionException
     {
-        return new InMemoryDataStore();
+        if (extensionContext.getTags().contains("unit")) {
+            return new InMemoryDataStore();
+        } else {
+            return new FileSystemJsonDataStore("./saved_instance/");
+        }
     }
 }

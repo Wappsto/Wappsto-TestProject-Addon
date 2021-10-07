@@ -22,15 +22,9 @@ import static actions.Utils.*;
     name = "Run RPC Client",
     description = "Create and run a simple virtual IoT network"
 )
-public class RunSimpleRPCClient implements WebAction {
+public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction {
     @Parameter(description = "Service API root")
     public String serviceUrl;
-
-    @Parameter(description = "Socket URL")
-    public String socketUrl;
-
-    @Parameter(description = "Socket port")
-    public String port;
 
     @Parameter(description = "Minimum value")
     public String min;
