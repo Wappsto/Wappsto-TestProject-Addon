@@ -144,9 +144,7 @@ public class RunSimpleRPCClientTest {
         String stepSize,
         String type
     ) {
-        RunSimpleRPCClient action =
-            new RunSimpleRPCClient();
-
+        RunSimpleRPCClient action = new RunSimpleRPCClient();
         action.serviceUrl = serviceUrl;
         action.socketUrl = socketUrl;
         action.port = socketPort;

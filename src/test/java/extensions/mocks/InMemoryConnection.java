@@ -6,6 +6,8 @@ import java.io.*;
 
 public class InMemoryConnection implements Connection {
 
+    public String lastReceived;
+
     @Override
     public void start(Callback messageCallback, Callback errorCallback) {
 
@@ -18,6 +20,6 @@ public class InMemoryConnection implements Connection {
 
     @Override
     public void send(String message) throws IOException {
-
+        lastReceived = message;
     }
 }

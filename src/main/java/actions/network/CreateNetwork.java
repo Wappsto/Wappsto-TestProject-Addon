@@ -10,10 +10,8 @@ import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
 import wappsto.network.*;
 import wappsto.rest.network.*;
-import wappsto.rest.session.*;
 
-import static actions.Utils.createRestSession;
-import static actions.Utils.getSessionFrom;
+import static actions.Utils.*;
 
 @Action(name = "Create new network")
 public class CreateNetwork implements WebAction {
@@ -40,7 +38,7 @@ public class CreateNetwork implements WebAction {
     }
 
     public static class Controller {
-        private NetworkService service;
+        private final NetworkService service;
 
         public Controller(
             String sessionId,
