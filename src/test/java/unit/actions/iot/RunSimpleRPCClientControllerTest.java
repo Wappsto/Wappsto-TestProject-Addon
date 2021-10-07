@@ -19,14 +19,16 @@ public class RunSimpleRPCClientControllerTest {
     @Test
     public void creates_virtual_iot_network(
         Connection connection,
-        CreatorResponse creator
+        CreatorResponse creator,
+        DataStore store
     ) {
         RunSimpleRPCClient.Controller controller = new RunSimpleRPCClient
             .Controller(
                 "Test",
                 creator,
                 new NumberSchema(0, 1, 1, "Boolean"),
-                connection
+                connection,
+                store
             );
         VirtualIoTNetwork network = controller.execute();
         assertEquals(

@@ -124,22 +124,6 @@ public class RunSimpleRPCClient implements WebAction {
             String name,
             CreatorResponse creator,
             NumberSchema numbers,
-            Connection connection
-        ) {
-            this.connection = connection;
-            schema = new NetworkSchema.Builder(name, creator.network.id)
-                .addDevice("Test")
-                .addValue("Test", ValuePermission.RW)
-                .withNumberSchema(numbers)
-                .addToDevice()
-                .addToNetwork()
-                .build();
-        }
-
-        public Controller(
-            String name,
-            CreatorResponse creator,
-            NumberSchema numbers,
             Connection connection,
             DataStore store
         ) {
