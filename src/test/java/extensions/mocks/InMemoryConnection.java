@@ -4,7 +4,7 @@ import wappsto.iot.rpc.*;
 
 import java.io.*;
 
-public class ConnectionMock implements Connection {
+public class InMemoryConnection implements Connection {
 
     @Override
     public void start(Callback messageCallback, Callback errorCallback) {

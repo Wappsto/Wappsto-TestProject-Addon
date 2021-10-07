@@ -11,4 +11,5 @@ public class DataSchema extends Data {
         this.meta = new Meta(type, id);
         this.name = name;
     }
+    public DataSchema() {}
 }

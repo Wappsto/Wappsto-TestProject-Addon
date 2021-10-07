@@ -37,7 +37,7 @@ public class VirtualIoTNetworkInjector implements ParameterResolver {
     {
         NetworkSchema schema = createNetworkSchema();
         if (extensionContext.getTags().contains("unit")) {
-            Connection connection = new ConnectionMock();
+            Connection connection = new InMemoryConnection();
             RPCClient client = new RPCClient(connection);
             return new VirtualIoTNetwork(schema, client);
         } else {

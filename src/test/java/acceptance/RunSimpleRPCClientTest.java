@@ -109,6 +109,29 @@ public class RunSimpleRPCClientTest {
         );
     }
 
+    @Test
+    public void saves_itself_on_the_file_system() throws Exception {
+        RunSimpleRPCClient action = createAction(
+            serviceUrl,
+            socketUrl,
+            socketPort,
+            min,
+            max,
+            stepSize,
+            type
+        );
+        runner().run(action);
+        /*
+        assertEquals(
+            action.networkId,
+            ((NetworkInstance) new FileSystemDataStore(
+                "./saved_instances/", "json"
+            ).load(action.networkId, NetworkInstance.class))
+                .schema.meta.id
+        );
+        */
+    }
+
     private RunSimpleRPCClient createAction(
         String serviceUrl,
         String socketUrl,

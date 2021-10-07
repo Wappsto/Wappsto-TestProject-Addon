@@ -29,6 +29,8 @@ public class ValueSchema {
         this(name, permission.toString(), numberSchema);
     }
 
+    public ValueSchema() {}
+
     public static class Builder {
         private final String name;
         private final ValuePermission permission;

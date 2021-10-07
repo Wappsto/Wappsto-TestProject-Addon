@@ -10,6 +10,7 @@ public class NetworkSchema extends DataSchema {
         super(name, id, "network");
         this.device = device;
     }
+    public NetworkSchema(){}
 
     public static class Builder {
         private final String name;

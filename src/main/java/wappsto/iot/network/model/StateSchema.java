@@ -24,4 +24,5 @@ public class StateSchema {
         timestamp = getCurrentTimestamp();
         meta = new Meta("State");
     }
+    public StateSchema(){}
 }

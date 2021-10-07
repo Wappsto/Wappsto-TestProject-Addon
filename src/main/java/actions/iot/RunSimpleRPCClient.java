@@ -7,6 +7,8 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
+import wappsto.iot.*;
+import wappsto.iot.filesystem.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
@@ -111,27 +113,49 @@ public class RunSimpleRPCClient implements WebAction {
         ) throws Exception {
             this(
                 name,
-                creator.network.id,
+                creator,
                 numbers,
-                new SSLConnection(socketUrl, port, new WappstoCerts(creator))
+                new SSLConnection(socketUrl, port, new WappstoCerts(creator)),
+                new FileSystemDataStore("./saved_instance/", "json")
             );
         }
 
         public Controller(
             String name,
-            String networkId,
+            CreatorResponse creator,
             NumberSchema numbers,
             Connection connection
-
         ) {
             this.connection = connection;
-            schema = new NetworkSchema.Builder(name, networkId)
+            schema = new NetworkSchema.Builder(name, creator.network.id)
                 .addDevice("Test")
                 .addValue("Test", ValuePermission.RW)
                 .withNumberSchema(numbers)
                 .addToDevice()
                 .addToNetwork()
                 .build();
+        }
+
+        public Controller(
+            String name,
+            CreatorResponse creator,
+            NumberSchema numbers,
+            Connection connection,
+            DataStore store
+        ) {
+            this.connection = connection;
+            schema = new NetworkSchema.Builder(name, creator.network.id)
+                .addDevice("Test")
+                .addValue("Test", ValuePermission.RW)
+                .withNumberSchema(numbers)
+                .addToDevice()
+                .addToNetwork()
+                .build();
+            NetworkInstance instance = new NetworkInstance(
+                new WappstoCerts(creator),
+                schema
+            );
+            store.save(creator.network.id, instance);
         }
 
         public VirtualIoTNetwork execute() {

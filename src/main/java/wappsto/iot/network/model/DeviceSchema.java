@@ -3,7 +3,6 @@ package wappsto.iot.network.model;
 import com.fasterxml.jackson.annotation.*;
 import wappsto.iot.rpc.model.*;
 
-import java.security.cert.*;
 import java.util.*;
 
 public class DeviceSchema {
@@ -16,6 +15,8 @@ public class DeviceSchema {
         this.value = value;
         meta = new Meta("Device");
     }
+
+    public DeviceSchema() {}
 
     public static class Builder {
         private final NetworkSchema.Builder network;

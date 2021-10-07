@@ -14,4 +14,6 @@ public class NumberSchema {
         this.step = step;
         this.unit = unit;
     }
+
+    public NumberSchema(){}
 }
