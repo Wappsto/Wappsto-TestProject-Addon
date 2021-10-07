@@ -16,7 +16,6 @@ mvn install:install-file\
   -Dversion=0.65.0\
   -Dpackaging=jar
 ```
-
 # Testing
 In order to run the automated test suite, the following environment variables need to be set:
 ```
@@ -29,4 +28,4 @@ WAPPSTO_ADMIN_PANEL_URL : <admin_panel_url>
 WAPPSTO_SOCKET_URL : <ssl_socket_address>
 WAPPSTO_SOCKET_PORT : <ssl_socket_port>
 ```
-
+Furthermore, a TestProject agent is needed in order to run the acceptance tests. The docker-compose provided with the repo can be used for this purpose. Simply start the container, and run the tests on your local machines - the testrunner will connect to the dockerized agent through localhost.
