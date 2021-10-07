@@ -1,22 +1,24 @@
 package unit.iot;
 
-import org.junit.Ignore;
+import org.junit.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
-import wappsto.iot.rpc.Callback;
-import wappsto.iot.ssl.DataReader;
+import wappsto.iot.rpc.*;
+import wappsto.iot.ssl.*;
 
 import java.io.*;
 
-import static wappsto.iot.exceptions.InvalidMessage.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static wappsto.iot.exceptions.InvalidMessage.*;
 
-public class DataReaderTest {
+public class InputReaderTest {
     public static final int WAIT_FOR_INPUT = 100;
+    public static final int MESSAGE_TIMEOUT = 50;
     private static ByteArrayInputStream input;
     private static ByteArrayOutputStream toInput;
     private static MessageCallbackMock messageCallback;
     private static ErrorCallbackMock errorCallback;
-    private DataReader handler;
+    private InputReader handler;
     private final String ERROR_CALLBACK_NOT_CALLED = "Error callback not called";
 
 
@@ -39,7 +41,7 @@ public class DataReaderTest {
                 toInput.toByteArray()
             );
 
-            handler = new DataReader(
+            handler = new InputReader(
                 input,
                 messageCallback,
                 errorCallback
@@ -55,14 +57,15 @@ public class DataReaderTest {
         public void terminates_with_a_closing_bracket() throws Exception {
             toInput.write("{ does not close".getBytes());
             input = new ByteArrayInputStream(toInput.toByteArray());
-            handler = new DataReader(
+            handler = new InputReader(
                 input,
                 messageCallback,
-                errorCallback
+                errorCallback,
+                MESSAGE_TIMEOUT
             );
 
             handler.start();
-            Thread.sleep(DataReader.MESSAGE_TIMOUT + 100);
+            Thread.sleep(MESSAGE_TIMEOUT + 100);
             assert errorCallback.wasCalled : ERROR_CALLBACK_NOT_CALLED;
             assertEquals(MISSING_CLOSING_BRACKET, errorCallback.message);
 
@@ -75,10 +78,11 @@ public class DataReaderTest {
             toInput.write(message.getBytes());
             input = new ByteArrayInputStream(toInput.toByteArray());
 
-            handler = new DataReader(
+            handler = new InputReader(
                 input,
                 messageCallback,
-                errorCallback
+                errorCallback,
+                MESSAGE_TIMEOUT
             );
             handler.start();
 

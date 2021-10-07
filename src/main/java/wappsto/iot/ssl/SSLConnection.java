@@ -39,7 +39,7 @@ public class SSLConnection implements Connection {
     @Override
     public void start(Callback messageCallback, Callback errorCallback) {
         try {
-            DataReader reader = new DataReader(
+            InputReader reader = new InputReader(
                 socket.getInputStream(),
                 messageCallback,
                 errorCallback

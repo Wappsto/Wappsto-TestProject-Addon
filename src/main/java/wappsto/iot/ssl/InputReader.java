@@ -8,22 +8,37 @@ import java.util.function.*;
 
 import static wappsto.iot.exceptions.InvalidMessage.*;
 
-public class DataReader extends Thread{
-    public static final int MESSAGE_TIMOUT = 500;
-    private final Callback messageCallBack;
+public class InputReader extends Thread{
+    public static final int DEFAULT_MESSAGE_TIMOUT = 500;
+    private final Callback messageCallback;
     private final Callback errorCallback;
     private final InputStream incomingData;
+    private int timeout;
 
-    public DataReader(
+    public InputReader(
         InputStream incomingData,
         Callback messageCallback,
         Callback errorCallback
     ) {
-        this.incomingData = incomingData;
-        this.messageCallBack = messageCallback;
-        this.errorCallback = errorCallback;
+        this(
+            incomingData,
+            messageCallback,
+            errorCallback,
+            DEFAULT_MESSAGE_TIMOUT
+        );
     }
 
+    public InputReader(
+        InputStream incomingData,
+        Callback messageCallback,
+        Callback errorCallback,
+        int timeout
+    ) {
+        this.incomingData = incomingData;
+        this.messageCallback = messageCallback;
+        this.errorCallback = errorCallback;
+        this.timeout = timeout;
+    }
 
     public void run() {
         try {
@@ -62,7 +77,7 @@ public class DataReader extends Thread{
             }
 
             message = messageCompleted.message();
-            messageCallBack.call(message);
+            messageCallback.call(message);
 
         } catch (IOException e) {
             throw e;
@@ -71,7 +86,7 @@ public class DataReader extends Thread{
     }
 
     private boolean waitFor(MessageCompleted messageCompleted) {
-        Duration timeout = Duration.ofMillis(MESSAGE_TIMOUT);
+        Duration timeout = Duration.ofMillis(this.timeout);
         Instant messageStarted = Instant.now();
         while (!messageCompleted.completed()) {
             if (Instant.now().isAfter(messageStarted.plus(timeout))) {
