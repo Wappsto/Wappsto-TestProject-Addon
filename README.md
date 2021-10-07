@@ -10,12 +10,19 @@ Alternatively:
 * Run the following command from terminal:
 ```
 mvn install:install-file\
-  -Dfile=path/to/TestProject_SDK_0.65.0.jar\
+  -Dfile=external-dep/TestProject_SDK_0.65.0.jar\
   -DgroupId=io.testproject\
   -DartifactId=java-sdk\
   -Dversion=0.65.0\
   -Dpackaging=jar
 ```
+
+# Compile
+To compile the addon, run this maven command:
+```
+mvn compile
+```
+
 # Testing
 In order to run the automated test suite, the following environment variables need to be set:
 ```
@@ -29,3 +36,8 @@ WAPPSTO_SOCKET_URL : <ssl_socket_address>
 WAPPSTO_SOCKET_PORT : <ssl_socket_port>
 ```
 Furthermore, a TestProject agent is needed in order to run the acceptance tests. The docker-compose provided with the repo can be used for this purpose. Simply start the container, and run the tests on your local machines - the testrunner will connect to the dockerized agent through localhost.
+
+To compile the Addon and run the tests at the same time:
+```
+nvm package
+```
