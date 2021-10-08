@@ -26,9 +26,10 @@ public class VirtualIoTNetwork {
         addStatesAndValues(schema);
 
         client.start(new RpcParser(
-            data -> {},
-            this::update,
-            response -> client.send(toJson(response)))
+            new RpcStrategies(data -> {},
+                this::update,
+                response -> client.send(toJson(response)),
+                null))
         );
         client.send(toJson(
             new RpcRequest(new Params("/network", schema), Methods.POST))

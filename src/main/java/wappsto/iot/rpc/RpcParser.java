@@ -13,15 +13,13 @@ public class RpcParser {
     private final SuccessResponseStrategy successResponse;
     private final ResultStrategy result;
     private final UpdateStateStrategy updateState;
+    private final DeleteStrategy deleteCommand;
 
-    public RpcParser(
-        ResultStrategy result,
-        UpdateStateStrategy updateState,
-        SuccessResponseStrategy successResponse
-    ) {
-        this.result = result;
-        this.updateState = updateState;
-        this.successResponse = successResponse;
+    public RpcParser(RpcStrategies rpcStrategies) {
+        this.result = rpcStrategies.result;
+        this.updateState = rpcStrategies.updateState;
+        this.successResponse = rpcStrategies.successResponse;
+        this.deleteCommand = rpcStrategies.delete;
         mapper = new ObjectMapper();
     }
 
@@ -34,6 +32,8 @@ public class RpcParser {
                 switch (rpc.method) {
                     case PUT:
                         executeStateCommand(data);
+                    case DELETE:
+                        executeDeleteCommand();
                     default:
                         break;
                 }
@@ -48,6 +48,10 @@ public class RpcParser {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void executeDeleteCommand() {
+        deleteCommand.execute();
     }
 
     private boolean isCommand(JsonNode node) {

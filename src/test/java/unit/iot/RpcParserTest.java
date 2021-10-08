@@ -19,44 +19,61 @@ public class RpcParserTest {
             @Test
             public void a_result() throws Exception {
                 RpcIncomingResult result = createResult();
+                RpcStrategies strategies = createStrategies();
+                CommandMock resultStrategy =
+                    (CommandMock) strategies.result;
 
-                CommandMock responseCommand = new CommandMock();
-                CommandMock controlCommand = new CommandMock();
-                CommandMock successResponse = new CommandMock();
-                new RpcParser(
-                    responseCommand,
-                    controlCommand,
-                    successResponse
-                ).parse(
-                    new ObjectMapper().writeValueAsString(result)
-                );
+                new RpcParser(strategies)
+                    .parse(new ObjectMapper().writeValueAsString(result));
 
-                assertTrue(responseCommand.wasCalled);
+                assertTrue(resultStrategy.wasCalled);
             }
 
             @Test
             public void an_update_state_command() throws Exception {
                 RpcStateCommand command = createUpdateCommand();
 
-                CommandMock responseCommand = new CommandMock();
-                CommandMock controlCommand = new CommandMock();
-                CommandMock successResponse = new CommandMock();
-                new RpcParser(
-                    responseCommand,
-                    controlCommand,
-                    successResponse
-                ).parse(
-                    new ObjectMapper().writeValueAsString(command)
-                );
+                RpcStrategies strategies = createStrategies();
+                CommandMock controlCommand =
+                    (CommandMock) strategies.updateState;
+                new RpcParser(strategies)
+                    .parse(new ObjectMapper().writeValueAsString(command));
 
                 assertTrue(controlCommand.wasCalled);
             }
 
             @Test
-            @Disabled
             public void a_delete_command() throws Exception {
+                RpcDeleteCommand command = createDeleteCommand();
+                RpcStrategies strategies = createStrategies();
+                CommandMock deleteCommand =
+                    (CommandMock) strategies.delete;
+                new RpcParser(strategies)
+                    .parse(new ObjectMapper().writeValueAsString(command));
+
+                assertTrue(deleteCommand.wasCalled);
             }
         }
+    }
+
+    private RpcStrategies createStrategies(
+    ) {
+        CommandMock responseCommand = new CommandMock();
+        CommandMock controlCommand = new CommandMock();
+        CommandMock successResponse = new CommandMock();
+        CommandMock deleteCommand = new CommandMock();
+        return new RpcStrategies(
+            responseCommand,
+            controlCommand,
+            successResponse,
+            deleteCommand
+        );
+    }
+
+    private RpcDeleteCommand createDeleteCommand() {
+        RpcDeleteCommand command = new RpcDeleteCommand();
+        command.method = Methods.DELETE;
+        return command;
     }
 
     private RpcStateCommand createUpdateCommand() {
@@ -82,7 +99,8 @@ public class RpcParserTest {
     private class CommandMock implements
         UpdateStateStrategy,
         ResultStrategy,
-        SuccessResponseStrategy
+        SuccessResponseStrategy,
+        DeleteStrategy
     {
         public boolean wasCalled = false;
         @Override
@@ -97,6 +115,11 @@ public class RpcParserTest {
 
         @Override
         public void execute(RpcOutgoingResult response) {
+            wasCalled = true;
+        }
+
+        @Override
+        public void execute() {
             wasCalled = true;
         }
     }
