@@ -24,7 +24,7 @@ public class VirtualIoTNetwork {
         reportStates = new LinkedList<>();
         addStatesAndValues(schema);
 
-        client.start(new JsonRPCParser(
+        client.start(new RpcParser(
             data -> {},
             this::update,
             response -> client.send(toJson(response)))

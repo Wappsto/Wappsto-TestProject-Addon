@@ -54,7 +54,7 @@ public class VirtualIotNetworkTest {
         public String state;
 
         @Override
-        public void start(JsonRPCParser parser) {
+        public void start(RpcParser parser) {
 
         }
 

@@ -8,7 +8,7 @@ import wappsto.iot.rpc.model.from.server.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JsonRPCParserTest {
+public class RpcParserTest {
     @Nested
     public  class an_incoming_message {
 
@@ -21,7 +21,7 @@ public class JsonRPCParserTest {
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
                 CommandMock successResponse = new CommandMock();
-                new JsonRPCParser(
+                new RpcParser(
                     responseCommand,
                     controlCommand,
                     successResponse
@@ -39,7 +39,7 @@ public class JsonRPCParserTest {
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
                 CommandMock successResponse = new CommandMock();
-                new JsonRPCParser(
+                new RpcParser(
                     responseCommand,
                     controlCommand,
                     successResponse

@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class InputReaderTest {
     public static final int WAIT_FOR_INPUT = 100;
-    public static final int MESSAGE_TIMEOUT = 10;
+    public static final int MESSAGE_TIMEOUT = 50;
     private static ByteArrayInputStream input;
     private static ByteArrayOutputStream toInput;
     private static MessageCallbackMock messageCallback;
     private static ErrorCallbackMock errorCallback;
-    private InputReader handler;
+    private InputReader reader;
     private final String ERROR_CALLBACK_NOT_CALLED = "Error callback not called";
 
 
@@ -41,13 +41,13 @@ public class InputReaderTest {
                 toInput.toByteArray()
             );
 
-            handler = new InputReader(
+            reader = new InputReader(
                 input,
                 messageCallback,
                 errorCallback
             );
-            handler.start();
-            assert callbackWasCalled(errorCallback)
+            reader.start();
+            assert wasCalled(errorCallback)
                 : ERROR_CALLBACK_NOT_CALLED;
         }
 
@@ -56,40 +56,39 @@ public class InputReaderTest {
         public void terminates_with_a_closing_bracket() throws Exception {
             toInput.write("{ does not close".getBytes());
             input = new ByteArrayInputStream(toInput.toByteArray());
-            handler = new InputReader(
+            reader = new InputReader(
                 input,
                 messageCallback,
                 errorCallback,
                 MESSAGE_TIMEOUT
             );
 
-            handler.start();
-            assert callbackWasCalled(errorCallback) :
-                ERROR_CALLBACK_NOT_CALLED;
+            reader.start();
+            assert wasCalled(errorCallback) : ERROR_CALLBACK_NOT_CALLED;
         }
 
         @Test
         public void has_an_equal_number_of_opening_and_closing_brackets()
             throws IOException
         {
-            String message = "{data: 'valid message'}";
+            String message = "{data:'valid message'}";
             toInput.write(message.getBytes());
             input = new ByteArrayInputStream(toInput.toByteArray());
 
-            handler = new InputReader(
+            reader = new InputReader(
                 input,
                 messageCallback,
                 errorCallback,
                 MESSAGE_TIMEOUT
             );
-            handler.start();
+            reader.start();
 
-            assert callbackWasCalled(messageCallback);
+            assert wasCalled(messageCallback);
             assertEquals(message, messageCallback.message);
         }
     }
 
-    private boolean callbackWasCalled(CallbackMock callback) {
+    private boolean wasCalled(CallbackMock callback) {
         Duration timeout = Duration.ofMillis(WAIT_FOR_INPUT);
         Instant messageSent = Instant.now();
         while (!callback.wasCalled) {
@@ -102,8 +101,8 @@ public class InputReaderTest {
 
     @AfterEach
     public void stopHandlerThread() throws InterruptedException {
-        handler.interrupt();
-        handler.join();
+        reader.interrupt();
+        reader.join();
     }
 
     static class MessageCallbackMock extends CallbackMock {

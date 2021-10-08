@@ -3,7 +3,7 @@ package wappsto.iot;
 import wappsto.iot.rpc.*;
 
 public interface IoTClient {
-    void start(JsonRPCParser parser);
+    void start(RpcParser parser);
 
     void send(String message);
 

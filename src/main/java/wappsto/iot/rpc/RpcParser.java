@@ -6,13 +6,13 @@ import wappsto.iot.rpc.model.from.server.*;
 
 import java.io.*;
 
-public class JsonRPCParser {
+public class RpcParser {
     private final ObjectMapper mapper;
     private final SuccessResponseStrategy successResponse;
     private final ResultStrategy result;
     private final UpdateStateStrategy updateState;
 
-    public JsonRPCParser(
+    public RpcParser(
         ResultStrategy result,
         UpdateStateStrategy updateState,
         SuccessResponseStrategy successResponse

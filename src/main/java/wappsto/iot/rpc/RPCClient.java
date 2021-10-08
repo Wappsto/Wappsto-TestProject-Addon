@@ -9,14 +9,14 @@ import java.io.*;
 
 public class RPCClient implements IoTClient {
     private final Connection conn;
-    private JsonRPCParser parser;
+    private RpcParser parser;
 
     public RPCClient(Connection conn) {
         this.conn = conn;
     }
 
     @Override
-    public void start(JsonRPCParser parser) {
+    public void start(RpcParser parser) {
         this.parser = parser;
         conn.start(this::incoming, this::error);
     }
