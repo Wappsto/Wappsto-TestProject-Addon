@@ -19,13 +19,13 @@ import wappsto.network.model.*;
         "TestProject.io"
 )
 public class LoadAndRunSavedClient
-    extends ActionWithSSLSocket implements WebAction
+    extends ActionWithSSLSocket implements GenericAction
 {
     @Parameter(description = "Network UUID")
     public String networkId;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+    public ExecutionResult execute(AddonHelper helper) throws FailureException {
         new Controller(
             socketUrl,
             port,
