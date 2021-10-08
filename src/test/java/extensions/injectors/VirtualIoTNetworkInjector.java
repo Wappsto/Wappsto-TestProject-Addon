@@ -39,7 +39,7 @@ public class VirtualIoTNetworkInjector implements ParameterResolver {
         NetworkSchema schema = createNetworkSchema();
         if (extensionContext.getTags().contains("unit")) {
             Connection connection = new InMemoryConnection();
-            RPCClient client = new RPCClient(connection);
+            RpcClient client = new RpcClient(connection);
             return new VirtualIoTNetwork(schema, client);
         } else {
             RestAdmin admin = createNewAdmin();
@@ -54,9 +54,9 @@ public class VirtualIoTNetworkInjector implements ParameterResolver {
                 );
             }
             schema.meta.id = UUID.fromString(creator.network.id);
-            RPCClient client;
+            RpcClient client;
             try {
-                client = new RPCClient.Builder(creator)
+                client = new RpcClient.Builder(creator)
                     .connectingTo(
                         env().get(SOCKET_URL),
                         Integer.parseInt(env().get(SOCKET_PORT))

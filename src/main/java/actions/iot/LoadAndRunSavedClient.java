@@ -81,7 +81,7 @@ public class LoadAndRunSavedClient
 
         public String execute() throws FailureException {
             try {
-                RPCClient client = new RPCClient(connection);
+                RpcClient client = new RpcClient(connection);
 
                 NetworkInstance instance = ((NetworkInstance)store
                     .load(networkId, NetworkInstance.class));

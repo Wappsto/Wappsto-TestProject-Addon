@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DataStoreInjector.class)
 @ExtendWith(ConnectionInjector.class)
 @ExtendWith(CreatorResponseInjector.class)
-public class RunSimpleRPCClientControllerTest {
+public class RunSimpleRpcClientControllerTest {
     @Test
     public void creates_virtual_iot_network(
         Connection connection,

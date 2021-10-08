@@ -20,7 +20,7 @@ import static util.Utils.*;
 
 
 @ExtendWith(AdminInjector.class)
-public class RunSimpleRPCClientTest {
+public class RunSimpleRpcClientTest {
     private static String serviceUrl;
     private static String appUrl;
     private RestUser session;

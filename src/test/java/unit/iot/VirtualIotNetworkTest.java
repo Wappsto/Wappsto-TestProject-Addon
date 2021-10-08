@@ -1,6 +1,7 @@
 package unit.iot;
 
 import extensions.injectors.*;
+import extensions.mocks.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.iot.*;
@@ -13,30 +14,30 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("unit")
 @ExtendWith(NetworkSchemaInjector.class)
-@ExtendWith(VirtualIoTNetworkInjector.class)
+@ExtendWith(ConnectionInjector.class)
 public class VirtualIotNetworkTest {
-    private IoTClientMock client;
-
-
-    @BeforeEach
-    public void instantiateClient() {
-        client = new IoTClientMock();
-    }
 
     @Nested
     public class reports_its_state {
         @Test
-        public void on_startup(NetworkSchema schema) {
-
-            VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
-            assertTrue(client.state.contains(schema.meta.id.toString()));
+        public void on_startup(NetworkSchema schema, Connection connection) {
+            startNetwork(schema, connection);
+            assertTrue(
+                wasReceived(
+                    schema.meta.id.toString(),
+                    (InMemoryConnection) connection
+                )
+            );
         }
 
         @Test
-        public void on_state_change(NetworkSchema schema) {
-            VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
-
+        public void on_state_change(
+            NetworkSchema schema,
+            Connection connection
+        ) {
+            VirtualIoTNetwork network = startNetwork(schema, connection);
             UUID state = schema.device.get(0)
                 .value.get(0)
                 .state.get(1)
@@ -45,27 +46,20 @@ public class VirtualIotNetworkTest {
 
             ControlStateData request = new ControlStateData(state, "1");
             network.update(request);
-            assertTrue(client.state.contains("\"data\":\"1\""));
+            assertTrue(
+                wasReceived("\"data\":\"1\"", (InMemoryConnection)connection));
         }
     }
 
-    private static class IoTClientMock implements IoTClient {
+    private VirtualIoTNetwork startNetwork(
+        NetworkSchema schema,
+        Connection connection
+    ) {
+        RpcClient client = new RpcClient(connection);
+        return new VirtualIoTNetwork(schema, client);
+    }
 
-        public String state;
-
-        @Override
-        public void start(RpcParser parser) {
-
-        }
-
-        @Override
-        public void send(String message) {
-            state = message;
-        }
-
-        @Override
-        public void stop() {
-
-        }
+    private boolean wasReceived(String message, InMemoryConnection connection) {
+        return connection.lastReceived.contains(message);
     }
 }

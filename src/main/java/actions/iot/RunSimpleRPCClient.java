@@ -137,7 +137,7 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
         public VirtualIoTNetwork execute() {
             return new VirtualIoTNetwork(
                 schema,
-                new RPCClient(connection)
+                new RpcClient(connection)
             );
         }
     }

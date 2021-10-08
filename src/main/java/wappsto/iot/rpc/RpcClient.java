@@ -7,11 +7,11 @@ import wappsto.network.model.*;
 
 import java.io.*;
 
-public class RPCClient implements IoTClient {
+public class RpcClient implements IoTClient {
     private final Connection conn;
     private RpcParser parser;
 
-    public RPCClient(Connection conn) {
+    public RpcClient(Connection conn) {
         this.conn = conn;
     }
 
@@ -68,11 +68,11 @@ public class RPCClient implements IoTClient {
             return this;
         }
 
-        public RPCClient build() {
+        public RpcClient build() {
             if(connection == null) {
                 throw new RuntimeException("Connection cannot be null");
             }
-            return new RPCClient(connection);
+            return new RpcClient(connection);
         }
     }
 }

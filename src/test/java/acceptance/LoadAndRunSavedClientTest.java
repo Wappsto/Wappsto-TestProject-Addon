@@ -95,7 +95,7 @@ public class LoadAndRunSavedClientTest {
         );
         VirtualIoTNetwork other = new VirtualIoTNetwork(
             schema,
-            new RPCClient(new SSLConnection(
+            new RpcClient(new SSLConnection(
                 socketUrl,
                 Integer.parseInt(socketPort),
                 new WappstoCerts(creator)))
