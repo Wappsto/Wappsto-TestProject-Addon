@@ -4,19 +4,21 @@ import com.fasterxml.jackson.databind.*;
 import wappsto.iot.rpc.model.*;
 import wappsto.iot.rpc.model.from.server.*;
 
+import java.io.*;
+
 public class JsonRPCParser {
-    private final SuccessResponse successResponse;
     private final ObjectMapper mapper;
-    private final ServerReponse responseFromServer;
-    private final ControlState controlState;
+    private final SuccessResponseStrategy successResponse;
+    private final ResultStrategy result;
+    private final UpdateStateStrategy updateState;
 
     public JsonRPCParser(
-        ServerReponse responseFromServer,
-        ControlState controlState,
-        SuccessResponse successResponse
+        ResultStrategy result,
+        UpdateStateStrategy updateState,
+        SuccessResponseStrategy successResponse
     ) {
-        this.responseFromServer = responseFromServer;
-        this.controlState = controlState;
+        this.result = result;
+        this.updateState = updateState;
         this.successResponse = successResponse;
         mapper = new ObjectMapper();
     }
@@ -25,27 +27,42 @@ public class JsonRPCParser {
         try {
             JsonNode node = mapper.readTree(data);
 
-            if (node.get("result") == null) {
-                JsonRPCRequestFromServer request = mapper
-                    .readValue(data, JsonRPCRequestFromServer.class);
-                successResponse.execute(
-                    new SuccessResponseToServer(request.id)
-                );
-                controlState.execute(
-                    new ControlStateData(
-                        request.params.data.meta.id,
-                        request.params.data.data
-                    )
-                );
+            if (isCommand(node)) {
+                RpcBase rpc = mapper.readValue(data, RpcBase.class);
+                switch (rpc.method) {
+                    case PUT:
+                        executeStateCommand(data);
+                    default:
+                        break;
+                }
+
             } else {
-                responseFromServer.execute(
+                result.execute(
                     new ResponseData(
-                        mapper.readValue(data, JsonRPCResponse.class)
+                        mapper.readValue(data, RpcResult.class)
                     )
                 );
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isCommand(JsonNode node) {
+        return node.get("result") == null;
+    }
+
+    private void executeStateCommand(String data) throws IOException {
+        RpcStateCommand command = mapper
+            .readValue(data, RpcStateCommand.class);
+        successResponse.execute(
+            new SuccessResponseToServer(command.id)
+        );
+        updateState.execute(
+            new ControlStateData(
+                command.params.data.meta.id,
+                command.params.data.data
+            )
+        );
     }
 }

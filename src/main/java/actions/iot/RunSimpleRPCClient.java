@@ -86,8 +86,6 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
         }
         VirtualIoTNetwork network = controller.execute();
 
-
-
         reportState = network.getReportState(0).toString();
         controlState = network.getControlState(0).toString();
         networkId = creator.network.id;

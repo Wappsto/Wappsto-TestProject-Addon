@@ -30,7 +30,7 @@ public class VirtualIoTNetwork {
             response -> client.send(toJson(response)))
         );
         client.send(toJson(
-            new RPCRequest(new Params("/network", schema), Methods.POST))
+            new RpcRequest(new Params("/network", schema), Methods.POST))
         );
     }
 
@@ -41,7 +41,7 @@ public class VirtualIoTNetwork {
             new ReportData(request.data)
         );
 
-        client.send(toJson(new RPCRequest(report, Methods.PUT)));
+        client.send(toJson(new RpcRequest(report, Methods.PUT)));
     }
 
     public UUID getControlState(int index) {

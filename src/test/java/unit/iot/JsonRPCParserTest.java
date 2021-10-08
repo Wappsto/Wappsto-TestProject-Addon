@@ -15,11 +15,8 @@ public class JsonRPCParserTest {
         @Nested
         public class can_be_deserialized_to {
             @Test
-            public void a_server_response() throws Exception {
-                JsonRPCResponse response = new JsonRPCResponse();
-                response.id = "id";
-                response.result = new JsonRPCResult();
-                response.result.value = true;
+            public void a_result() throws Exception {
+                RpcResult result = createResult();
 
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
@@ -29,22 +26,15 @@ public class JsonRPCParserTest {
                     controlCommand,
                     successResponse
                 ).parse(
-                    new ObjectMapper().writeValueAsString(response)
+                    new ObjectMapper().writeValueAsString(result)
                 );
 
                 assertTrue(responseCommand.wasCalled);
             }
 
             @Test
-            public void a_server_request() throws Exception {
-                JsonRPCRequestFromServer request =
-                    new JsonRPCRequestFromServer();
-                request.id = "";
-                request.method = Methods.PUT;
-                request.params = new JsonRPCRequestFromServerParams();
-                request.params.data = new JsonRPCRequestFromServerData();
-                request.params.data.meta = new Meta("thing");
-                request.params.data.data = "1";
+            public void an_update_state_command() throws Exception {
+                RpcStateCommand command = createCommand();
 
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
@@ -54,7 +44,7 @@ public class JsonRPCParserTest {
                     controlCommand,
                     successResponse
                 ).parse(
-                    new ObjectMapper().writeValueAsString(request)
+                    new ObjectMapper().writeValueAsString(command)
                 );
 
                 assertTrue(controlCommand.wasCalled);
@@ -62,10 +52,30 @@ public class JsonRPCParserTest {
         }
     }
 
+    private RpcStateCommand createCommand() {
+        RpcStateCommand request =
+            new RpcStateCommand();
+        request.id = "";
+        request.method = Methods.PUT;
+        request.params = new JsonRPCRequestFromServerParams();
+        request.params.data = new JsonRPCRequestFromServerData();
+        request.params.data.meta = new Meta("thing");
+        request.params.data.data = "1";
+        return request;
+    }
+
+    private RpcResult createResult() {
+        RpcResult response = new RpcResult();
+        response.id = "id";
+        response.result = new RpcResultData();
+        response.result.value = true;
+        return response;
+    }
+
     private class CommandMock implements
-        ControlState,
-        ServerReponse,
-        SuccessResponse
+        UpdateStateStrategy,
+        ResultStrategy,
+        SuccessResponseStrategy
     {
         public boolean wasCalled = false;
         @Override

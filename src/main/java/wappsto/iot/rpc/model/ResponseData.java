@@ -5,7 +5,7 @@ import wappsto.iot.rpc.model.from.server.*;
 public class ResponseData {
     public String id;
 
-    public ResponseData(JsonRPCResponse data) {
+    public ResponseData(RpcResult data) {
         this.id = data.id;
     }
 }

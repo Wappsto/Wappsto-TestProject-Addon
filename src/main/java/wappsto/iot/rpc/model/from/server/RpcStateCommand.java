@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import wappsto.iot.rpc.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonRPCRequestFromServer extends JsonRpcMessage {
+public class RpcStateCommand extends RpcData {
     @JsonProperty public Methods method;
     @JsonProperty public JsonRPCRequestFromServerParams params;
 }
