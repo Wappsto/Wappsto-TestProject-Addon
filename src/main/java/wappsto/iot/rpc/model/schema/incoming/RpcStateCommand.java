@@ -1,4 +1,4 @@
-package wappsto.iot.rpc.model.from.server;
+package wappsto.iot.rpc.model.schema.incoming;
 
 import com.fasterxml.jackson.annotation.*;
 import wappsto.iot.rpc.*;
@@ -6,5 +6,5 @@ import wappsto.iot.rpc.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RpcStateCommand extends RpcData {
     @JsonProperty public Methods method;
-    @JsonProperty public JsonRPCRequestFromServerParams params;
+    @JsonProperty public RpcCommandParams params;
 }

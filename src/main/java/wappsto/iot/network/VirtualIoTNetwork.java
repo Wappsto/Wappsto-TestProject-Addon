@@ -4,6 +4,7 @@ import wappsto.iot.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
+import wappsto.iot.rpc.model.schema.outgoing.*;
 
 import java.util.*;
 

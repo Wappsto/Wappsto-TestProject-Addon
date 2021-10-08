@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.*;
 import org.junit.jupiter.api.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.rpc.model.*;
-import wappsto.iot.rpc.model.from.server.*;
+import wappsto.iot.rpc.model.schema.*;
+import wappsto.iot.rpc.model.schema.incoming.*;
+import wappsto.iot.rpc.model.schema.outgoing.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +18,7 @@ public class RpcParserTest {
         public class can_be_deserialized_to {
             @Test
             public void a_result() throws Exception {
-                RpcResult result = createResult();
+                RpcIncomingResult result = createResult();
 
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
@@ -34,7 +36,7 @@ public class RpcParserTest {
 
             @Test
             public void an_update_state_command() throws Exception {
-                RpcStateCommand command = createCommand();
+                RpcStateCommand command = createUpdateCommand();
 
                 CommandMock responseCommand = new CommandMock();
                 CommandMock controlCommand = new CommandMock();
@@ -50,28 +52,27 @@ public class RpcParserTest {
                 assertTrue(controlCommand.wasCalled);
             }
 
-            @Disabled
             @Test
+            @Disabled
             public void a_delete_command() throws Exception {
-
             }
         }
     }
 
-    private RpcStateCommand createCommand() {
+    private RpcStateCommand createUpdateCommand() {
         RpcStateCommand request =
             new RpcStateCommand();
         request.id = "";
         request.method = Methods.PUT;
-        request.params = new JsonRPCRequestFromServerParams();
-        request.params.data = new JsonRPCRequestFromServerData();
+        request.params = new RpcCommandParams();
+        request.params.data = new RpcCommandData();
         request.params.data.meta = new Meta("thing");
         request.params.data.data = "1";
         return request;
     }
 
-    private RpcResult createResult() {
-        RpcResult response = new RpcResult();
+    private RpcIncomingResult createResult() {
+        RpcIncomingResult response = new RpcIncomingResult();
         response.id = "id";
         response.result = new RpcResultData();
         response.result.value = true;
@@ -95,7 +96,7 @@ public class RpcParserTest {
         }
 
         @Override
-        public void execute(SuccessResponseToServer response) {
+        public void execute(RpcOutgoingResult response) {
             wasCalled = true;
         }
     }

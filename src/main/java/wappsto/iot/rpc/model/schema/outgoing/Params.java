@@ -1,7 +1,7 @@
-package wappsto.iot.rpc.model;
+package wappsto.iot.rpc.model.schema.outgoing;
 
 import com.fasterxml.jackson.annotation.*;
-import wappsto.iot.network.model.*;
+import wappsto.iot.rpc.model.schema.*;
 
 public class Params {
     @JsonProperty public String url;

@@ -1,7 +1,8 @@
-package wappsto.iot.rpc.model;
+package wappsto.iot.rpc.model.schema.outgoing;
 
 import com.fasterxml.jackson.annotation.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.rpc.model.schema.*;
 
 public class RpcRequest extends RpcBase {
     @JsonProperty public Params params;

@@ -1,7 +1,7 @@
 package wappsto.iot.rpc;
 
-import wappsto.iot.rpc.model.*;
+import wappsto.iot.rpc.model.schema.outgoing.*;
 
 public interface SuccessResponseStrategy {
-    void execute(SuccessResponseToServer response);
+    void execute(RpcOutgoingResult response);
 }

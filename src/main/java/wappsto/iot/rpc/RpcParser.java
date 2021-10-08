@@ -2,7 +2,9 @@ package wappsto.iot.rpc;
 
 import com.fasterxml.jackson.databind.*;
 import wappsto.iot.rpc.model.*;
-import wappsto.iot.rpc.model.from.server.*;
+import wappsto.iot.rpc.model.schema.*;
+import wappsto.iot.rpc.model.schema.incoming.*;
+import wappsto.iot.rpc.model.schema.outgoing.*;
 
 import java.io.*;
 
@@ -39,7 +41,7 @@ public class RpcParser {
             } else {
                 result.execute(
                     new ResponseData(
-                        mapper.readValue(data, RpcResult.class)
+                        mapper.readValue(data, RpcIncomingResult.class)
                     )
                 );
             }
@@ -56,7 +58,7 @@ public class RpcParser {
         RpcStateCommand command = mapper
             .readValue(data, RpcStateCommand.class);
         successResponse.execute(
-            new SuccessResponseToServer(command.id)
+            new RpcOutgoingResult(command.id)
         );
         updateState.execute(
             new ControlStateData(

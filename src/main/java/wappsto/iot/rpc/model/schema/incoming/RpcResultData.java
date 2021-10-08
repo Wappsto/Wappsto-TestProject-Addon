@@ -1,4 +1,4 @@
-package wappsto.iot.rpc.model.from.server;
+package wappsto.iot.rpc.model.schema.incoming;
 
 import com.fasterxml.jackson.annotation.*;
 
