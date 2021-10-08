@@ -1,8 +1,8 @@
 package wappsto.rest.session;
 
 import wappsto.rest.request.*;
-import wappsto.session.model.*;
 import wappsto.session.*;
+import wappsto.session.model.*;
 
 public class RestUser extends RestSession implements User {
 
@@ -54,7 +54,7 @@ public class RestUser extends RestSession implements User {
         return id;
     }
 
-    public static class Builder implements UserBuilder {
+    public static class Builder {
         private final Admin admin;
         private final String serviceUrl;
         private Credentials credentials;
@@ -73,7 +73,6 @@ public class RestUser extends RestSession implements User {
          * @param credentials
          * @return this
          */
-        @Override
         public Builder withCredentials(Credentials credentials) {
             this.credentials = credentials;
             return this;
@@ -84,7 +83,6 @@ public class RestUser extends RestSession implements User {
          * @return this
          * @throws Exception
          */
-        @Override
         public RestUser create() throws Exception {
             admin.register(credentials);
             return new RestUser(credentials, serviceUrl);

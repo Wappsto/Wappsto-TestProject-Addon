@@ -29,7 +29,9 @@ public class ChangeControlState implements WebAction {
     public String serviceUrl;
 
     @Override
-    public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
+    public ExecutionResult execute(WebAddonHelper helper)
+        throws FailureException
+    {
         WebDriver browser = helper.getDriver();
         String sessionId;
         try {
@@ -37,12 +39,7 @@ public class ChangeControlState implements WebAction {
         } catch (NoSuchCookieException e) {
             throw new FailureException("Browser not logged in");
         }
-        new Controller(
-            sessionId,
-            serviceUrl,
-            controlState,
-            value
-        ).execute();
+        new Controller(sessionId, serviceUrl, controlState, value).execute();
 
         return ExecutionResult.PASSED;
     }
