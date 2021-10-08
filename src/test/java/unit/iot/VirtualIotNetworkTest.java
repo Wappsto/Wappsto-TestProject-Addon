@@ -51,6 +51,14 @@ public class VirtualIotNetworkTest {
         }
     }
 
+    @Test
+    public void stops(NetworkSchema schema, Connection connection) {
+        VirtualIoTNetwork network = startNetwork(schema, connection);
+        network.stop();
+        assertFalse(network.isRunning());
+        assertFalse(((InMemoryConnection)connection).isConnected);
+    }
+
     private VirtualIoTNetwork startNetwork(
         NetworkSchema schema,
         Connection connection

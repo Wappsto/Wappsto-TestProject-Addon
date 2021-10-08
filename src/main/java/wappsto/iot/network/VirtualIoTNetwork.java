@@ -16,6 +16,7 @@ public class VirtualIoTNetwork {
     private final HashMap<UUID, Value> values;
     private final List<UUID> controlStates;
     private final List<UUID> reportStates;
+    private boolean isRunning;
 
     public VirtualIoTNetwork(NetworkSchema schema, IoTClient client) {
         this.schema = schema;
@@ -26,14 +27,16 @@ public class VirtualIoTNetwork {
         addStatesAndValues(schema);
 
         client.start(new RpcParser(
-            new RpcStrategies(data -> {},
+            new RpcStrategies(
+                data -> {},
                 this::update,
                 response -> client.send(toJson(response)),
-                null))
+                this::stop))
         );
         client.send(toJson(
             new RpcRequest(new Params("/network", schema), Methods.POST))
         );
+        isRunning = true;
     }
 
     public void update(ControlStateData request) {
@@ -56,6 +59,11 @@ public class VirtualIoTNetwork {
 
     public void stop() {
         client.stop();
+        isRunning = false;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 
     private void addStatesAndValues(NetworkSchema schema) {
