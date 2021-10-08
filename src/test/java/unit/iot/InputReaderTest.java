@@ -7,13 +7,13 @@ import wappsto.iot.*;
 import wappsto.iot.ssl.*;
 
 import java.io.*;
+import java.time.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static wappsto.iot.exceptions.InvalidMessage.*;
 
 public class InputReaderTest {
     public static final int WAIT_FOR_INPUT = 100;
-    public static final int MESSAGE_TIMEOUT = 50;
+    public static final int MESSAGE_TIMEOUT = 10;
     private static ByteArrayInputStream input;
     private static ByteArrayOutputStream toInput;
     private static MessageCallbackMock messageCallback;
@@ -47,9 +47,8 @@ public class InputReaderTest {
                 errorCallback
             );
             handler.start();
-            Thread.sleep(WAIT_FOR_INPUT);
-            assert errorCallback.wasCalled : ERROR_CALLBACK_NOT_CALLED;
-            assertEquals(MISSING_OPENING_BRACKET, errorCallback.message);
+            assert callbackWasCalled(errorCallback)
+                : ERROR_CALLBACK_NOT_CALLED;
         }
 
         @Test
@@ -65,15 +64,14 @@ public class InputReaderTest {
             );
 
             handler.start();
-            Thread.sleep(MESSAGE_TIMEOUT + 100);
-            assert errorCallback.wasCalled : ERROR_CALLBACK_NOT_CALLED;
-            assertEquals(MISSING_CLOSING_BRACKET, errorCallback.message);
-
+            assert callbackWasCalled(errorCallback) :
+                ERROR_CALLBACK_NOT_CALLED;
         }
 
         @Test
         public void has_an_equal_number_of_opening_and_closing_brackets()
-            throws InterruptedException, IOException {
+            throws IOException
+        {
             String message = "{data: 'valid message'}";
             toInput.write(message.getBytes());
             input = new ByteArrayInputStream(toInput.toByteArray());
@@ -86,9 +84,20 @@ public class InputReaderTest {
             );
             handler.start();
 
-            Thread.sleep(WAIT_FOR_INPUT);
+            assert callbackWasCalled(messageCallback);
             assertEquals(message, messageCallback.message);
         }
+    }
+
+    private boolean callbackWasCalled(CallbackMock callback) {
+        Duration timeout = Duration.ofMillis(WAIT_FOR_INPUT);
+        Instant messageSent = Instant.now();
+        while (!callback.wasCalled) {
+            if (Instant.now().isAfter(messageSent.plus(timeout))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @AfterEach
@@ -97,9 +106,7 @@ public class InputReaderTest {
         handler.join();
     }
 
-    class MessageCallbackMock implements Callback {
-        public String message;
-        public boolean wasCalled;
+    static class MessageCallbackMock extends CallbackMock {
 
         @Override
         public void call(String message) {
@@ -108,10 +115,7 @@ public class InputReaderTest {
         }
     }
 
-    class ErrorCallbackMock implements Callback {
-        public String message;
-        public boolean wasCalled;
-
+    static class ErrorCallbackMock extends CallbackMock {
         @Override
         public void call(String message) {
             try {
@@ -123,4 +127,10 @@ public class InputReaderTest {
             }
         }
     }
+
+    static abstract class CallbackMock implements Callback {
+        public String message;
+        public boolean wasCalled;
+    }
+
 }

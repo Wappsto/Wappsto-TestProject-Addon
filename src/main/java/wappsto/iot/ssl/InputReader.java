@@ -13,7 +13,7 @@ public class InputReader extends Thread{
     private final Callback messageCallback;
     private final Callback errorCallback;
     private final InputStream incomingData;
-    private int timeout;
+    private final int timeout;
 
     public InputReader(
         InputStream incomingData,

@@ -49,6 +49,12 @@ public class JsonRPCParserTest {
 
                 assertTrue(controlCommand.wasCalled);
             }
+
+            @Disabled
+            @Test
+            public void a_delete_command() throws Exception {
+
+            }
         }
     }
 
