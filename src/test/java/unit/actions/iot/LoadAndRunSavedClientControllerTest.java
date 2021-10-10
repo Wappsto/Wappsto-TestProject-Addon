@@ -6,10 +6,10 @@ import extensions.mocks.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.api.network.model.*;
 import wappsto.iot.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.ssl.model.*;
-import wappsto.network.model.*;
 
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package extensions.mocks;
 
-import wappsto.session.*;
-import wappsto.session.model.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
 import java.util.*;
 

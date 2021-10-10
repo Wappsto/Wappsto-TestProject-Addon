@@ -2,13 +2,11 @@ package extensions.injectors;
 
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.wapps.*;
-import wappsto.wapps.*;
+import wappsto.api.rest.wapps.*;
+import wappsto.api.wapps.*;
 
-import static util.Env.API_ROOT;
-import static util.Env.env;
-import static util.Utils.createNewAdmin;
-import static util.Utils.createNewUserSession;
+import static util.Env.*;
+import static util.Utils.*;
 
 public class WappServiceInjector implements ParameterResolver {
     @Override

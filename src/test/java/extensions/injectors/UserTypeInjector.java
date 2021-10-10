@@ -2,7 +2,7 @@ package extensions.injectors;
 
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.session.*;
+import wappsto.api.rest.session.*;
 
 public class UserTypeInjector implements ParameterResolver {
     @Override

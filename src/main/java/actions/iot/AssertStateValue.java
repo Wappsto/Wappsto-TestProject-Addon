@@ -7,9 +7,9 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
-import wappsto.network.*;
-import wappsto.rest.network.*;
-import wappsto.rest.session.*;
+import wappsto.api.network.*;
+import wappsto.api.rest.network.*;
+import wappsto.api.rest.session.*;
 
 import java.util.*;
 

@@ -1,8 +1,8 @@
 package extensions.mocks;
 
-import wappsto.network.*;
-import wappsto.network.model.*;
-import wappsto.session.model.*;
+import wappsto.api.network.*;
+import wappsto.api.network.model.*;
+import wappsto.api.session.model.*;
 
 import java.util.*;
 

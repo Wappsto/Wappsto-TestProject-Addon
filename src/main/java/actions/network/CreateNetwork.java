@@ -9,8 +9,8 @@ import io.testproject.java.sdk.v2.drivers.WebDriver;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
-import wappsto.network.*;
-import wappsto.rest.network.*;
+import wappsto.api.network.*;
+import wappsto.api.rest.network.*;
 
 import static actions.Utils.*;
 

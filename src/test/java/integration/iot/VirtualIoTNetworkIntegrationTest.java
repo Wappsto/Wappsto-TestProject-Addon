@@ -3,11 +3,11 @@ package integration.iot;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.api.network.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.session.*;
 import wappsto.iot.network.*;
 import wappsto.iot.rpc.model.*;
-import wappsto.network.*;
-import wappsto.rest.request.exceptions.*;
-import wappsto.session.*;
 
 import java.util.*;
 

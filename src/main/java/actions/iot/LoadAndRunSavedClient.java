@@ -5,12 +5,12 @@ import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
+import wappsto.api.network.model.*;
 import wappsto.iot.*;
 import wappsto.iot.filesystem.*;
 import wappsto.iot.network.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.ssl.*;
-import wappsto.network.model.*;
 
 @Action(
     name = "Load and run saved client",

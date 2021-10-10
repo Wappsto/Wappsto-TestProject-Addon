@@ -2,11 +2,10 @@ package extensions.injectors;
 
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
 
-import static util.Env.API_ROOT;
-import static util.Env.env;
+import static util.Env.*;
 import static util.Utils.*;
 
 public class UserInjector implements ParameterResolver {

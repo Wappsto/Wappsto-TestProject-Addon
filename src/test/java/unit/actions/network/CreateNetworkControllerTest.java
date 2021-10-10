@@ -4,9 +4,9 @@ import actions.network.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.network.*;
+import wappsto.api.network.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("unit")
 @ExtendWith(NetworkServiceInjector.class)

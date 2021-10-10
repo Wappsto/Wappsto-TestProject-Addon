@@ -1,7 +1,7 @@
 package extensions.injectors;
 
 import org.junit.jupiter.api.extension.*;
-import wappsto.network.model.*;
+import wappsto.api.network.model.*;
 
 import java.util.*;
 

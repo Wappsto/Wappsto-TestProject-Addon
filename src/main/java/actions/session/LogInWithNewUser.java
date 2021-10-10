@@ -7,7 +7,7 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
-import wappsto.session.model.*;
+import wappsto.api.session.model.*;
 
 import static actions.Utils.*;
 

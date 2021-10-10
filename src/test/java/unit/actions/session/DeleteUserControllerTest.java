@@ -5,11 +5,10 @@ import extensions.injectors.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.session.*;
-import wappsto.session.model.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("unit")
 @ExtendWith(AdminInjector.class)

@@ -1,7 +1,7 @@
 package extensions.mocks;
 
-import wappsto.wapps.*;
-import wappsto.wapps.model.*;
+import wappsto.api.wapps.*;
+import wappsto.api.wapps.model.*;
 
 import java.util.*;
 

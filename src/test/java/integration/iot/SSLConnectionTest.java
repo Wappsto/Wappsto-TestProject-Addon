@@ -1,16 +1,14 @@
 package integration.iot;
 
 import extensions.injectors.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.iot.ssl.SSLConnection;
-import wappsto.iot.ssl.model.WappstoCerts;
-import org.junit.jupiter.api.Test;
-import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.network.RestNetworkService;
-import wappsto.network.model.CreatorResponse;
-import wappsto.session.*;
+import wappsto.api.network.model.*;
+import wappsto.api.rest.network.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.session.*;
+import wappsto.iot.ssl.*;
+import wappsto.iot.ssl.model.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;

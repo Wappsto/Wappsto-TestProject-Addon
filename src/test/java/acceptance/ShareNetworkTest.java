@@ -4,12 +4,12 @@ import actions.network.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.network.*;
-import wappsto.rest.network.*;
-import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
-import wappsto.session.model.*;
+import wappsto.api.network.*;
+import wappsto.api.rest.network.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
 import java.util.concurrent.*;
 

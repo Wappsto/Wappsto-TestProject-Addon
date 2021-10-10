@@ -3,10 +3,10 @@ package util;
 import io.testproject.java.enums.*;
 import io.testproject.java.sdk.v2.*;
 import org.openqa.selenium.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 import wappsto.iot.network.model.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
-import wappsto.session.model.*;
 
 import java.util.*;
 

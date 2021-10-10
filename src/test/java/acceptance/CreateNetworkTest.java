@@ -4,14 +4,12 @@ import actions.network.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.session.*;
 
 import java.util.concurrent.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 

@@ -2,13 +2,12 @@ package extensions.injectors;
 
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.network.*;
-import wappsto.rest.network.*;
-import wappsto.rest.session.*;
+import wappsto.api.network.*;
+import wappsto.api.rest.network.*;
+import wappsto.api.rest.session.*;
 
 import static util.Env.*;
-import static util.Utils.createNewAdmin;
-import static util.Utils.createNewUserSession;
+import static util.Utils.*;
 
 public class NetworkServiceInjector implements ParameterResolver {
 

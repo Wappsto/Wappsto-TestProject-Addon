@@ -4,12 +4,12 @@ import actions.wapps.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.session.*;
-import wappsto.rest.wapps.RestWappService;
-import wappsto.session.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.rest.wapps.*;
+import wappsto.api.session.*;
 
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;

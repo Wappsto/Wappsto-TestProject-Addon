@@ -1,16 +1,14 @@
 package actions.session;
 
 import io.testproject.java.annotations.v2.*;
-import io.testproject.java.sdk.v2.addons.WebAction;
-import io.testproject.java.sdk.v2.addons.helpers.WebAddonHelper;
-import io.testproject.java.sdk.v2.enums.ExecutionResult;
-import io.testproject.java.sdk.v2.exceptions.FailureException;
-import wappsto.session.*;
-import wappsto.session.model.AdminCredentials;
-import wappsto.rest.session.RestAdmin;
+import io.testproject.java.sdk.v2.addons.*;
+import io.testproject.java.sdk.v2.addons.helpers.*;
+import io.testproject.java.sdk.v2.enums.*;
+import io.testproject.java.sdk.v2.exceptions.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
-import static actions.Utils.createRestAdminSession;
-import static actions.Utils.createRestSession;
+import static actions.Utils.*;
 
 @Action(name = "Delete user")
 public class DeleteUser extends ActionWithAdminSession implements WebAction {

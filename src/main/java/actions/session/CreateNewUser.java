@@ -5,7 +5,7 @@ import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
-import wappsto.session.model.*;
+import wappsto.api.session.model.*;
 
 @Action(name = "Create new user")
 public class CreateNewUser extends ActionWithAdminSession implements WebAction {

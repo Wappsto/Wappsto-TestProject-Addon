@@ -3,12 +3,10 @@ package integration.rest;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
+import wappsto.api.session.*;
 
-import static util.Env.*;
-import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
 @ExtendWith(UserInjector.class)

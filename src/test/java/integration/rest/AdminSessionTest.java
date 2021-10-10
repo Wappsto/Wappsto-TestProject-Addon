@@ -3,15 +3,13 @@ package integration.rest;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.RestAdmin;
-import wappsto.session.*;
-import wappsto.session.model.AdminCredentials;
-import wappsto.session.model.Credentials;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static util.Env.API_ROOT;
-import static util.Env.env;
+import static util.Env.*;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)

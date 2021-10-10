@@ -2,14 +2,11 @@ package actions;
 
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
-import wappsto.iot.network.*;
-import wappsto.iot.network.model.*;
-import wappsto.iot.rpc.*;
-import wappsto.rest.network.*;
-import wappsto.network.model.*;
-import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.*;
-import wappsto.session.model.*;
+import wappsto.api.network.model.*;
+import wappsto.api.rest.network.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.model.*;
 
 public class Utils {
     public static void logIn(WebDriver browser, String session) {

@@ -5,7 +5,7 @@ import extensions.injectors.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.network.*;
+import wappsto.api.network.*;
 
 import java.util.*;
 

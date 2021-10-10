@@ -3,12 +3,11 @@ package extensions.injectors;
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
 import util.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
-import wappsto.session.model.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
-import static util.Env.API_ROOT;
-import static util.Env.env;
+import static util.Env.*;
 
 public class AdminInjector implements ParameterResolver {
 

@@ -1,19 +1,14 @@
 package integration.rest;
 
 import extensions.injectors.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.rest.request.exceptions.HttpException;
-import wappsto.session.*;
-import wappsto.wapps.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.session.*;
+import wappsto.api.wapps.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static util.Env.API_ROOT;
-import static util.Env.env;
+import static org.junit.jupiter.api.Assertions.*;
+import static util.Env.*;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)

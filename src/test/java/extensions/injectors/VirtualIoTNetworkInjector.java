@@ -2,13 +2,13 @@ package extensions.injectors;
 
 import extensions.mocks.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.api.network.model.*;
+import wappsto.api.rest.network.*;
+import wappsto.api.rest.session.*;
 import wappsto.iot.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
-import wappsto.network.model.*;
-import wappsto.rest.network.*;
-import wappsto.rest.session.*;
 
 import java.util.*;
 

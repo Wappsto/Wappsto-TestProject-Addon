@@ -7,6 +7,7 @@ import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.openqa.selenium.*;
+import wappsto.api.network.model.*;
 import wappsto.iot.*;
 import wappsto.iot.filesystem.*;
 import wappsto.iot.network.*;
@@ -14,7 +15,6 @@ import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
 import wappsto.iot.ssl.*;
 import wappsto.iot.ssl.model.*;
-import wappsto.network.model.*;
 
 import static actions.Utils.*;
 

@@ -1,13 +1,11 @@
 package actions.session;
 
 import io.testproject.java.sdk.v2.exceptions.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
-import wappsto.session.model.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
-import java.lang.reflect.*;
-
-import static actions.Utils.createRestAdminSession;
+import static actions.Utils.*;
 
 public class CreateNewUserController {
     private final User user;

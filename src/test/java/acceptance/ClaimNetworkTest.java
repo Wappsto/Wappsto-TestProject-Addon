@@ -4,17 +4,16 @@ import actions.network.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.network.*;
-import wappsto.rest.network.*;
-import wappsto.network.model.*;
-import wappsto.rest.request.exceptions.HttpException;
-import wappsto.rest.session.*;
-import wappsto.session.*;
-import wappsto.session.model.Credentials;
+import wappsto.api.network.*;
+import wappsto.api.network.model.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
+import wappsto.api.session.model.*;
 
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 

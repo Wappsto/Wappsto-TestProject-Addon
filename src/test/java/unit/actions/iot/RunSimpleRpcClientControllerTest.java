@@ -4,10 +4,10 @@ import actions.iot.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.api.network.model.*;
 import wappsto.iot.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
-import wappsto.network.model.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

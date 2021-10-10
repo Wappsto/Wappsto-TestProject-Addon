@@ -4,18 +4,17 @@ import actions.session.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import wappsto.rest.request.exceptions.HttpException;
-import wappsto.session.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.session.*;
 
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
-import static util.Env.*;
-import static util.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static util.Env.*;
+import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
 public class LogInExistingUserTest {

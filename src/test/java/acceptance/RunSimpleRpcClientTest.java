@@ -6,11 +6,11 @@ import io.testproject.java.execution.results.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.api.network.model.*;
+import wappsto.api.rest.request.exceptions.*;
+import wappsto.api.rest.session.*;
+import wappsto.api.session.*;
 import wappsto.iot.filesystem.*;
-import wappsto.network.model.*;
-import wappsto.rest.request.exceptions.*;
-import wappsto.rest.session.*;
-import wappsto.session.*;
 
 import java.util.concurrent.*;
 

@@ -4,9 +4,9 @@ import actions.session.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.session.*;
+import wappsto.api.session.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("unit")
 @ExtendWith(AdminInjector.class)
