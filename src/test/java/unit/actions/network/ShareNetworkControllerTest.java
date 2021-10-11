@@ -27,7 +27,7 @@ public class ShareNetworkControllerTest {
 
     @Test
     public void shares_network(NetworkService service) throws Exception {
-        String network = service.create().id;
+        String network = service.createNetwork().id;
         ShareNetwork.Controller controller = new ShareNetwork.Controller(
             service,
             network,

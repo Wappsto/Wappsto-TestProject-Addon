@@ -50,7 +50,7 @@ public class RestNetworkService implements NetworkService {
      * @throws Exception
      */
     @Override
-    public NetworkMeta create() throws Exception {
+    public NetworkMeta createNetwork() throws Exception {
         return ((NetworkResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.NETWORK)
@@ -141,5 +141,16 @@ public class RestNetworkService implements NetworkService {
 
 
 
+    }
+
+    @Override
+    public String createDevice(String networkId) throws Exception {
+        return ((CreateDeviceResponse) new Request.Builder(session.service)
+            .atEndPoint(API.V2_0)
+            .atEndPoint(API.NETWORK)
+            .atEndPoint(networkId)
+            .atEndPoint(API.DEVICE)
+            .withBody("{}")
+            .post(session.getId(), CreateDeviceResponse.class)).meta.id;
     }
 }

@@ -69,6 +69,13 @@ public enum API {
         }
     },
 
+    DEVICE {
+        @Override
+        public String toString() {
+            return "device";
+        }
+    },
+
     CREATOR {
         @Override
         public String toString() {

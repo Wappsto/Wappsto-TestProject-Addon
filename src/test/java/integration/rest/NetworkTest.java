@@ -11,6 +11,8 @@ import wappsto.api.rest.session.*;
 import wappsto.api.session.*;
 import wappsto.api.session.model.*;
 
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
@@ -26,8 +28,15 @@ public class NetworkTest {
     public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
 
+        resetUser(admin);
+    }
+
+    private static void resetUser(Admin admin) throws Exception {
         try {
             admin.delete(defaultUser().username);
+        } catch (HttpException ignored) {
+        }
+        try {
             admin.delete(NETWORK_FRIEND);
         } catch (HttpException ignored) {
         }
@@ -51,7 +60,7 @@ public class NetworkTest {
 
     @Test
     public void shares_an_owned_network(NetworkService service) throws Exception {
-        NetworkMeta network = service.create();
+        NetworkMeta network = service.createNetwork();
         service.share(network, friend.fetchMe());
 
         RestNetworkService friendService = new RestNetworkService(friend);
@@ -61,7 +70,7 @@ public class NetworkTest {
 
     @Test
     public void fetches_an_owned_network(NetworkService service) throws Exception {
-        NetworkMeta network = service.create();
+        NetworkMeta network = service.createNetwork();
         assertEquals(network.id, service.fetch(network.id).id);
     }
 
@@ -78,7 +87,7 @@ public class NetworkTest {
 
         @Test
         public void when_not_authorized(NetworkService service) throws Exception {
-            NetworkMeta network = service.create();
+            NetworkMeta network = service.createNetwork();
             RestNetworkService friendService = new RestNetworkService(friend);
 
             assertThrows(
@@ -91,7 +100,7 @@ public class NetworkTest {
 
     @Test
     public void claims_shared_network(NetworkService service) throws Exception {
-        NetworkMeta network = service.create();
+        NetworkMeta network = service.createNetwork();
         service.share(network, friend.fetchMe());
 
         RestNetworkService friendService = new RestNetworkService(friend);
@@ -99,12 +108,26 @@ public class NetworkTest {
         assertDoesNotThrow(() -> friendService.claim(network.id));
     }
 
+    @Test
+    public void fails_to_create_device_under_nonexistent_network(
+        NetworkService service
+    ) {
+        assertThrows(
+            HttpException.class,
+            () -> service.createDevice(UUID.randomUUID().toString())
+        );
+    }
+
+    @Test
+    public void creates_device_under_existing_network(NetworkService service)
+        throws Exception
+    {
+        String networkId = service.createNetwork().id;
+        assertNotNull(service.createDevice(networkId));
+    }
+
     @AfterEach
-    public void tearDown(Admin admin) {
-        try {
-            admin.delete(defaultUser().username);
-            admin.delete(NETWORK_FRIEND);
-        } catch (Exception ignored) {
-        }
+    public void tearDown(Admin admin) throws Exception {
+        resetUser(admin);
     }
 }

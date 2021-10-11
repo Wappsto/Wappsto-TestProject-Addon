@@ -7,8 +7,8 @@ import wappsto.api.session.model.*;
 import java.util.*;
 
 public class InMemoryNetworkService implements NetworkService {
-    private HashMap<UUID, String> states;
-    private HashMap<UUID, NetworkMeta> networks;
+    private final HashMap<UUID, String> states;
+    private final HashMap<UUID, NetworkMeta> networks;
 
     public InMemoryNetworkService() {
         states = new HashMap<>();
@@ -28,10 +28,11 @@ public class InMemoryNetworkService implements NetworkService {
     }
 
     @Override
-    public NetworkMeta create() throws Exception {
+    public NetworkMeta createNetwork() throws Exception {
         NetworkMeta meta = new NetworkMeta();
         UUID id = UUID.randomUUID();
         meta.id = id.toString();
+        meta.device = new LinkedList<>();
         networks.put(id, meta);
         return meta;
     }
@@ -63,5 +64,16 @@ public class InMemoryNetworkService implements NetworkService {
         String value = states.get(id);
         if (value == null) throw new Exception("Not found");
         else return value;
+    }
+
+    @Override
+    public String createDevice(String networkId) throws Exception {
+        UUID id = UUID.randomUUID();
+        try {
+            networks.get(UUID.fromString(networkId)).device.add(id.toString());
+        } catch (NullPointerException e) {
+            throw new Exception("Network not found");
+        }
+        return id.toString();
     }
 }

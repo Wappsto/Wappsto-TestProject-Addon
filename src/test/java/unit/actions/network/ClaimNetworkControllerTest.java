@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ClaimNetworkControllerTest {
     @Test
     public void claims_network(NetworkService service) throws Exception {
-        UUID network = UUID.fromString(service.create().id);
+        UUID network = UUID.fromString(service.createNetwork().id);
         ClaimNetwork.Controller controller = new ClaimNetwork
             .Controller(service, network.toString());
         assertDoesNotThrow(() -> controller.execute());

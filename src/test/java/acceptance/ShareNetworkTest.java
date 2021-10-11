@@ -58,7 +58,7 @@ public class ShareNetworkTest {
         @Test
         public void when_browser_is_not_logged_in() throws Exception {
             NetworkService service = new RestNetworkService(user);
-            String network = service.create().id;
+            String network = service.createNetwork().id;
             ShareNetwork action = createNewAction(
                 serviceUrl,
                 network,
@@ -78,7 +78,7 @@ public class ShareNetworkTest {
         RestNetworkService selfService = new RestNetworkService(user);
         RestNetworkService friendService = new RestNetworkService(friend);
 
-        String network = selfService.create().id;
+        String network = selfService.createNetwork().id;
         ShareNetwork action = createNewAction(
             serviceUrl,
             network,

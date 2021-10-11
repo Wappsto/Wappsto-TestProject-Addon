@@ -52,7 +52,7 @@ public class ClaimNetworkTest {
 
     @Test
     public void claims_network(NetworkService service) throws Exception {
-        NetworkMeta network = service.create();
+        NetworkMeta network = service.createNetwork();
 
         service.share(network, friend.fetchMe());
 
@@ -83,7 +83,7 @@ public class ClaimNetworkTest {
         public void when_network_has_not_been_shared(NetworkService service)
             throws Exception
         {
-            NetworkMeta network = service.create();
+            NetworkMeta network = service.createNetwork();
             ClaimNetwork action = createAction(
                 network.id
             );

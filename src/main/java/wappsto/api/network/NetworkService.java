@@ -10,7 +10,7 @@ public interface NetworkService {
 
     CreatorResponse getCreator() throws Exception;
 
-    NetworkMeta create() throws Exception;
+    NetworkMeta createNetwork() throws Exception;
 
     NetworkMeta fetch(String id) throws Exception;
 
@@ -21,4 +21,6 @@ public interface NetworkService {
     void updateState(UUID id, String data) throws Exception;
 
     String getState(UUID id) throws Exception;
+
+    String createDevice(String networkId) throws Exception;
 }

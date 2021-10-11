@@ -58,7 +58,7 @@ public class CreateNetwork implements WebAction {
 
         public String execute() throws FailureException {
             try {
-                return service.create().id;
+                return service.createNetwork().id;
             } catch (Exception e) {
                 throw new FailureException(
                     "Failed to create network: " + e.getMessage()
