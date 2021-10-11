@@ -49,12 +49,27 @@ public class VirtualIotNetworkTest {
     public void can_change_its_report_state_directly(
         NetworkSchema schema,
         Connection connection
-    ) {
+    )
+        throws Exception
+    {
         VirtualIoTNetwork network = startNetwork(schema, connection);
         UUID state = network.getReportStateId(0);
         network.updateReportState(new StateData(state, "1"));
         assertTrue(
             wasReceived("\"data\":\"1\"", (InMemoryConnection)connection)
+        );
+    }
+
+    @Test
+    public void fails_to_update_invalid_report_state(
+        NetworkSchema schema,
+        Connection connection
+    ) {
+        VirtualIoTNetwork network = startNetwork(schema, connection);
+        UUID state = UUID.randomUUID();
+        assertThrows(
+            Exception.class,
+            () -> network.updateReportState(new StateData(state, "1"))
         );
     }
 

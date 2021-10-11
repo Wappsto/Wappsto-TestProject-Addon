@@ -89,7 +89,6 @@ public class LoadAndRunSavedClient
                 VirtualIoTNetwork network = new VirtualIoTNetwork(
                     instance.schema, client
                 );
-
                 return instance.schema.meta.id.toString();
             } catch (Exception e) {
                 throw new FailureException(

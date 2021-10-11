@@ -44,16 +44,33 @@ public class VirtualIoTNetwork {
 
     public void updateControlState(StateData request) {
         request.state = controlAndReportStates.get(request.state);
-        updateReportState(request);
+        try {
+            updateReportState(request);
+        } catch (Exception e) {
+            throw new RuntimeException("Report state does not exist");
+        }
     }
 
-    public void updateReportState(StateData request) {
+    public void updateReportState(StateData request) throws Exception {
+        if (!reportValues.containsKey(request.state)) {
+            throw new Exception("Invalid report state");
+        }
         reportValues.put(request.state, request.data);
         ReportState report = new ReportState(
             request.state,
             new ReportData(reportValues.get(request.state))
         );
+        updateStateInSchema(request);
         client.send(toJson(new RpcRequest(report, Methods.PUT)));
+    }
+
+    private void updateStateInSchema(StateData request) {
+        schema.device.get(0).value.get(0).state
+            .stream()
+            .filter(s -> s.meta.id.equals(request.state))
+            .findAny()
+            .orElseThrow()
+            .data = request.data;
     }
 
     public UUID getControlStateId(int index) {
