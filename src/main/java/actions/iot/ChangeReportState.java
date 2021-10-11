@@ -117,7 +117,7 @@ public class ChangeReportState extends ActionWithSSLSocket implements WebAction 
                     new StateData(UUID.fromString(state), value)
                 );
                 instance.schema = network.schema;
-                store.save(networkId, network.schema);
+                store.save(networkId, instance);
             } catch (Exception e) {
                 throw new FailureException(
                     "Failed to load network from data store: " + e.getMessage());
