@@ -39,8 +39,8 @@ public class VirtualIoTNetworkIntegrationTest {
         throws Exception
     {
         service.claim(network.schema.meta.id.toString());
-        network.update(
-            new ControlStateData(
+        network.updateControlState(
+            new StateData(
                 network.schema.device.get(0).value.get(0).state.stream()
                     .filter(s -> s.type.equals("Control"))
                     .findAny()

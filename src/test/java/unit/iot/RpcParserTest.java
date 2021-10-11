@@ -104,7 +104,7 @@ public class RpcParserTest {
     {
         public boolean wasCalled = false;
         @Override
-        public void execute(ControlStateData command) {
+        public void execute(StateData command) {
             wasCalled = true;
         }
 

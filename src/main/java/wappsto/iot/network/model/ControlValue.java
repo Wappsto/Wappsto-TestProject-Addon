@@ -2,10 +2,10 @@ package wappsto.iot.network.model;
 
 import java.util.*;
 
-public class Value {
+public class ControlValue {
     public UUID reportState;
     public String value;
-    public Value(UUID reportState, String value) {
+    public ControlValue(UUID reportState, String value) {
         this.reportState = reportState;
         this.value = value;
     }

@@ -65,7 +65,7 @@ public class RpcParser {
             new RpcOutgoingResult(command.id)
         );
         updateState.execute(
-            new ControlStateData(
+            new StateData(
                 command.params.data.meta.id,
                 command.params.data.data
             )

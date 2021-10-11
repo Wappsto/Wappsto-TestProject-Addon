@@ -13,7 +13,8 @@ import static wappsto.iot.rpc.Utils.*;
 public class VirtualIoTNetwork {
     public final NetworkSchema schema;
     public final IoTClient client;
-    private final HashMap<UUID, Value> values;
+    private final HashMap<UUID, UUID> controlAndReportStates;
+    private final HashMap<UUID, String> reportValues;
     private final List<UUID> controlStates;
     private final List<UUID> reportStates;
     private boolean isRunning;
@@ -21,7 +22,9 @@ public class VirtualIoTNetwork {
     public VirtualIoTNetwork(NetworkSchema schema, IoTClient client) {
         this.schema = schema;
         this.client = client;
-        values = new HashMap<>();
+        controlAndReportStates = new HashMap<>();
+        reportValues = new HashMap<>();
+
         controlStates = new LinkedList<>();
         reportStates = new LinkedList<>();
         addStatesAndValues(schema);
@@ -29,7 +32,7 @@ public class VirtualIoTNetwork {
         client.start(new RpcParser(
             new RpcStrategies(
                 data -> {},
-                this::update,
+                this::updateControlState,
                 response -> client.send(toJson(response)),
                 this::stop))
         );
@@ -39,21 +42,25 @@ public class VirtualIoTNetwork {
         isRunning = true;
     }
 
-    public void update(ControlStateData request) {
-        values.get(request.state).value = request.data;
-        ReportState report = new ReportState(
-            values.get(request.state).reportState,
-            new ReportData(request.data)
-        );
+    public void updateControlState(StateData request) {
+        request.state = controlAndReportStates.get(request.state);
+        updateReportState(request);
+    }
 
+    public void updateReportState(StateData request) {
+        reportValues.put(request.state, request.data);
+        ReportState report = new ReportState(
+            request.state,
+            new ReportData(reportValues.get(request.state))
+        );
         client.send(toJson(new RpcRequest(report, Methods.PUT)));
     }
 
-    public UUID getControlState(int index) {
+    public UUID getControlStateId(int index) {
         return controlStates.get(index);
     }
 
-    public UUID getReportState(int index) {
+    public UUID getReportStateId(int index) {
         return reportStates.get(index);
     }
 
@@ -79,10 +86,8 @@ public class VirtualIoTNetwork {
                     .orElseThrow();
                 controlStates.add(control.meta.id);
                 reportStates.add(report.meta.id);
-                values.put(
-                    control.meta.id,
-                    new Value(report.meta.id, report.data)
-                );
+                controlAndReportStates.put(control.meta.id, report.meta.id);
+                reportValues.put(report.meta.id, report.data);
             }
         }
     }
