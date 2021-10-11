@@ -27,7 +27,9 @@ public class ChangeReportStateControllerTest {
         NetworkSchema schema,
         Connection connection,
         DataStore store
-    ) throws FailureException {
+    )
+        throws FailureException
+    {
         VirtualIoTNetwork network = startNetwork(schema, connection, store);
         ChangeReportState.Controller controller =
             new ChangeReportState.Controller(
