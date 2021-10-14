@@ -59,15 +59,24 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
     )
     public String networkId;
 
+    @Parameter(
+        description = "Manufacturer as owner, (true/false)"
+    )
+    public String manufacturerAsOwner;
+
     @Override
     public ExecutionResult execute(WebAddonHelper helper)
         throws FailureException
     {
         WebDriver browser = helper.getDriver();
-        CreatorResponse creator = getCreator(browser, serviceUrl);
+        CreatorResponse creator = getCreator(
+            browser,
+            serviceUrl,
+            Boolean.valueOf(manufacturerAsOwner)
+        );
         Controller controller;
         try {
-             controller = new Controller(
+            controller = new Controller(
                 name,
                 creator,
                 new NumberSchema(

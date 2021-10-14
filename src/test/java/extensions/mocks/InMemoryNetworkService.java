@@ -28,6 +28,11 @@ public class InMemoryNetworkService implements NetworkService {
     }
 
     @Override
+    public CreatorResponse getCreator(boolean manufacturerAsOwner) throws Exception {
+        return null;
+    }
+
+    @Override
     public NetworkMeta createNetwork() throws Exception {
         NetworkMeta meta = new NetworkMeta();
         UUID id = UUID.randomUUID();

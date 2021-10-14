@@ -10,6 +10,8 @@ public interface NetworkService {
 
     CreatorResponse getCreator() throws Exception;
 
+    CreatorResponse getCreator(boolean manufacturerAsOwner) throws Exception;
+
     NetworkMeta createNetwork() throws Exception;
 
     NetworkMeta fetch(String id) throws Exception;
@@ -23,4 +25,5 @@ public interface NetworkService {
     String getState(UUID id) throws Exception;
 
     String createDevice(String networkId) throws Exception;
+
 }

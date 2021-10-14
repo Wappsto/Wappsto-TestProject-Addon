@@ -134,7 +134,28 @@ public class RunSimpleRpcClientTest {
             action.networkId,
             uuidFromFile
         );
+    }
 
+    @Test
+    public void creates_as_manufacturer_as_owner() throws Exception {
+        RunSimpleRPCClient action = createAction(
+            serviceUrl,
+            socketUrl,
+            socketPort,
+            min,
+            max,
+            stepSize,
+            type
+        );
+        action.manufacturerAsOwner = "true";
+        runner().run(action);
+        Thread.sleep(2000);
+        UUID controlState = UUID.fromString(action.controlState);
+        UUID reportState = UUID.fromString(action.reportState);
+        RestNetworkService service = new RestNetworkService(session);
+        service.updateState(controlState, "1");
+        Thread.sleep(1000);
+        assertEquals("1", service.getState(reportState));
     }
 
     @Test

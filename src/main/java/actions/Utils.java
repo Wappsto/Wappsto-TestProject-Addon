@@ -26,7 +26,13 @@ public class Utils {
         }
     }
 
-    public static CreatorResponse getCreator(WebDriver browser, String serviceUrl) throws FailureException {
+    public static CreatorResponse getCreator(
+        WebDriver browser,
+        String serviceUrl,
+        boolean manufacturerAsOwner
+    )
+        throws FailureException
+    {
         String sessionId;
         RestUser session;
         try {
@@ -44,7 +50,7 @@ public class Utils {
         RestNetworkService service = new RestNetworkService(session);
         CreatorResponse creator;
         try {
-            creator = service.getCreator();
+            creator = service.getCreator(manufacturerAsOwner);
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to get creator: " + e.getMessage()
