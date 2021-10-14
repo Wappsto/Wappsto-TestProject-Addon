@@ -163,4 +163,9 @@ public class RestNetworkService implements NetworkService {
             .withBody("{}")
             .post(session.getId(), CreateDeviceResponse.class)).meta.id;
     }
+
+    @Override
+    public List<UUID> getDevice(UUID device) {
+        return null;
+    }
 }

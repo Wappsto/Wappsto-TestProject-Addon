@@ -81,4 +81,9 @@ public class InMemoryNetworkService implements NetworkService {
         }
         return id.toString();
     }
+
+    @Override
+    public List<UUID> getDevice(UUID device) {
+        return null;
+    }
 }
