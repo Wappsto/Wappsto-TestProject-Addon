@@ -23,4 +23,8 @@ public class InMemoryConnection implements Connection {
     public void send(String message) throws IOException {
         lastReceived = message;
     }
+
+    public boolean wasReceived(String message) {
+        return lastReceived.contains(message);
+    }
 }

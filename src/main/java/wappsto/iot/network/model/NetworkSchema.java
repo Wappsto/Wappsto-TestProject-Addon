@@ -10,6 +10,12 @@ public class NetworkSchema extends DataSchema {
         super(name, id, "network");
         this.device = device;
     }
+
+    public NetworkSchema(String name, String id) {
+        super(name, id, "network");
+        device = new ArrayList<>();
+    }
+
     public NetworkSchema(){}
 
     public static class Builder {

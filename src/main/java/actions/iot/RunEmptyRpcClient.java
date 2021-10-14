@@ -18,40 +18,10 @@ import wappsto.iot.ssl.model.*;
 
 import static actions.Utils.*;
 
-@Action(
-    name = "Run RPC Client",
-    description = "Create and run a simple virtual IoT network"
-)
-public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction {
-    @Parameter(description = "Service API root")
-    public String serviceUrl;
-
-    @Parameter(description = "Minimum value")
-    public String min;
-
-    @Parameter(description = "Maximum value")
-    public String max;
-
-    @Parameter(description = "Step size")
-    public String stepSize;
-
-    @Parameter(description = "Value type")
-    public String type;
-
+@Action(name = "Run RPC Client with no devices")
+public class RunEmptyRpcClient extends ActionWithSSLSocket implements WebAction {
     @Parameter(description = "Network name")
     public String name;
-
-    @Parameter(
-        description = "Report state UUID",
-        direction = ParameterDirection.OUTPUT
-    )
-    public String reportState;
-
-    @Parameter(
-        description = "Control state UUID",
-        direction = ParameterDirection.OUTPUT
-    )
-    public String controlState;
 
     @Parameter(
         description = "Network UUID",
@@ -59,10 +29,14 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
     )
     public String networkId;
 
+    @Parameter(description = "Service API URL")
+    public String serviceUrl;
+
     @Parameter(
         description = "Manufacturer as owner, (true/false)"
     )
     public String manufacturerAsOwner;
+
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper)
@@ -79,12 +53,6 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
             controller = new Controller(
                 name,
                 creator,
-                new NumberSchema(
-                    Integer.parseInt(min),
-                    Integer.parseInt(max),
-                    Integer.parseInt(stepSize),
-                    type
-                ),
                 Integer.parseInt(port),
                 socketUrl
             );
@@ -93,29 +61,26 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
                 "Failed to establish socket connection: " + e.getMessage()
             );
         }
-        VirtualIoTNetwork network = controller.execute();
 
-        reportState = network.getReportStateId(0).toString();
-        controlState = network.getControlStateId(0).toString();
-        networkId = creator.network.id;
+        networkId = controller.execute();
         return ExecutionResult.PASSED;
     }
 
     public static class Controller {
-        private final NetworkSchema schema;
+        private final String name;
+        private final CreatorResponse creator;
         private final Connection connection;
+        private final DataStore store;
 
         public Controller(
             String name,
             CreatorResponse creator,
-            NumberSchema numbers,
             int port,
             String socketUrl
         ) throws Exception {
             this(
                 name,
                 creator,
-                numbers,
                 new SSLConnection(socketUrl, port, new WappstoCerts(creator)),
                 new FileSystemJsonDataStore("./saved_instance/")
             );
@@ -124,30 +89,27 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
         public Controller(
             String name,
             CreatorResponse creator,
-            NumberSchema numbers,
             Connection connection,
             DataStore store
         ) {
+
+            this.name = name;
+            this.creator = creator;
             this.connection = connection;
-            schema = new NetworkSchema.Builder(name, creator.network.id)
-                .addDevice("Test")
-                .addValue("Test", ValuePermission.RW)
-                .withNumberSchema(numbers)
-                .addToDevice()
-                .addToNetwork()
-                .build();
-            NetworkInstance instance = new NetworkInstance(
-                new WappstoCerts(creator),
-                schema
-            );
-            store.save(creator.network.id, instance);
+            this.store = store;
         }
 
-        public VirtualIoTNetwork execute() {
-            return new VirtualIoTNetwork(
+        public String execute() {
+            NetworkSchema schema = new NetworkSchema(name, creator.network.id);
+            VirtualIoTNetwork network = new VirtualIoTNetwork(
                 schema,
                 new RpcClient(connection)
             );
+            store.save(
+                schema.meta.id.toString(),
+                new NetworkInstance(new WappstoCerts(creator), schema)
+            );
+            return schema.meta.id.toString();
         }
     }
 }

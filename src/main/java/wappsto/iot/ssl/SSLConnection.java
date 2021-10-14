@@ -14,7 +14,9 @@ public class SSLConnection implements Connection {
         String address,
         int port,
         WappstoCerts certs
-    ) throws Exception {
+    )
+        throws Exception
+    {
         SSLContext sc = init(certs);
         socket = (SSLSocket) sc.getSocketFactory().createSocket(address, port);
         socket.startHandshake();

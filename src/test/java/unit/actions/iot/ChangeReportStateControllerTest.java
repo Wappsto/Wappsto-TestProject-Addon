@@ -41,7 +41,7 @@ public class ChangeReportStateControllerTest {
             );
         controller.execute();
         assertTrue(
-            wasReceived("\"data\":\"1\"", ((InMemoryConnection) connection))
+            ((InMemoryConnection)connection).wasReceived("\"data\":\"1\"")
         );
     }
 
