@@ -51,12 +51,15 @@ public class RestNetworkService implements NetworkService {
      */
     @Override
     public NetworkMeta createNetwork() throws Exception {
-        return ((NetworkResponse) new Request.Builder(session.service)
-            .atEndPoint(API.V2_0)
-            .atEndPoint(API.NETWORK)
-            .withBody("{}")
-            .post(session.getId(), NetworkResponse.class))
-            .meta;
+        NetworkResponse response =(
+            (NetworkResponse) new Request.Builder(session.service)
+                .atEndPoint(API.V2_0)
+                .atEndPoint(API.NETWORK)
+                .withBody("{}")
+                .post(session.getId(), NetworkResponse.class)
+        );
+
+        return response.meta;
     }
 
     /**

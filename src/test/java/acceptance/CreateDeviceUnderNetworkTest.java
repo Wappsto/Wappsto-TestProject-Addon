@@ -39,10 +39,10 @@ public class CreateDeviceUnderNetworkTest {
 
     @Test
     public void creates_device_under_network() throws Exception {
-        CreateDeviceUnderNetwork action = new CreateDeviceUnderNetwork();
         NetworkService service = new RestNetworkService(session);
         String networkId = service.createNetwork().id;
 
+        CreateDeviceUnderNetwork action = new CreateDeviceUnderNetwork();
         action.serviceUrl = serviceUrl;
         action.networkId = networkId;
         StepExecutionResult run = runner().run(action);
