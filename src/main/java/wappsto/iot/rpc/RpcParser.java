@@ -32,8 +32,10 @@ public class RpcParser {
                 switch (rpc.method) {
                     case PUT:
                         executeStateCommand(data);
+                        break;
                     case DELETE:
                         executeDeleteCommand();
+                        break;
                     default:
                         break;
                 }
