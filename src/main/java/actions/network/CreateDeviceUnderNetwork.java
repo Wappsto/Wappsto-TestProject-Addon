@@ -32,7 +32,7 @@ public class CreateDeviceUnderNetwork implements WebAction {
         WebDriver browser = helper.getDriver();
         String sessionId = getSessionFrom(browser);
 
-        deviceId = new Controller(serviceUrl, sessionId, networkId).execute();
+        deviceId = new Controller(serviceUrl, networkId, sessionId).execute();
 
         return ExecutionResult.PASSED;
     }

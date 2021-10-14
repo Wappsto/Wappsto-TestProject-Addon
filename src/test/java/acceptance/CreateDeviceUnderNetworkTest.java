@@ -6,6 +6,7 @@ import io.testproject.java.execution.results.*;
 import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.api.network.*;
 import wappsto.api.rest.network.*;
 import wappsto.api.rest.request.exceptions.*;
 import wappsto.api.rest.session.*;
@@ -37,12 +38,13 @@ public class CreateDeviceUnderNetworkTest {
     }
 
     @Test
-    @Disabled
     public void creates_device_under_network() throws Exception {
         CreateDeviceUnderNetwork action = new CreateDeviceUnderNetwork();
+        NetworkService service = new RestNetworkService(session);
+        String networkId = service.createNetwork().id;
+
         action.serviceUrl = serviceUrl;
-        action.networkId = new RestNetworkService(session)
-            .createNetwork().id;
+        action.networkId = networkId;
         StepExecutionResult run = runner().run(action);
         assertEquals(
             ExecutionResult.PASSED.name().toUpperCase(),
