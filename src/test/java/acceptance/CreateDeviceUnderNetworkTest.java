@@ -11,7 +11,6 @@ import wappsto.api.rest.request.exceptions.*;
 import wappsto.api.rest.session.*;
 import wappsto.api.session.*;
 
-import static actions.Utils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
@@ -21,6 +20,7 @@ import static util.Utils.*;
 public class CreateDeviceUnderNetworkTest {
     private static String serviceUrl;
     private static String appUrl;
+    private RestUser session;
 
     @BeforeAll
     public static void setup(Admin admin) throws Exception {
@@ -32,6 +32,7 @@ public class CreateDeviceUnderNetworkTest {
     @BeforeEach
     public void reset(User session) throws Exception {
         resetRunner();
+        this.session = (RestUser) session;
         logInBrowser(session.getId(), appUrl);
     }
 
@@ -40,8 +41,7 @@ public class CreateDeviceUnderNetworkTest {
     public void creates_device_under_network() throws Exception {
         CreateDeviceUnderNetwork action = new CreateDeviceUnderNetwork();
         action.serviceUrl = serviceUrl;
-        action.networkId = new RestNetworkService(
-            new RestUser(getSessionFrom(runner().getDriver()), serviceUrl))
+        action.networkId = new RestNetworkService(session)
             .createNetwork().id;
         StepExecutionResult run = runner().run(action);
         assertEquals(

@@ -7,11 +7,13 @@ import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.api.network.model.*;
+import wappsto.api.rest.network.*;
 import wappsto.api.rest.request.exceptions.*;
 import wappsto.api.rest.session.*;
 import wappsto.api.session.*;
 import wappsto.iot.filesystem.*;
 
+import java.util.*;
 import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -133,6 +135,32 @@ public class RunSimpleRpcClientTest {
             uuidFromFile
         );
 
+    }
+
+    @Test
+    @Tag("regression")
+    public void updates_control_state_more_than_once() throws Exception {
+        RestNetworkService service = new RestNetworkService(session);
+        RunSimpleRPCClient action = createAction(
+            serviceUrl,
+            socketUrl,
+            socketPort,
+            min,
+            max,
+            stepSize,
+            type
+        );
+        runner().run(action);
+        Thread.sleep(3000);
+        service.claim(action.networkId);
+        service.updateState(UUID.fromString(action.controlState), "1");
+        Thread.sleep(2000);
+        service.updateState(UUID.fromString(action.controlState), "something");
+        Thread.sleep(2000);
+        assertEquals(
+            "something",
+            service.getState(UUID.fromString(action.controlState))
+        );
     }
 
     private RunSimpleRPCClient createAction(

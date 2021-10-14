@@ -45,6 +45,25 @@ public class VirtualIotNetworkTest {
         );
     }
 
+
+    @Test
+    @Tag("regression")
+    public void updates_control_state_more_than_once(
+        NetworkSchema schema,
+        Connection connection
+    ) {
+        VirtualIoTNetwork network = startNetwork(schema, connection);
+        UUID state = network.getControlStateId(0);
+        StateData firstRequest = new StateData(state, "1");
+        StateData secondRequest = new StateData(state, "5");
+        network.updateControlState(firstRequest);
+        network.updateControlState(secondRequest);
+
+        assertTrue(
+            wasReceived("\"data\":\"5\"", (InMemoryConnection) connection)
+        );
+    }
+
     @Test
     public void can_change_its_report_state_directly(
         NetworkSchema schema,
