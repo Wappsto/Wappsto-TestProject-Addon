@@ -39,5 +39,5 @@ Furthermore, a TestProject agent is needed in order to run the acceptance tests.
 
 To compile the Addon and run the tests at the same time:
 ```
-nvm package
+mvn package
 ```
