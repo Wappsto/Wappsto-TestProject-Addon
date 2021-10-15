@@ -18,5 +18,12 @@ public enum ValuePermission {
         public String toString() {
             return "rw";
         }
+    };
+
+    public static ValuePermission from(String string) throws Exception {
+        for (ValuePermission v : values()) {
+            if (v.toString().equals(string)) return v;
+        }
+        throw new Exception("Invalid permission");
     }
 }

@@ -1,6 +1,6 @@
-package unit.actions.iot;
+package unit.actions.network;
 
-import actions.iot.*;
+import actions.network.*;
 import extensions.injectors.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
@@ -25,7 +25,7 @@ public class AssertStateValueControllerTest {
             service.updateState(state, "new value");
             AssertStateValue.Controller controller = new AssertStateValue
                 .Controller(service, state.toString(), "different value");
-            assertThrows(FailureException.class, () -> controller.execute());
+            assertThrows(FailureException.class, controller::execute);
         }
 
         @Test
@@ -34,7 +34,7 @@ public class AssertStateValueControllerTest {
             AssertStateValue.Controller controller = new AssertStateValue
                 .Controller(service, state.toString(), "value");
 
-            assertThrows(FailureException.class, () -> controller.execute());
+            assertThrows(FailureException.class, controller::execute);
         }
     }
 
@@ -49,6 +49,6 @@ public class AssertStateValueControllerTest {
         service.updateState(state, expected);
         AssertStateValue.Controller controller = new AssertStateValue
             .Controller(service, state.toString(), expected);
-        assertDoesNotThrow(() -> controller.execute());
+        assertDoesNotThrow(controller::execute);
     }
 }

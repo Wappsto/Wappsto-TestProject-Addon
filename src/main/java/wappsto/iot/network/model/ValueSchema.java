@@ -8,25 +8,27 @@ public class ValueSchema {
     @JsonProperty public String name;
     @JsonProperty public String permission;
     @JsonProperty public List<StateSchema> state;
-    @JsonProperty public NumberSchema number;
+    @JsonProperty public NumberSchema numbers;
     @JsonProperty public Meta meta;
 
-    public ValueSchema(String name, String permission, NumberSchema number) {
-        this.name = name;
-        this.permission = permission;
-        state = new LinkedList<>();
-        if (permission.contains("r")) state.add(new StateSchema("Report"));
-        if (permission.contains("w")) state.add(new StateSchema("Control"));
-        this.number = number;
-        meta = new Meta("Value");
+    public ValueSchema(String name, String permission, NumberSchema numbers)
+        throws Exception
+    {
+        this(name, ValuePermission.from(permission), numbers);
     }
 
     public ValueSchema(
         String name,
         ValuePermission permission,
-        NumberSchema numberSchema
+        NumberSchema numbers
     ) {
-        this(name, permission.toString(), numberSchema);
+        this.name = name;
+        this.permission = permission.toString();
+        state = new LinkedList<>();
+        if (this.permission.contains("r")) state.add(new StateSchema("Report"));
+        if (this.permission.contains("w")) state.add(new StateSchema("Control"));
+        this.numbers = numbers;
+        meta = new Meta("Value");
     }
 
     public ValueSchema() {}

@@ -2,7 +2,7 @@ package actions.iot;
 
 import io.testproject.java.annotations.v2.*;
 
-public class ActionWithSSLSocket {
+public abstract class ActionWithSSLSocket {
     @Parameter(description = "Socket URL")
     public String socketUrl;
     @Parameter(description = "Socket port")

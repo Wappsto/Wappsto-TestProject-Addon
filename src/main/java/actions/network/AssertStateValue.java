@@ -1,4 +1,4 @@
-package actions.iot;
+package actions.network;
 
 import actions.*;
 import io.testproject.java.annotations.v2.*;

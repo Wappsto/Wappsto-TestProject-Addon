@@ -8,11 +8,11 @@ public class NumberSchema {
     @JsonProperty public int step;
     @JsonProperty public String unit;
 
-    public NumberSchema(int min, int max, int step, String unit) {
+    public NumberSchema(int min, int max, int step, String type) {
         this.min = min;
         this.max = max;
         this.step = step;
-        this.unit = unit;
+        this.unit = type;
     }
 
     public NumberSchema(){}
