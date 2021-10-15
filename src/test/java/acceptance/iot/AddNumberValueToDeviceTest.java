@@ -78,7 +78,7 @@ public class AddNumberValueToDeviceTest {
         action.permissions = "rw";
 
         runner().run(action);
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         DeviceResponse device = new RestNetworkService(session)
             .getDevice(UUID.fromString(action.deviceId));
         List<UUID> values = device

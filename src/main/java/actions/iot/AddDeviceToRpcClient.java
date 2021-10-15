@@ -15,6 +15,7 @@ import wappsto.iot.rpc.*;
 import wappsto.iot.ssl.*;
 import wappsto.iot.ssl.model.*;
 
+@Action(name = "Add empty device to RPC client")
 public class AddDeviceToRpcClient
     extends ActionWithSSLSocket
     implements WebAction
