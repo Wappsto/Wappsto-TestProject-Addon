@@ -19,7 +19,7 @@ import wappsto.iot.ssl.model.*;
 import static actions.Utils.*;
 
 @Action(
-    name = "Run RPC Client",
+    name = "Run RPC Client - DEPRECATED",
     description = "Create and run a simple virtual IoT network"
 )
 public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction {
