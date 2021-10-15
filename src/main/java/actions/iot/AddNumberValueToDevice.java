@@ -1,18 +1,22 @@
 package actions.iot;
 
 import io.testproject.java.annotations.v2.*;
+import io.testproject.java.enums.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import wappsto.api.network.model.*;
 import wappsto.iot.*;
+import wappsto.iot.filesystem.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.ssl.*;
 
 import java.util.*;
 
+@Action(name = "Add number value to an RPC device")
 public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAction {
 
     @Parameter(description = "Network UUID")
@@ -39,19 +43,68 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
     @Parameter(description = "Permissions (r, w, or rw")
     public String permissions;
 
+    @Parameter(
+        description = "Value UUID",
+        direction = ParameterDirection.OUTPUT
+    )
+    public String valueId;
+
+    @Parameter(
+        description = "Report state UUID",
+        direction = ParameterDirection.OUTPUT
+    )
+    public String reportId;
+
+    @Parameter(
+        description = "Control state UUID",
+        direction = ParameterDirection.OUTPUT
+    )
+    public String controlId;
+
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
-        return null;
+        Controller controller = new Controller(
+            networkId,
+            deviceId,
+            name,
+            new NumberSchema(
+                Integer.parseInt(min),
+                Integer.parseInt(max),
+                Integer.parseInt(stepSize),
+                type),
+            permissions,
+            socketUrl,
+            port
+        );
+        ValueSchema value = controller.execute();
+        valueId = value.meta.id.toString();
+        StateSchema reportState = value.state.stream()
+            .filter(s -> s.type.equals("Report"))
+            .findAny()
+            .orElse(null);
+        reportId = (reportState != null)
+            ? reportState.meta.id.toString()
+            : "";
+        StateSchema controlState = value.state.stream()
+            .filter(s -> s.type.equals("Control"))
+            .findAny()
+            .orElse(null);
+        controlId = (controlState != null)
+            ? controlState.meta.id.toString()
+            : "";
+
+        return ExecutionResult.PASSED;
+
     }
 
     public static class Controller {
-        private String networkId;
-        private String deviceId;
-        private String name;
-        private NumberSchema numbers;
-        private String permissions;
-        private DataStore store;
-        private Connection connection;
+        private final String networkId;
+        private final String deviceId;
+        private final String name;
+        private final NumberSchema numbers;
+        private final String permissions;
+        private final DataStore store;
+        private final Connection connection;
 
         public Controller(
             String networkId,
@@ -72,6 +125,49 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             this.connection = connection;
         }
 
+        public Controller(
+            String networkId,
+            String deviceId,
+            String name,
+            NumberSchema numbers,
+            String permissions,
+            String socketUrl,
+            String port
+        )
+            throws FailureException
+        {
+            this(
+                networkId,
+                deviceId,
+                name,
+                numbers,
+                permissions,
+                new FileSystemJsonDataStore(),
+                createSSLConnection(networkId, socketUrl, port)
+            );
+        }
+
+        private static SSLConnection createSSLConnection(
+            String networkId,
+            String socketUrl,
+            String port
+        )
+            throws FailureException
+        {
+            try {
+                return new SSLConnection(
+                    socketUrl,
+                    Integer.parseInt(port),
+                    ((NetworkInstance)new FileSystemJsonDataStore()
+                        .load(networkId, NetworkInstance.class)).certs
+                );
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to establish connection: " + e.getMessage()
+                );
+            }
+        }
+
         public ValueSchema execute() throws FailureException {
             NetworkInstance instance;
             try {
@@ -87,8 +183,8 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
                 .filter(d -> d.meta.id.equals(UUID.fromString(deviceId)))
                 .findAny()
                 .orElseThrow(() -> new FailureException(
-                    "Device not found on network")
-                );
+                    "Device not found on network"
+                ));
             ValueSchema value;
             try {
                 value = new ValueSchema(name, permissions, numbers);
@@ -105,7 +201,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
                     "Failed to start network: " + e.getMessage()
                 );
             }
-            return null;
+            return value;
         }
     }
 }

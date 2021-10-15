@@ -169,6 +169,7 @@ public class RestNetworkService implements NetworkService {
         return (DeviceResponse) new Request.Builder(session.service)
             .atEndPoint(API.V2_0)
             .atEndPoint(API.DEVICE)
+            .atEndPoint(device.toString())
             .get(session.getId(), DeviceResponse.class);
     }
 }

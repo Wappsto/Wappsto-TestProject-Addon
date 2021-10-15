@@ -15,13 +15,14 @@ import wappsto.iot.ssl.model.*;
 
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
 @ExtendWith(NetworkSchemaInjector.class)
 @ExtendWith(DataStoreInjector.class)
-public class AddValueToDeviceTest {
+public class AddNumberValueToDeviceTest {
     private static String serviceUrl;
     private static String appUrl;
     private static String socketUrl;
@@ -51,7 +52,7 @@ public class AddValueToDeviceTest {
         session = createNewUserSession(serviceUrl, admin);
         logInBrowser(session.getId(), appUrl);
         RestNetworkService service = new RestNetworkService(session);
-        CreatorResponse creator = service.getCreator();
+        CreatorResponse creator = service.getCreator(true);
         networkId = creator.network.id;
         schema.meta.id = UUID.fromString(networkId);
         this.schema = schema;
@@ -63,7 +64,6 @@ public class AddValueToDeviceTest {
     }
 
     @Test
-    @Disabled
     public void adds_value_to_a_device() throws Exception {
         AddNumberValueToDevice action = new AddNumberValueToDevice();
         action.socketUrl = socketUrl;
@@ -78,6 +78,14 @@ public class AddValueToDeviceTest {
         action.permissions = "rw";
 
         runner().run(action);
+        Thread.sleep(3000);
+        DeviceResponse device = new RestNetworkService(session)
+            .getDevice(UUID.fromString(action.deviceId));
+        List<UUID> values = device
+            .value;
+        assertTrue(
+            values.contains(UUID.fromString(action.valueId))
+        );
     }
 
     @AfterEach
