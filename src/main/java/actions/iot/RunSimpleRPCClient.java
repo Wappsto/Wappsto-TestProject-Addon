@@ -143,11 +143,17 @@ public class RunSimpleRPCClient extends ActionWithSSLSocket implements WebAction
             store.save(creator.network.id, instance);
         }
 
-        public VirtualIoTNetwork execute() {
-            return new VirtualIoTNetwork(
-                schema,
-                new RpcClient(connection)
-            );
+        public VirtualIoTNetwork execute() throws FailureException {
+            try {
+                return new VirtualIoTNetwork(
+                    schema,
+                    new RpcClient(connection)
+                );
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to start network: " + e.getMessage()
+                );
+            }
         }
     }
 }

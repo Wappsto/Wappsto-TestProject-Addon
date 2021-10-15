@@ -3,6 +3,7 @@ package unit.actions.iot;
 import actions.iot.*;
 import extensions.injectors.*;
 import extensions.mocks.*;
+import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.api.network.model.*;
@@ -20,7 +21,7 @@ public class RunEmptyRpcClientControllerTest {
         Connection connection,
         CreatorResponse creator,
         DataStore store
-    ) {
+    ) throws FailureException {
         RunEmptyRpcClient.Controller controller = new RunEmptyRpcClient.Controller(
             "Test",
             creator,

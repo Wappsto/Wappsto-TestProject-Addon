@@ -16,7 +16,7 @@ public class RpcClient implements IoTClient {
     }
 
     @Override
-    public void start(RpcParser parser) {
+    public void start(RpcParser parser) throws Exception {
         this.parser = parser;
         conn.start(this::incoming, this::error);
     }
@@ -51,7 +51,6 @@ public class RpcClient implements IoTClient {
         } catch (Exception e) {
             System.out.println("Failed to reestablish connection.");
             e.printStackTrace();
-            System.exit(-1);
         }
     }
 

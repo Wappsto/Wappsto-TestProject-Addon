@@ -28,7 +28,7 @@ public class ChangeReportStateControllerTest {
         Connection connection,
         DataStore store
     )
-        throws FailureException
+        throws Exception
     {
         VirtualIoTNetwork network = startNetwork(schema, connection, store);
         ChangeReportState.Controller controller =
@@ -50,7 +50,7 @@ public class ChangeReportStateControllerTest {
         NetworkSchema schema,
         Connection connection,
         DataStore store
-    ) {
+    ) throws Exception {
         VirtualIoTNetwork network = startNetwork(schema, connection, store);
         ChangeReportState.Controller controller =
             new ChangeReportState.Controller(
@@ -67,7 +67,9 @@ public class ChangeReportStateControllerTest {
         NetworkSchema schema,
         Connection connection,
         DataStore store
-    ) {
+    )
+        throws Exception
+    {
         RpcClient client = new RpcClient(connection);
         VirtualIoTNetwork network = new VirtualIoTNetwork(schema, client);
         store.save(
@@ -75,9 +77,5 @@ public class ChangeReportStateControllerTest {
             new NetworkInstance(new WappstoCerts(), schema)
         );
         return network;
-    }
-
-    private boolean wasReceived(String message, InMemoryConnection connection) {
-        return connection.lastReceived.contains(message);
     }
 }

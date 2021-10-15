@@ -19,7 +19,6 @@ public class SSLConnection implements Connection {
     {
         SSLContext sc = init(certs);
         socket = (SSLSocket) sc.getSocketFactory().createSocket(address, port);
-        socket.startHandshake();
         toServer = socket.getOutputStream();
     }
 
@@ -39,7 +38,17 @@ public class SSLConnection implements Connection {
     }
 
     @Override
-    public void start(Callback messageCallback, Callback errorCallback) {
+    public void start(Callback messageCallback, Callback errorCallback)
+        throws Exception
+    {
+        try {
+            socket.startHandshake();
+        } catch (IOException e) {
+            throw new Exception(
+                "Failed to connect to socket: " + e.getMessage()
+            );
+        }
+
         try {
             InputReader reader = new InputReader(
                 socket.getInputStream(),
@@ -48,7 +57,7 @@ public class SSLConnection implements Connection {
             );
             reader.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Input stream closed");
         }
     }
 

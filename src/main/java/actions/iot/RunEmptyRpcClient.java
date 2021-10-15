@@ -99,12 +99,18 @@ public class RunEmptyRpcClient extends ActionWithSSLSocket implements WebAction 
             this.store = store;
         }
 
-        public String execute() {
+        public String execute() throws FailureException {
             NetworkSchema schema = new NetworkSchema(name, creator.network.id);
-            VirtualIoTNetwork network = new VirtualIoTNetwork(
-                schema,
-                new RpcClient(connection)
-            );
+            try {
+                VirtualIoTNetwork network = new VirtualIoTNetwork(
+                    schema,
+                    new RpcClient(connection)
+                );
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to start network: " + e.getMessage()
+                );
+            }
             store.save(
                 schema.meta.id.toString(),
                 new NetworkInstance(new WappstoCerts(creator), schema)

@@ -8,10 +8,11 @@ public class InMemoryConnection implements Connection {
 
     public String lastReceived;
     public boolean isConnected;
+    public boolean refuseConnection;
 
     @Override
     public void start(Callback messageCallback, Callback errorCallback) {
-        isConnected = true;
+        //if (refuseConnection) throw new ConnectException("Connection refused");
     }
 
     @Override

@@ -40,7 +40,13 @@ public class VirtualIoTNetworkInjector implements ParameterResolver {
         if (extensionContext.getTags().contains("unit")) {
             Connection connection = new InMemoryConnection();
             RpcClient client = new RpcClient(connection);
-            return new VirtualIoTNetwork(schema, client);
+            try {
+                return new VirtualIoTNetwork(schema, client);
+            } catch (Exception e) {
+                throw new RuntimeException(
+                    "Failed to start VirtualIoTNetwork" + e.getMessage()
+                );
+            }
         } else {
             RestAdmin admin = createNewAdmin();
             RestUser user = createNewUserSession(env().get(API_ROOT), admin);
@@ -66,7 +72,13 @@ public class VirtualIoTNetworkInjector implements ParameterResolver {
                     "Failed to establish SSL connection" + e.getMessage()
                 );
             }
-            return new VirtualIoTNetwork(schema, client);
+            try {
+                return new VirtualIoTNetwork(schema, client);
+            } catch (Exception e) {
+                throw new RuntimeException(
+                    "Failed to start VirtualIoTNetwork" + e.getMessage()
+                );
+            }
         }
 
 

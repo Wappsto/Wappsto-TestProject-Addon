@@ -6,6 +6,7 @@ import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
+import wappsto.iot.*;
 
 public class AddDeviceToRpcClient
     extends ActionWithSSLSocket
@@ -22,5 +23,19 @@ public class AddDeviceToRpcClient
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
         return null;
+    }
+
+    public static class Controller {
+        public Controller(
+            String networkId,
+            DataStore store,
+            Connection connection
+        ) {
+
+        }
+
+        public String execute() throws FailureException {
+            throw new FailureException("");
+        }
     }
 }

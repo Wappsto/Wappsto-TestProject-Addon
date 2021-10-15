@@ -20,7 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class VirtualIotNetworkTest {
 
     @Test
-    public void reports_its_state_on_startup(NetworkSchema schema, Connection connection) {
+    public void reports_its_state_on_startup(
+        NetworkSchema schema,
+        Connection connection
+    )
+        throws Exception
+    {
         startNetwork(schema, connection);
         assertTrue(
             wasReceived(
@@ -34,7 +39,9 @@ public class VirtualIotNetworkTest {
     public void updates_report_state_on_control_state_change(
         NetworkSchema schema,
         Connection connection
-    ) {
+    )
+        throws Exception
+    {
         VirtualIoTNetwork network = startNetwork(schema, connection);
         UUID state = network.getControlStateId(0);
 
@@ -51,7 +58,9 @@ public class VirtualIotNetworkTest {
     public void updates_control_state_more_than_once(
         NetworkSchema schema,
         Connection connection
-    ) {
+    )
+        throws Exception
+    {
         VirtualIoTNetwork network = startNetwork(schema, connection);
         UUID state = network.getControlStateId(0);
         StateData firstRequest = new StateData(state, "1");
@@ -83,7 +92,9 @@ public class VirtualIotNetworkTest {
     public void fails_to_update_invalid_report_state(
         NetworkSchema schema,
         Connection connection
-    ) {
+    )
+        throws Exception
+    {
         VirtualIoTNetwork network = startNetwork(schema, connection);
         UUID state = UUID.randomUUID();
         assertThrows(
@@ -93,7 +104,9 @@ public class VirtualIotNetworkTest {
     }
 
     @Test
-    public void stops(NetworkSchema schema, Connection connection) {
+    public void stops(NetworkSchema schema, Connection connection)
+        throws Exception
+    {
         VirtualIoTNetwork network = startNetwork(schema, connection);
         network.stop();
         assertFalse(network.isRunning());
@@ -103,7 +116,7 @@ public class VirtualIotNetworkTest {
     private VirtualIoTNetwork startNetwork(
         NetworkSchema schema,
         Connection connection
-    ) {
+    ) throws Exception {
         RpcClient client = new RpcClient(connection);
         return new VirtualIoTNetwork(schema, client);
     }

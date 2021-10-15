@@ -22,6 +22,9 @@ public class ConnectionInjector implements ParameterResolver {
     )
         throws ParameterResolutionException
     {
-        return new InMemoryConnection();
+        InMemoryConnection connection = new InMemoryConnection();
+        if (extensionContext.getTags().contains("connection-refused"))
+            connection.refuseConnection = true;
+        return connection;
     }
 }

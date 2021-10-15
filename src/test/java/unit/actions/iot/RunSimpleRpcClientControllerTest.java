@@ -2,6 +2,7 @@ package unit.actions.iot;
 
 import actions.iot.*;
 import extensions.injectors.*;
+import io.testproject.java.sdk.v2.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import wappsto.api.network.model.*;
@@ -21,7 +22,9 @@ public class RunSimpleRpcClientControllerTest {
         Connection connection,
         CreatorResponse creator,
         DataStore store
-    ) {
+    )
+        throws FailureException
+    {
         RunSimpleRPCClient.Controller controller = new RunSimpleRPCClient
             .Controller(
                 "Test",

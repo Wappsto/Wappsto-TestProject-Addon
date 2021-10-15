@@ -19,7 +19,9 @@ public class VirtualIoTNetwork {
     private final List<UUID> reportStates;
     private boolean isRunning;
 
-    public VirtualIoTNetwork(NetworkSchema schema, IoTClient client) {
+    public VirtualIoTNetwork(NetworkSchema schema, IoTClient client)
+        throws Exception
+    {
         this.schema = schema;
         this.client = client;
         controlAndReportStates = new HashMap<>();
