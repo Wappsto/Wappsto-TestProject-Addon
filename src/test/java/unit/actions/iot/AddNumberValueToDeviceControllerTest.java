@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(DataStoreInjector.class)
 @ExtendWith(ConnectionInjector.class)
 @ExtendWith(NetworkSchemaInjector.class)
-public class AddValueToDeviceControllerTest {
+public class AddNumberValueToDeviceControllerTest {
     private DataStore store;
     private NetworkSchema schema;
 
