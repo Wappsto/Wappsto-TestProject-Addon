@@ -11,7 +11,7 @@ public class FileSystemJsonDataStore implements DataStore {
     private static final String FILE_EXTENSION = "json";
 
     public FileSystemJsonDataStore() {
-        this("./saved_instance");
+        this("./saved_instance/");
     }
 
     public FileSystemJsonDataStore(String path) {
