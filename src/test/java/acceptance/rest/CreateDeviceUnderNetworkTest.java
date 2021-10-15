@@ -1,9 +1,12 @@
-package acceptance;
+package acceptance.rest;
 
-import actions.iot.*;
+import actions.network.*;
 import extensions.injectors.*;
+import io.testproject.java.execution.results.*;
+import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
+import wappsto.api.network.*;
 import wappsto.api.rest.network.*;
 import wappsto.api.rest.request.exceptions.*;
 import wappsto.api.rest.session.*;
@@ -14,42 +17,38 @@ import static util.Env.*;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
-public class RunEmptyRpcClientTest {
-
+@ExtendWith(UserInjector.class)
+public class CreateDeviceUnderNetworkTest {
     private static String serviceUrl;
     private static String appUrl;
-    private static String socketUrl;
-    private static String socketPort;
     private RestUser session;
 
     @BeforeAll
     public static void setup(Admin admin) throws Exception {
         serviceUrl = env().get(API_ROOT);
         appUrl = env().get(APP_URL);
-        socketUrl = env().get(SOCKET_URL);
-        socketPort = env().get(SOCKET_PORT);
         resetUser(admin);
     }
 
     @BeforeEach
-    public void reset(Admin admin) throws Exception {
+    public void reset(User session) throws Exception {
         resetRunner();
-        session = createNewUserSession(serviceUrl, admin);
+        this.session = (RestUser) session;
         logInBrowser(session.getId(), appUrl);
     }
 
     @Test
-    public void creates_empty_rpc_client() throws Exception {
-        RunEmptyRpcClient action = new RunEmptyRpcClient();
-        action.socketUrl = socketUrl;
-        action.port = socketPort;
+    public void creates_device_under_network() throws Exception {
+        NetworkService service = new RestNetworkService(session);
+        String networkId = service.createNetwork().id;
+
+        CreateDeviceUnderNetwork action = new CreateDeviceUnderNetwork();
         action.serviceUrl = serviceUrl;
-        action.name = "Test";
-
-        runner().run(action);
-
-        assertDoesNotThrow(() -> new RestNetworkService(session)
-            .fetch(action.networkId)
+        action.networkId = networkId;
+        StepExecutionResult run = runner().run(action);
+        assertEquals(
+            ExecutionResult.PASSED.name().toUpperCase(),
+            run.getResultType().name().toUpperCase()
         );
     }
 
@@ -64,4 +63,6 @@ public class RunEmptyRpcClientTest {
         } catch (HttpException ignored) {
         }
     }
+
+
 }

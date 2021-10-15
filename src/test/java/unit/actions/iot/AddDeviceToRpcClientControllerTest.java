@@ -84,9 +84,12 @@ public class AddDeviceToRpcClientControllerTest {
         String deviceId = controller.execute();
         NetworkInstance loadedInstance = (NetworkInstance) store
             .load(schema.meta.id.toString(), NetworkInstance.class);
-        assertTrue(loadedInstance.schema.device.stream()
-            .anyMatch(d -> d.meta.id.toString().equals(deviceId))
-        );
+        assertTrue(deviceExistsInSchema(deviceId, loadedInstance));
+    }
+
+    private boolean deviceExistsInSchema(String deviceId, NetworkInstance loadedInstance) {
+        return loadedInstance.schema.device.stream()
+            .anyMatch(d -> d.meta.id.toString().equals(deviceId));
     }
 
     private void saveNetworkInstanceTo(DataStore store, NetworkSchema schema) {

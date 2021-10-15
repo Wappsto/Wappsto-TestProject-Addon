@@ -1,16 +1,13 @@
-package acceptance;
+package acceptance.rest;
 
 import actions.network.*;
 import extensions.injectors.*;
-import io.testproject.java.execution.results.*;
-import io.testproject.java.sdk.v2.enums.ExecutionResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.api.network.*;
-import wappsto.api.rest.network.*;
 import wappsto.api.rest.request.exceptions.*;
-import wappsto.api.rest.session.*;
 import wappsto.api.session.*;
+
+import java.util.concurrent.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
@@ -18,10 +15,9 @@ import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
 @ExtendWith(UserInjector.class)
-public class CreateDeviceUnderNetworkTest {
+public class CreateNetworkTest {
     private static String serviceUrl;
     private static String appUrl;
-    private RestUser session;
 
     @BeforeAll
     public static void setup(Admin admin) throws Exception {
@@ -33,28 +29,32 @@ public class CreateDeviceUnderNetworkTest {
     @BeforeEach
     public void reset(User session) throws Exception {
         resetRunner();
-        this.session = (RestUser) session;
         logInBrowser(session.getId(), appUrl);
     }
 
     @Test
-    public void creates_device_under_network() throws Exception {
-        NetworkService service = new RestNetworkService(session);
-        String networkId = service.createNetwork().id;
+    public void fails_to_create_when_logged_out() throws Exception {
+        CreateNetwork action = createNewAction(serviceUrl);
+        logBrowserOut();
+        assertThrows(ExecutionException.class, () -> runner().run(action));
+    }
 
-        CreateDeviceUnderNetwork action = new CreateDeviceUnderNetwork();
-        action.serviceUrl = serviceUrl;
-        action.networkId = networkId;
-        StepExecutionResult run = runner().run(action);
-        assertEquals(
-            ExecutionResult.PASSED.name().toUpperCase(),
-            run.getResultType().name().toUpperCase()
-        );
+    @Test
+    public void creates_network() throws Exception {
+        CreateNetwork action = createNewAction(serviceUrl);
+        runner().run(action);
+        assertNotNull(action.network);
     }
 
     @AfterEach
     public void tearDown(Admin admin) throws Exception {
         resetUser(admin);
+    }
+
+    private CreateNetwork createNewAction(String serviceUrl) {
+        CreateNetwork action = new CreateNetwork();
+        action.serviceUrl = serviceUrl;
+        return action;
     }
 
     private static void resetUser(Admin admin) throws Exception {
@@ -63,6 +63,4 @@ public class CreateDeviceUnderNetworkTest {
         } catch (HttpException ignored) {
         }
     }
-
-
 }

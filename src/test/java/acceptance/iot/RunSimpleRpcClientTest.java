@@ -1,4 +1,4 @@
-package acceptance;
+package acceptance.iot;
 
 import actions.iot.*;
 import extensions.injectors.*;

@@ -1,4 +1,4 @@
-package acceptance;
+package acceptance.rest;
 
 import actions.session.*;
 import extensions.injectors.*;
