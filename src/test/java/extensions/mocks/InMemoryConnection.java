@@ -10,9 +10,17 @@ public class InMemoryConnection implements Connection {
     public boolean isConnected;
     public boolean refuseConnection;
 
+    public InMemoryConnection() {
+        isConnected = false;
+        refuseConnection = false;
+    }
+
     @Override
-    public void start(Callback messageCallback, Callback errorCallback) {
-        //if (refuseConnection) throw new ConnectException("Connection refused");
+    public void start(Callback messageCallback, Callback errorCallback)
+        throws Exception
+    {
+        if (refuseConnection) throw new Exception("Connection refused");
+        else isConnected = true;
     }
 
     @Override

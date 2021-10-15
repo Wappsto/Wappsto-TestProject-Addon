@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import wappsto.iot.*;
 
-import java.io.*;
 import java.util.*;
 
 public class InMemoryDataStore implements DataStore {
@@ -29,11 +28,14 @@ public class InMemoryDataStore implements DataStore {
     }
 
     @Override
-    public Object load(String identifier, Class<?> type) {
+    public Object load(String identifier, Class<?> type) throws Exception {
         try {
             return new ObjectMapper().readValue(data.get(identifier), type);
-        } catch (IOException e) {
-            return null;
+        } catch (Exception e) {
+            Exception error = new Exception(
+                "Failed to load network from data store" + e.getMessage()
+            );
+            throw error;
         }
     }
 }

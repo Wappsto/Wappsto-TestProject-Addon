@@ -16,6 +16,10 @@ public class DeviceSchema {
         meta = new Meta("Device");
     }
 
+    public DeviceSchema(String name) {
+        this(name, new LinkedList<>());
+    }
+
     public DeviceSchema() {}
 
     public static class Builder {
