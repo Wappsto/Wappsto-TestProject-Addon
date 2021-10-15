@@ -178,20 +178,22 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
                     "Failed to load device from data store: " + e.getMessage()
                 );
             }
-            NetworkSchema schema = instance.schema;
-            DeviceSchema device = schema.device.stream()
-                .filter(d -> d.meta.id.equals(UUID.fromString(deviceId)))
-                .findAny()
-                .orElseThrow(() -> new FailureException(
-                    "Device not found on network"
-                ));
+
             ValueSchema value;
             try {
                 value = new ValueSchema(name, permissions, numbers);
             } catch (Exception e) {
                 throw new FailureException("Invalid permission string");
             }
-            device.value.add(value);
+
+            NetworkSchema schema = instance.schema;
+            schema.device.stream()
+                .filter(d -> d.meta.id.equals(UUID.fromString(deviceId)))
+                .findAny()
+                .orElseThrow(() -> new FailureException(
+                    "Device not found on network"
+                )).value.add(value);
+
             instance.schema = schema;
             store.save(networkId, instance);
             try {
