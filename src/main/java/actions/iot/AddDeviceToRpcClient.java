@@ -8,14 +8,20 @@ import io.testproject.java.sdk.v2.enums.*;
 import io.testproject.java.sdk.v2.exceptions.*;
 import wappsto.api.network.model.*;
 import wappsto.iot.*;
+import wappsto.iot.filesystem.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.ssl.*;
+import wappsto.iot.ssl.model.*;
 
 public class AddDeviceToRpcClient
     extends ActionWithSSLSocket
     implements WebAction
 {
+    @Parameter(description = "Network UUID")
+    public String networkId;
+
     @Parameter(description = "Device name")
     public String name;
     @Parameter(
@@ -26,7 +32,15 @@ public class AddDeviceToRpcClient
 
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
-        return null;
+
+        Controller controller = new Controller(
+            name,
+            networkId,
+            socketUrl,
+            port
+        );
+        deviceId = controller.execute();
+        return ExecutionResult.PASSED;
     }
 
     public static class Controller {
@@ -46,6 +60,53 @@ public class AddDeviceToRpcClient
             this.networkId = networkId;
             this.store = store;
             this.connection = connection;
+        }
+
+        public Controller(
+            String name,
+            String networkId,
+            String socketUrl,
+            String port
+        ) throws FailureException {
+            this(
+                name,
+                networkId,
+                new FileSystemJsonDataStore(),
+                createSSLConnection(networkId, socketUrl, port)
+            );
+        }
+
+        private static SSLConnection createSSLConnection(
+            String networkId,
+            String socketUrl,
+            String port
+        )
+            throws FailureException
+        {
+            try {
+                return new SSLConnection(
+                    socketUrl,
+                    Integer.parseInt(port),
+                    getCerts(networkId)
+                );
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to create SSL Socket: " + e.getMessage()
+                );
+            }
+        }
+
+        private static WappstoCerts getCerts(String networkId)
+            throws FailureException
+        {
+            try {
+                return ((NetworkInstance)new FileSystemJsonDataStore()
+                    .load(networkId, NetworkInstance.class)).certs;
+            } catch (Exception e) {
+                throw new FailureException(
+                    "Failed to load network from datastore"
+                );
+            }
         }
 
         public String execute() throws FailureException {

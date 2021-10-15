@@ -48,7 +48,6 @@ public class AddDeviceToRpcClientTest {
     }
 
     @Test
-    @Disabled
     public void adds_new_device_to_existing_client(
         NetworkSchema schema,
         DataStore store
@@ -66,6 +65,7 @@ public class AddDeviceToRpcClientTest {
         action.socketUrl = socketUrl;
         action.port = socketPort;
         action.name = "Test";
+        action.networkId = creator.network.id;
         runner().run(action);
         assertNotNull(service.getDevice(UUID.fromString(action.deviceId)));
     }

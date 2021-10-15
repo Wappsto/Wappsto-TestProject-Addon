@@ -26,7 +26,7 @@ public class DataStoreInjector implements ParameterResolver {
         if (extensionContext.getTags().contains("unit")) {
             return new InMemoryDataStore();
         } else {
-            return new FileSystemJsonDataStore("./saved_instance/");
+            return new FileSystemJsonDataStore();
         }
     }
 }

@@ -165,7 +165,10 @@ public class RestNetworkService implements NetworkService {
     }
 
     @Override
-    public List<UUID> getDevice(UUID device) {
-        return null;
+    public DeviceResponse getDevice(UUID device) throws Exception {
+        return (DeviceResponse) new Request.Builder(session.service)
+            .atEndPoint(API.V2_0)
+            .atEndPoint(API.DEVICE)
+            .get(session.getId(), DeviceResponse.class);
     }
 }

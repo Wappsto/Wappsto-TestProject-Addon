@@ -83,7 +83,7 @@ public class InMemoryNetworkService implements NetworkService {
     }
 
     @Override
-    public List<UUID> getDevice(UUID device) {
+    public DeviceResponse getDevice(UUID device) {
         return null;
     }
 }
