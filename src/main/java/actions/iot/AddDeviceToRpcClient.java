@@ -128,7 +128,7 @@ public class AddDeviceToRpcClient
             instance.schema = schema;
             store.save(schema.meta.id.toString(), instance);
             try {
-                VirtualIoTNetwork network = new VirtualIoTNetwork(
+                new VirtualIoTNetwork(
                     schema,
                     new RpcClient(connection)
                 );
