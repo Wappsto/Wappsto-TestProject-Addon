@@ -62,17 +62,7 @@ public class VirtualIoTNetwork {
             request.state,
             new ReportData(reportValues.get(request.state))
         );
-        updateStateInSchema(request);
         client.send(toJson(new RpcRequest(report, Methods.PUT)));
-    }
-
-    private void updateStateInSchema(StateData request) {
-        schema.device.get(0).value.get(0).state
-            .stream()
-            .filter(s -> s.meta.id.equals(request.state))
-            .findAny()
-            .orElseThrow()
-            .data = request.data;
     }
 
     public UUID getControlStateId(int index) {
@@ -95,18 +85,22 @@ public class VirtualIoTNetwork {
     private void addStatesAndValues(NetworkSchema schema) {
         for (DeviceSchema d : schema.device) {
             for (ValueSchema v : d.value) {
-                StateSchema control = v.state.stream()
-                    .filter(s -> s.type.equals("Control"))
-                    .findAny()
-                    .orElseThrow();
-                StateSchema report = v.state.stream()
-                    .filter(s -> s.type.equals("Report"))
-                    .findAny()
-                    .orElseThrow();
-                controlStates.add(control.meta.id);
-                reportStates.add(report.meta.id);
-                controlAndReportStates.put(control.meta.id, report.meta.id);
-                reportValues.put(report.meta.id, report.data);
+                Optional<StateSchema> report = v.state.stream()
+                    .filter(s -> s.type.equals("Report")).findAny();
+                Optional<StateSchema> control = v.state.stream()
+                    .filter(s -> s.type.equals("Control")).findAny();
+
+                report.ifPresent(s -> {
+                    reportStates.add(s.meta.id);
+                    reportValues.put(s.meta.id, s.data);
+                });
+                control.ifPresent(s -> {
+                    report.ifPresent(stateSchema -> controlAndReportStates.put(
+                        s.meta.id,
+                        stateSchema.meta.id
+                    ));
+                    controlStates.add(s.meta.id);
+                });
             }
         }
     }
