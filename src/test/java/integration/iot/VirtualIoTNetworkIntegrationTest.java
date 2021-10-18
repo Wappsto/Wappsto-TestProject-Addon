@@ -11,7 +11,6 @@ import wappsto.iot.rpc.model.*;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static util.Utils.*;
 
 @ExtendWith(AdminInjector.class)
@@ -48,15 +47,13 @@ public class VirtualIoTNetworkIntegrationTest {
                 "1"
             )
         );
-        Thread.sleep(2000);
-        assertEquals(
+        assertEventuallyEquals(
             "1",
-            service.getState(
-                network.schema.device.get(0).value.get(0).state.stream()
-                    .filter(s -> s.type.equals("Report"))
-                    .findAny()
-                    .orElseThrow().meta.id
-            )
+            id -> service.getState((UUID) id),
+            network.schema.device.get(0).value.get(0).state.stream()
+                .filter(s -> s.type.equals("Report"))
+                .findAny()
+                .orElseThrow().meta.id
         );
         network.stop();
     }
@@ -82,8 +79,11 @@ public class VirtualIoTNetworkIntegrationTest {
             .orElseThrow().meta.id;
         Thread.sleep(500);
         service.updateState(controlState, "1");
-        Thread.sleep(500);
-        assertEquals("1", service.getState(reportState));
+        assertEventuallyEquals(
+            "1",
+            id -> service.getState((UUID) id),
+            reportState
+        );
         network.stop();
     }
 

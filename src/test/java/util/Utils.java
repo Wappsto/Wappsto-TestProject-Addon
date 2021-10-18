@@ -8,8 +8,10 @@ import wappsto.api.session.*;
 import wappsto.api.session.model.*;
 import wappsto.iot.network.model.*;
 
+import java.time.*;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 
 
@@ -103,4 +105,22 @@ public class Utils {
         return schema;
     }
 
+    public static void assertEventuallyEquals(
+        Object expected,
+        ThrowingFunction<?> actual,
+        Object argument
+    ) {
+        Duration timeout = Duration.ofMillis(20000);
+        Instant start = Instant.now();
+        while (!Instant.now().isAfter(start.plus(timeout))) {
+            try {
+                assertEquals(expected, actual.apply(argument));
+                return;
+            } catch (Exception ignored) {
+            }
+        }
+        throw new AssertionError("Method never returned expected value");
+    }
+
 }
+
