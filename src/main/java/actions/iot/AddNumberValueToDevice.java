@@ -68,9 +68,9 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             deviceId,
             name,
             new NumberSchema(
-                Integer.parseInt(min),
-                Integer.parseInt(max),
-                Integer.parseInt(stepSize),
+                Float.parseFloat(min),
+                Float.parseFloat(max),
+                Float.parseFloat(stepSize),
                 type),
             permissions,
             socketUrl,

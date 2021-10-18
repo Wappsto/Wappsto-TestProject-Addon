@@ -3,12 +3,12 @@ package wappsto.iot.network.model;
 import com.fasterxml.jackson.annotation.*;
 
 public class NumberSchema {
-    @JsonProperty public int min;
-    @JsonProperty public int max;
-    @JsonProperty public int step;
+    @JsonProperty public float min;
+    @JsonProperty public float max;
+    @JsonProperty public float step;
     @JsonProperty public String unit;
 
-    public NumberSchema(int min, int max, int step, String type) {
+    public NumberSchema(float min, float max, float step, String type) {
         this.min = min;
         this.max = max;
         this.step = step;
