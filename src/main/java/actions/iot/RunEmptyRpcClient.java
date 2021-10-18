@@ -102,7 +102,7 @@ public class RunEmptyRpcClient extends ActionWithSSLSocket implements WebAction 
         public String execute() throws FailureException {
             NetworkSchema schema = new NetworkSchema(name, creator.network.id);
             try {
-                VirtualIoTNetwork network = new VirtualIoTNetwork(
+                new VirtualIoTNetwork(
                     schema,
                     new RpcClient(connection)
                 );
