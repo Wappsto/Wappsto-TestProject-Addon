@@ -87,15 +87,20 @@ public class Utils {
     }
 
     public static NetworkSchema createNetworkSchema() {
-        return new NetworkSchema.Builder(
+        NetworkSchema schema = new NetworkSchema(
             "On/off switch",
             UUID.randomUUID().toString()
-        ).addDevice("Switch")
-            .addValue("On/off", ValuePermission.RW)
-            .withNumberSchema(0, 1, 1, "Boolean")
-            .addToDevice()
-            .addToNetwork()
-            .build();
+        );
+        schema.device = new LinkedList<>();
+        schema.device.add(new DeviceSchema("Switch"));
+        schema.device.get(0).value = new LinkedList<>();
+        schema.device.get(0).value.add(new ValueSchema(
+            "On/off",
+            ValuePermission.RW,
+            new NumberSchema(0, 1, 1, "Boolean")
+        ));
+
+        return schema;
     }
 
 }
