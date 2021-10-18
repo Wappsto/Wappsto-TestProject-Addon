@@ -6,13 +6,13 @@ public class NumberSchema {
     @JsonProperty public float min;
     @JsonProperty public float max;
     @JsonProperty public float step;
-    @JsonProperty public String unit;
+    @JsonProperty public String type;
 
     public NumberSchema(float min, float max, float step, String type) {
         this.min = min;
         this.max = max;
         this.step = step;
-        this.unit = type;
+        this.type = type;
     }
 
     public NumberSchema(){}
