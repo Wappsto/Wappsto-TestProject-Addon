@@ -22,7 +22,7 @@ import static util.Utils.*;
 @ExtendWith(AdminInjector.class)
 @ExtendWith(NetworkSchemaInjector.class)
 @ExtendWith(DataStoreInjector.class)
-public class AddNumberValueToDeviceTest {
+public class ChangeValueTypeTest {
     private static String serviceUrl;
     private static String appUrl;
     private static String socketUrl;
@@ -57,28 +57,24 @@ public class AddNumberValueToDeviceTest {
     }
 
     @Test
-    public void adds_value_to_a_device() throws Exception {
-        AddNumberValueToDevice action = new AddNumberValueToDevice();
+    public void changes_existing_value_to_different_type() throws Exception {
+        ChangeValueType action = new ChangeValueType();
         action.socketUrl = socketUrl;
         action.port = socketPort;
         action.networkId = networkId;
-        action.deviceId = schema.device.get(0).meta.id.toString();
-        action.name = "Add Value Test";
-        action.type = "Boolean";
-        action.min = "0";
-        action.max = "1";
-        action.stepSize = "1";
-        action.permissions = "rw";
+        action.valueId = schema.device.get(0).value.get(0).meta.id.toString();
+        action.name = "Change value test";
+        action.type = "Range";
+        action.min = "50";
+        action.max = "100";
+        action.stepSize = "5";
+        action.permissions = "r";
 
         runner().run(action);
         Thread.sleep(5000);
-        DeviceResponse device = new RestNetworkService(session)
-            .getDevice(UUID.fromString(action.deviceId));
-        List<UUID> values = device
-            .value;
-        assertTrue(
-            values.contains(UUID.fromString(action.valueId))
-        );
+        ValueResponse value = new RestNetworkService(session)
+            .getValue(UUID.fromString(action.valueId));
+        assertEquals("Change value test", value.name);
     }
 
     @AfterEach

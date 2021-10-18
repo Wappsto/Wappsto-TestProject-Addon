@@ -76,6 +76,13 @@ public enum API {
         }
     },
 
+    VALUE {
+        @Override
+        public String toString() {
+            return "value";
+        }
+    },
+
     CREATOR {
         @Override
         public String toString() {

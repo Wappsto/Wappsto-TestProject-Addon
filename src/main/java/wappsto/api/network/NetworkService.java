@@ -27,4 +27,6 @@ public interface NetworkService {
     String createDevice(String networkId) throws Exception;
 
     DeviceResponse getDevice(UUID device) throws Exception;
+
+    ValueResponse getValue(UUID fromString) throws Exception;
 }

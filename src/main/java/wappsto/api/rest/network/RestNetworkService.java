@@ -172,4 +172,13 @@ public class RestNetworkService implements NetworkService {
             .atEndPoint(device.toString())
             .get(session.getId(), DeviceResponse.class);
     }
+
+    @Override
+    public ValueResponse getValue(UUID id) throws Exception {
+        return (ValueResponse) new Request.Builder(session.service)
+            .atEndPoint(API.V2_0)
+            .atEndPoint(API.VALUE)
+            .atEndPoint(id.toString())
+            .get(session.getId(), ValueResponse.class);
+    }
 }

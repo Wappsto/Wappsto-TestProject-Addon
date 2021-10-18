@@ -86,4 +86,9 @@ public class InMemoryNetworkService implements NetworkService {
     public DeviceResponse getDevice(UUID device) {
         return null;
     }
+
+    @Override
+    public ValueResponse getValue(UUID fromString) throws Exception {
+        return null;
+    }
 }
