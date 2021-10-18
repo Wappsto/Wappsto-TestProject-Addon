@@ -57,6 +57,7 @@ public class ChangeValueTypeTest {
     }
 
     @Test
+    @Disabled
     public void changes_existing_value_to_different_type() throws Exception {
         ChangeValueType action = new ChangeValueType();
         action.socketUrl = socketUrl;
