@@ -7,6 +7,8 @@ import wappsto.api.rest.network.*;
 import wappsto.api.rest.request.exceptions.*;
 import wappsto.api.rest.session.*;
 import wappsto.api.session.model.*;
+import wappsto.iot.filesystem.*;
+import wappsto.iot.ssl.*;
 
 public class Utils {
     public static void logIn(WebDriver browser, String session) {
@@ -99,6 +101,27 @@ public class Utils {
         } catch (Exception e) {
             throw new FailureException(
                 "Failed to create admin session: " + e.getMessage()
+            );
+        }
+    }
+
+    public static SSLConnection createSSLConnection(
+        String networkId,
+        String socketUrl,
+        String port
+    )
+        throws FailureException
+    {
+        try {
+            return new SSLConnection(
+                socketUrl,
+                Integer.parseInt(port),
+                ((NetworkInstance)new FileSystemJsonDataStore()
+                    .load(networkId, NetworkInstance.class)).certs
+            );
+        } catch (Exception e) {
+            throw new FailureException(
+                "Failed to establish connection: " + e.getMessage()
             );
         }
     }

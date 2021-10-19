@@ -12,9 +12,10 @@ import wappsto.iot.filesystem.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
-import wappsto.iot.ssl.*;
 
 import java.util.*;
+
+import static actions.Utils.*;
 
 @Action(name = "Add number value to an RPC device")
 public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAction {
@@ -147,26 +148,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             );
         }
 
-        private static SSLConnection createSSLConnection(
-            String networkId,
-            String socketUrl,
-            String port
-        )
-            throws FailureException
-        {
-            try {
-                return new SSLConnection(
-                    socketUrl,
-                    Integer.parseInt(port),
-                    ((NetworkInstance)new FileSystemJsonDataStore()
-                        .load(networkId, NetworkInstance.class)).certs
-                );
-            } catch (Exception e) {
-                throw new FailureException(
-                    "Failed to establish connection: " + e.getMessage()
-                );
-            }
-        }
+
 
         public ValueSchema execute() throws FailureException {
             NetworkInstance instance;

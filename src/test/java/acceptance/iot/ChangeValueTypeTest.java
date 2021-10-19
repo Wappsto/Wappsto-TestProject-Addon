@@ -57,7 +57,6 @@ public class ChangeValueTypeTest {
     }
 
     @Test
-    @Disabled
     public void changes_existing_value_to_different_type() throws Exception {
         ChangeValueType action = new ChangeValueType();
         action.socketUrl = socketUrl;
@@ -72,10 +71,12 @@ public class ChangeValueTypeTest {
         action.permissions = "r";
 
         runner().run(action);
-        Thread.sleep(5000);
-        ValueResponse value = new RestNetworkService(session)
-            .getValue(UUID.fromString(action.valueId));
-        assertEquals("Change value test", value.name);
+        String valueName = ((ValueResponse) waitForResponse(
+            value -> new RestNetworkService(session)
+                .getValue((UUID) value),
+            UUID.fromString(action.valueId)
+        )).name;
+        assertEquals("Change value test", valueName);
     }
 
     @AfterEach
