@@ -64,10 +64,6 @@ public class ChangeValueTypeTest {
         action.networkId = networkId;
         action.valueId = schema.device.get(0).value.get(0).meta.id.toString();
         action.name = "Change value test";
-        action.unit = "Range";
-        action.min = "50";
-        action.max = "100";
-        action.stepSize = "5";
         action.permissions = "r";
 
         runner().run(action);

@@ -51,7 +51,7 @@ public class ChangeReportStateControllerTest {
         Connection connection,
         DataStore store
     ) throws Exception {
-        VirtualIoTNetwork network = startNetwork(schema, connection, store);
+        startNetwork(schema, connection, store);
         ChangeReportState.Controller controller =
             new ChangeReportState.Controller(
                 schema.meta.id.toString(),

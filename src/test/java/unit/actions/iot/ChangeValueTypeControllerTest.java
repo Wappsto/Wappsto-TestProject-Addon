@@ -40,8 +40,6 @@ public class ChangeValueTypeControllerTest {
                 "Test", networkId,
                 schema.device.get(0).value.get(0).meta.id.toString(),
                 "Number",
-                new NumberSchema(0, 1, 1, "Change value type test"),
-                ValuePermission.RW,
                 store,
                 connection
             );
@@ -61,8 +59,6 @@ public class ChangeValueTypeControllerTest {
                 "Test", networkId,
                 valueId,
                 "Number",
-                new NumberSchema(0, 1, 1, "Change value type test"),
-                ValuePermission.RW,
                 store,
                 connection
             );
@@ -82,8 +78,6 @@ public class ChangeValueTypeControllerTest {
                 "Test", networkId,
                 valueId,
                 "Number",
-                new NumberSchema(0, 1, 1, "Change value type test"),
-                ValuePermission.RW,
                 store,
                 connection
             );

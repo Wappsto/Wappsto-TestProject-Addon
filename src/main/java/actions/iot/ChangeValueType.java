@@ -31,18 +31,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
     @Parameter(description = "Type")
     public String type;
 
-    @Parameter(description = "Minimum")
-    public String min;
-
-    @Parameter(description = "Maximum")
-    public String max;
-
-    @Parameter(description = "Step size")
-    public String stepSize;
-
-    @Parameter(description = "Unit")
-    public String unit;
-
     @Parameter(description = "Permissions (r/w/rw")
     public String permissions;
 
@@ -65,13 +53,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             networkId,
             valueId,
             type,
-            new NumberSchema(
-                Float.parseFloat(min),
-                Float.parseFloat(max),
-                Float.parseFloat(stepSize),
-                unit
-            ),
-            permissions,
             socketUrl,
             port
         );
@@ -92,8 +73,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             ? report.get().meta.id.toString()
             : "";
 
-
-
         return ExecutionResult.PASSED;
     }
 
@@ -102,8 +81,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
         private final String networkId;
         private final String valueId;
         private final String type;
-        private final NumberSchema numbers;
-        private final ValuePermission valuePermission;
         private final DataStore store;
         private final Connection connection;
 
@@ -112,8 +89,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             String networkId,
             String valueId,
             String type,
-            NumberSchema numbers,
-            ValuePermission valuePermission,
             DataStore store,
             Connection connection
         ) {
@@ -121,8 +96,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             this.networkId = networkId;
             this.valueId = valueId;
             this.type = type;
-            this.numbers = numbers;
-            this.valuePermission = valuePermission;
             this.store = store;
             this.connection = connection;
         }
@@ -132,8 +105,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             String networkId,
             String valueId,
             String type,
-            NumberSchema numbers,
-            String permissions,
             String socketUrl,
             String port
         ) throws FailureException {
@@ -143,24 +114,9 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
                 networkId,
                 valueId,
                 type,
-                numbers,
-                getValuePermissions(permissions),
                 new FileSystemJsonDataStore(),
                 createSSLConnection(networkId, socketUrl, port)
             );
-        }
-
-
-        private static ValuePermission getValuePermissions(String permissions)
-            throws FailureException
-        {
-            try {
-                return ValuePermission.from(permissions);
-            } catch (Exception e) {
-                throw new FailureException(
-                    "Failed to instantiate controller: " + e.getMessage()
-                );
-            }
         }
 
         public ValueSchema execute() throws FailureException {
@@ -174,20 +130,32 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
                 );
             }
 
-            ValueSchema valueSchema = new ValueSchema(
-                name,
-                type,
-                valuePermission,
-                numbers
-            );
-            valueSchema.meta.id = UUID.fromString(valueId);
+            Optional<ValueSchema> value = instance.schema.device.stream()
+                .flatMap( d -> d.value.stream())
+                .filter( v -> v.meta.id.toString().equals(valueId))
+                .findAny();
+
+            ValueSchema valueSchema;
+            if (value.isPresent()) {
+                valueSchema = value.get();
+            } else {
+                throw new FailureException("Invalid value ID");
+            }
+
+            valueSchema.name = name.isEmpty()
+                ? valueSchema.name
+                : name;
+
+            valueSchema.type = type.isEmpty()
+                ? valueSchema.type
+                : type;
 
             instance.schema.device.stream().filter(
                 d -> d.value.stream().anyMatch(
                     v -> v.meta.id.toString().equals(valueId)
                 )
             ).findAny()
-                .orElseThrow(() -> new FailureException("Invalid value ID"))
+                .get()
                 .value.replaceAll(
                     v -> v.meta.id.toString().equals(valueId)
                         ? valueSchema
