@@ -22,7 +22,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
     @Parameter(description = "Network UUID")
     public String networkId;
 
-    @Parameter(description = "Value UUID")
+    @Parameter(description = "Value UUID to change")
     public String valueId;
 
     @Parameter(description = "Name")
@@ -87,6 +87,8 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
         reportState = report.isPresent()
             ? report.get().meta.id.toString()
             : "";
+
+
 
         return ExecutionResult.PASSED;
     }
