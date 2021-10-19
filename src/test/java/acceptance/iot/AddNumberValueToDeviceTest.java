@@ -4,7 +4,6 @@ import actions.iot.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.api.network.model.*;
 import wappsto.api.rest.network.*;
 import wappsto.api.rest.request.exceptions.*;
 import wappsto.api.rest.session.*;
@@ -15,7 +14,6 @@ import wappsto.iot.network.model.*;
 import java.util.*;
 
 import static acceptance.Util.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
@@ -71,13 +69,9 @@ public class AddNumberValueToDeviceTest {
         action.permissions = "rw";
 
         runner().run(action);
-        Thread.sleep(5000);
-        DeviceResponse device = new RestNetworkService(session)
-            .getDevice(UUID.fromString(action.deviceId));
-        List<UUID> values = device
-            .value;
-        assertTrue(
-            values.contains(UUID.fromString(action.valueId))
+        assertEventuallyDoesNotThrow(
+            value -> new RestNetworkService(session).getValue((UUID) value),
+            UUID.fromString(action.valueId)
         );
     }
 

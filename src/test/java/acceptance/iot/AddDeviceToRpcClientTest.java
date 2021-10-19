@@ -67,6 +67,10 @@ public class AddDeviceToRpcClientTest {
         action.name = "Test";
         action.networkId = creator.network.id;
         runner().run(action);
+        assertEventuallyDoesNotThrow(
+            device -> service.getDevice((UUID) device),
+            UUID.fromString(action.deviceId)
+        );
         assertNotNull(service.getDevice(UUID.fromString(action.deviceId)));
     }
 

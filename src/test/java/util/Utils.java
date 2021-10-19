@@ -107,20 +107,33 @@ public class Utils {
 
     public static void assertEventuallyEquals(
         Object expected,
-        ThrowingFunction<?> actual,
+        ThrowingFunction<?> function,
+        Object argument
+    ) {
+        assertEquals(expected, waitForResponse(function, argument));
+    }
+
+    public static void assertEventuallyDoesNotThrow(
+        ThrowingFunction<?> function,
+        Object argument
+    ) {
+        assertDoesNotThrow(() -> waitForResponse(function, argument));
+    }
+
+    public static Object waitForResponse(
+        ThrowingFunction<?> function,
         Object argument
     ) {
         Duration timeout = Duration.ofMillis(20000);
         Instant start = Instant.now();
         while (!Instant.now().isAfter(start.plus(timeout))) {
             try {
-                assertEquals(expected, actual.apply(argument));
-                return;
+                Object result = function.apply(argument);
+                if (result != null) return result;
             } catch (Exception ignored) {
             }
         }
         throw new AssertionError("Method never returned expected value");
     }
-
 }
 

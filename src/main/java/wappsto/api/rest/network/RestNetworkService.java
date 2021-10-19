@@ -148,9 +148,6 @@ public class RestNetworkService implements NetworkService {
             .atEndPoint(id.toString())
             .get(session.getId(), StateResponse.class))
             .data;
-
-
-
     }
 
     @Override

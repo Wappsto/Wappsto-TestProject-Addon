@@ -77,8 +77,10 @@ public class VirtualIoTNetworkIntegrationTest {
             .filter(s -> s.type.equals("Report"))
             .findAny()
             .orElseThrow().meta.id;
-        Thread.sleep(500);
-        service.updateState(controlState, "1");
+        waitForResponse(
+            request -> updateState((UpdateStateRequest) request),
+            new UpdateStateRequest(service, controlState, "1")
+        );
         assertEventuallyEquals(
             "1",
             id -> service.getState((UUID) id),
@@ -87,8 +89,25 @@ public class VirtualIoTNetworkIntegrationTest {
         network.stop();
     }
 
+    private boolean updateState(UpdateStateRequest request) throws Exception {
+        request.service.updateState(request.state, request.data);
+        return true;
+    }
+
     @AfterEach
     public void tearDown(Admin admin) throws Exception {
         resetUser(admin);
+    }
+
+    private class UpdateStateRequest {
+        public final NetworkService service;
+        public final UUID state;
+        public final String data;
+        public UpdateStateRequest(NetworkService service, UUID state, String data) {
+            this.service = service;
+            this.state = state;
+            this.data = data;
+        }
+
     }
 }
