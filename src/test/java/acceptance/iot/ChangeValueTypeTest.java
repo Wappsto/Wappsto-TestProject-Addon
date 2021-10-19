@@ -64,7 +64,7 @@ public class ChangeValueTypeTest {
         action.networkId = networkId;
         action.valueId = schema.device.get(0).value.get(0).meta.id.toString();
         action.name = "Change value test";
-        action.permissions = "r";
+        action.type = "Temperature";
 
         runner().run(action);
         String valueName = ((ValueResponse) waitForResponse(

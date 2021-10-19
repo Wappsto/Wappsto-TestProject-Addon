@@ -31,9 +31,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
     @Parameter(description = "Type")
     public String type;
 
-    @Parameter(description = "Permissions (r/w/rw")
-    public String permissions;
-
     @Parameter(
         description = "Report state UUID",
         direction = ParameterDirection.OUTPUT
