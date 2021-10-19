@@ -26,11 +26,11 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
     @Parameter(description = "Device UUID")
     public String deviceId;
 
-    @Parameter(description = "Value name")
-    public String name;
-
     @Parameter(description = "Type")
     public String type;
+
+    @Parameter(description = "Value name")
+    public String name;
 
     @Parameter(description = "Minimum value")
     public String min;
@@ -40,6 +40,9 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
 
     @Parameter(description = "Step size")
     public String stepSize;
+
+    @Parameter(description = "Unit")
+    public String unit;
 
     @Parameter(description = "Permissions (r, w, or rw")
     public String permissions;
@@ -68,11 +71,12 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             networkId,
             deviceId,
             name,
+            type,
             new NumberSchema(
                 Float.parseFloat(min),
                 Float.parseFloat(max),
                 Float.parseFloat(stepSize),
-                type),
+                unit),
             permissions,
             socketUrl,
             port
@@ -102,6 +106,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
         private final String networkId;
         private final String deviceId;
         private final String name;
+        private final String type;
         private final NumberSchema numbers;
         private final String permissions;
         private final DataStore store;
@@ -111,6 +116,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             String networkId,
             String deviceId,
             String name,
+            String type,
             NumberSchema numbers,
             String permissions,
             DataStore store,
@@ -120,6 +126,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             this.networkId = networkId;
             this.deviceId = deviceId;
             this.name = name;
+            this.type = type;
             this.numbers = numbers;
             this.permissions = permissions;
             this.store = store;
@@ -130,6 +137,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             String networkId,
             String deviceId,
             String name,
+            String type,
             NumberSchema numbers,
             String permissions,
             String socketUrl,
@@ -141,6 +149,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
                 networkId,
                 deviceId,
                 name,
+                type,
                 numbers,
                 permissions,
                 new FileSystemJsonDataStore(),
@@ -163,7 +172,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
 
             ValueSchema value;
             try {
-                value = new ValueSchema(name, permissions, numbers);
+                value = new ValueSchema(name, type, permissions, numbers);
             } catch (Exception e) {
                 throw new FailureException("Invalid permission string");
             }

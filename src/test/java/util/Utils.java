@@ -98,6 +98,7 @@ public class Utils {
         schema.device.get(0).value = new LinkedList<>();
         schema.device.get(0).value.add(new ValueSchema(
             "On/off",
+            "Number",
             ValuePermission.RW,
             new NumberSchema(0, 1, 1, "Boolean")
         ));

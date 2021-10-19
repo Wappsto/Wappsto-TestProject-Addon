@@ -62,7 +62,7 @@ public class AddNumberValueToDeviceTest {
         action.networkId = networkId;
         action.deviceId = schema.device.get(0).meta.id.toString();
         action.name = "Add Value Test";
-        action.type = "Boolean";
+        action.unit = "Boolean";
         action.min = "0";
         action.max = "1";
         action.stepSize = "1";

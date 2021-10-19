@@ -10,19 +10,27 @@ public class ValueSchema {
     @JsonProperty public List<StateSchema> state;
     @JsonProperty public NumberSchema number;
     @JsonProperty public Meta meta;
+    @JsonProperty public String type;
 
-    public ValueSchema(String name, String permission, NumberSchema numbers)
+    public ValueSchema(
+        String name,
+        String type,
+        String permission,
+        NumberSchema numbers
+    )
         throws Exception
     {
-        this(name, ValuePermission.from(permission), numbers);
+        this(name, type, ValuePermission.from(permission), numbers);
     }
 
     public ValueSchema(
         String name,
+        String type,
         ValuePermission permission,
         NumberSchema numbers
     ) {
         this.name = name;
+        this.type = type;
         this.permission = permission.toString();
         state = new LinkedList<>();
         if (this.permission.contains("r")) state.add(new StateSchema("Report"));

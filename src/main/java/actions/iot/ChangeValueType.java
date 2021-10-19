@@ -40,6 +40,9 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
     @Parameter(description = "Step size")
     public String stepSize;
 
+    @Parameter(description = "Unit")
+    public String unit;
+
     @Parameter(description = "Permissions (r/w/rw")
     public String permissions;
 
@@ -61,11 +64,12 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             name,
             networkId,
             valueId,
+            type,
             new NumberSchema(
                 Float.parseFloat(min),
                 Float.parseFloat(max),
                 Float.parseFloat(stepSize),
-                type
+                unit
             ),
             permissions,
             socketUrl,
@@ -97,6 +101,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
         private final String name;
         private final String networkId;
         private final String valueId;
+        private final String type;
         private final NumberSchema numbers;
         private final ValuePermission valuePermission;
         private final DataStore store;
@@ -106,6 +111,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             String name,
             String networkId,
             String valueId,
+            String type,
             NumberSchema numbers,
             ValuePermission valuePermission,
             DataStore store,
@@ -114,6 +120,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             this.name = name;
             this.networkId = networkId;
             this.valueId = valueId;
+            this.type = type;
             this.numbers = numbers;
             this.valuePermission = valuePermission;
             this.store = store;
@@ -124,6 +131,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             String name,
             String networkId,
             String valueId,
+            String type,
             NumberSchema numbers,
             String permissions,
             String socketUrl,
@@ -134,6 +142,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
                 name,
                 networkId,
                 valueId,
+                type,
                 numbers,
                 getValuePermissions(permissions),
                 new FileSystemJsonDataStore(),
@@ -167,6 +176,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
 
             ValueSchema valueSchema = new ValueSchema(
                 name,
+                type,
                 valuePermission,
                 numbers
             );
