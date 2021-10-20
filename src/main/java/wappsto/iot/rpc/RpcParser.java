@@ -84,10 +84,6 @@ public class RpcParser {
         deleteCommand.execute();
     }
 
-    private boolean isCommand(JsonNode node) {
-        return parseType(node) == RpcType.COMMAND;
-    }
-
     private RpcType parseType(JsonNode node) {
         if (node.get("result") != null) return RpcType.SUCCESS_RESPONSE;
         else if (node.get("error") != null) return RpcType.ERROR_RESPONSE;
