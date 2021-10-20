@@ -48,7 +48,6 @@ public class RestWappService implements wappsto.api.wapps.WappService {
         return ((WappsResponse) new Request.Builder(session.service)
             .atEndPoint(API.INSTALLATION)
             .get(session.getId(), WappsResponse.class)).id;
-
     }
 
     /**
