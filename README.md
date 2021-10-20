@@ -29,10 +29,10 @@ In order to run the automated test suite, the following environment variables ne
 WAPPSTO_ADMIN_USERNAME : <admin_email>
 WAPPSTO_ADMIN_PASSWORD : <admin_password>
 TESTPROJECT_DEV_TOKEN : <testproject.io_dev_token>
-WAPPSTO_API_ROOT : <wappsto_api_url>
-WAPPSTO_APP_URL : <wappsto_dashboard_url>
-WAPPSTO_ADMIN_PANEL_URL : <admin_panel_url>
-WAPPSTO_SOCKET_URL : <ssl_socket_address>
+WAPPSTO_API_ROOT : <wappsto_api_url> (eg. https//qa.wappsto.com/services)
+WAPPSTO_APP_URL : <wappsto_dashboard_url> (eg. https//:qa.wappsto.com)
+WAPPSTO_ADMIN_PANEL_URL : <admin_panel_url> (eg. https://admin.qa.wappsto.com)
+WAPPSTO_SOCKET_URL : <ssl_socket_address> (eg. qa.wappsto.com)
 WAPPSTO_SOCKET_PORT : <ssl_socket_port>
 ```
 Furthermore, a TestProject agent is needed in order to run the acceptance tests. The docker-compose provided with the repo can be used for this purpose. Simply start the container, and run the tests on your local machines - the testrunner will connect to the dockerized agent through localhost.
