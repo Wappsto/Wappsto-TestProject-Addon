@@ -40,7 +40,7 @@ public class RestWappService implements wappsto.api.wapps.WappService {
     /**
      * Fetch all Wapps installed on the user. Currently, not much useful info
      * from the response gets deserialized into POJO
-     * @return
+     * @return List of installed Wapp UUID's
      * @throws Exception
      */
     @Override

@@ -38,28 +38,45 @@ public class RpcParser {
         try {
             JsonNode node = mapper.readTree(data);
 
-            if (isCommand(node)) {
-                RpcBase rpc = mapper.readValue(data, RpcBase.class);
-                switch (rpc.method) {
-                    case PUT:
-                        executeStateCommand(data);
-                        break;
-                    case DELETE:
-                        executeDeleteCommand();
-                        break;
-                    default:
-                        break;
-                }
-
-            } else {
-                result.execute(
-                    new ResponseData(
-                        mapper.readValue(data, RpcIncomingResult.class)
-                    )
-                );
+            switch (parseType(node)) {
+                case COMMAND:
+                    parseCommand(data);
+                    break;
+                case SUCCESS_RESPONSE:
+                    parseSuccessResponse(data);
+                    break;
+                case ERROR_RESPONSE:
+                    throw new RuntimeException(
+                        "Server returned an error: \n" +
+                        data
+                    );
+                default:
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void parseSuccessResponse(String data) throws IOException {
+        result.execute(
+            new ResponseData(
+                mapper.readValue(data, RpcIncomingResult.class)
+            )
+        );
+    }
+
+    private void parseCommand(String data) throws IOException {
+        RpcBase rpc = mapper.readValue(data, RpcBase.class);
+        switch (rpc.method) {
+            case PUT:
+                executeStateCommand(data);
+                break;
+            case DELETE:
+                executeDeleteCommand();
+                break;
+            default:
+                break;
         }
     }
 
@@ -68,7 +85,13 @@ public class RpcParser {
     }
 
     private boolean isCommand(JsonNode node) {
-        return node.get("result") == null;
+        return parseType(node) == RpcType.COMMAND;
+    }
+
+    private RpcType parseType(JsonNode node) {
+        if (node.get("result") != null) return RpcType.SUCCESS_RESPONSE;
+        else if (node.get("error") != null) return RpcType.ERROR_RESPONSE;
+        else return RpcType.COMMAND;
     }
 
     private void executeStateCommand(String data) throws IOException {
