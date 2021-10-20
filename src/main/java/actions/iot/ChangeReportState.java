@@ -41,7 +41,7 @@ public class ChangeReportState extends ActionWithSSLSocket implements WebAction 
         private final DataStore store;
         private final Connection connection;
         private final String value;
-        private String state;
+        private final String state;
 
         public Controller(
             String networkId,
