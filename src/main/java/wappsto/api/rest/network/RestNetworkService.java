@@ -31,8 +31,8 @@ public class RestNetworkService implements NetworkService {
     }
 
     /**
-     * Make a new network creator - used for creating virtual IoT devices
-     * @return network creator
+     * Get a network creator object used for creating a simulated IoT network
+     * @return creator object
      * @throws Exception
      */
     @Override
@@ -40,6 +40,12 @@ public class RestNetworkService implements NetworkService {
         return getCreator(false);
     }
 
+    /**
+     * Get a network creator object used for creating a simulated IoT network
+     * @param manufacturerAsOwner parameter sent with the POST request
+     * @return creator object
+     * @throws Exception
+     */
     @Override
     public CreatorResponse getCreator(boolean manufacturerAsOwner)
         throws Exception
@@ -150,6 +156,12 @@ public class RestNetworkService implements NetworkService {
             .data;
     }
 
+    /**
+     * Create a device under a network
+     * @param networkId network to create the device under
+     * @return device UUID
+     * @throws Exception
+     */
     @Override
     public String createDevice(String networkId) throws Exception {
         return ((CreateDeviceResponse) new Request.Builder(session.service)
@@ -161,6 +173,12 @@ public class RestNetworkService implements NetworkService {
             .post(session.getId(), CreateDeviceResponse.class)).meta.id;
     }
 
+    /**
+     * Fetch a device by its UUID
+     * @param device
+     * @return device data
+     * @throws Exception
+     */
     @Override
     public DeviceResponse getDevice(UUID device) throws Exception {
         return (DeviceResponse) new Request.Builder(session.service)
@@ -170,6 +188,12 @@ public class RestNetworkService implements NetworkService {
             .get(session.getId(), DeviceResponse.class);
     }
 
+    /**
+     * Fetch a value by its UUID
+     * @param id value UUID
+     * @return value data
+     * @throws Exception
+     */
     @Override
     public ValueResponse getValue(UUID id) throws Exception {
         return (ValueResponse) new Request.Builder(session.service)

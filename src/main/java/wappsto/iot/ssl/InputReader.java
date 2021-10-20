@@ -8,6 +8,9 @@ import java.util.function.*;
 
 import static wappsto.iot.exceptions.InvalidMessage.*;
 
+/**
+ * Reads incoming data from the SSL socket and parses them into distinct strings
+ */
 public class InputReader extends Thread{
     public static final int DEFAULT_MESSAGE_TIMOUT = 500;
     private final Callback messageCallback;
@@ -15,6 +18,12 @@ public class InputReader extends Thread{
     private final InputStream incomingData;
     private final int timeout;
 
+    /**
+     * Instantiate the reader with the default timeout
+     * @param incomingData stream of incoming data from the socket
+     * @param messageCallback method to call on a completed message
+     * @param errorCallback method to call if an incoming message is malformed
+     */
     public InputReader(
         InputStream incomingData,
         Callback messageCallback,
@@ -28,6 +37,14 @@ public class InputReader extends Thread{
         );
     }
 
+    /**
+     * Instantiate the reader with a defined timeout
+     * @param incomingData stream of incoming data from the socket
+     * @param messageCallback method to call on a completed message
+     * @param errorCallback method to call if an incoming message is malformed
+     * @param timeout timeout from receiving the start of a message before the
+     *                message is deemed malformed
+     */
     public InputReader(
         InputStream incomingData,
         Callback messageCallback,
@@ -40,6 +57,9 @@ public class InputReader extends Thread{
         this.timeout = timeout;
     }
 
+    /**
+     * Start the thread
+     */
     public void run() {
         try {
             while (!Thread.interrupted()) {

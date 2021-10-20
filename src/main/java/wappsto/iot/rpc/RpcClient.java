@@ -1,26 +1,40 @@
 package wappsto.iot.rpc;
 
-import wappsto.api.network.model.*;
 import wappsto.iot.*;
-import wappsto.iot.ssl.*;
-import wappsto.iot.ssl.model.*;
 
 import java.io.*;
 
+/**
+ * Responsible for mediating messages between the server connection
+ * and the simulated Iot network
+ */
 public class RpcClient implements IoTClient {
     private final Connection conn;
     private RpcParser parser;
 
+    /**
+     * Instantiate client with a connection
+     * @param conn connection to the server
+     */
     public RpcClient(Connection conn) {
         this.conn = conn;
     }
 
+    /**
+     * Starts the connection and sets the parser for incoming data
+     * @param parser parses incoming JSON-RPC into commands
+     * @throws Exception
+     */
     @Override
     public void start(RpcParser parser) throws Exception {
         this.parser = parser;
         conn.start(this::incoming, this::error);
     }
 
+    /**
+     * Send message to the server
+     * @param message
+     */
     @Override
     public void send(String message) {
         try {
@@ -30,6 +44,9 @@ public class RpcClient implements IoTClient {
         }
     }
 
+    /**
+     * Close the connection to the server
+     */
     @Override
     public void stop() {
         try {
@@ -51,27 +68,6 @@ public class RpcClient implements IoTClient {
         } catch (Exception e) {
             System.out.println("Failed to reestablish connection.");
             e.printStackTrace();
-        }
-    }
-
-    public static class Builder {
-        private WappstoCerts certs;
-        private SSLConnection connection;
-
-        public Builder(CreatorResponse creator) {
-            certs = new WappstoCerts(creator);
-        }
-
-        public Builder connectingTo(String address, int port) throws Exception {
-            connection = new SSLConnection(address, port, certs);
-            return this;
-        }
-
-        public RpcClient build() {
-            if(connection == null) {
-                throw new RuntimeException("Connection cannot be null");
-            }
-            return new RpcClient(connection);
         }
     }
 }

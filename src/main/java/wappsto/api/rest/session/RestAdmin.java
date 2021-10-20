@@ -50,6 +50,10 @@ public class RestAdmin extends RestSession implements Admin {
             .delete(id);
     }
 
+    /**
+     * Get the session ID
+     * @return session ID
+     */
     @Override
     public String getId() {
         return id;

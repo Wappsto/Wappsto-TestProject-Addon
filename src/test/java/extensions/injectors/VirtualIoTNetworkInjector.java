@@ -9,6 +9,8 @@ import wappsto.iot.*;
 import wappsto.iot.network.*;
 import wappsto.iot.network.model.*;
 import wappsto.iot.rpc.*;
+import wappsto.iot.ssl.*;
+import wappsto.iot.ssl.model.*;
 
 import java.util.*;
 
@@ -62,11 +64,12 @@ public class VirtualIoTNetworkInjector implements ParameterResolver {
             schema.meta.id = UUID.fromString(creator.network.id);
             RpcClient client;
             try {
-                client = new RpcClient.Builder(creator)
-                    .connectingTo(
-                        env().get(SOCKET_URL),
-                        Integer.parseInt(env().get(SOCKET_PORT))
-                    ).build();
+                SSLConnection connection = new SSLConnection(
+                    env().get(SOCKET_URL),
+                    Integer.parseInt(env().get(SOCKET_PORT)),
+                    new WappstoCerts(creator)
+                );
+                client = new RpcClient(connection);
             } catch (Exception e) {
                 throw new RuntimeException(
                     "Failed to establish SSL connection" + e.getMessage()

@@ -15,7 +15,7 @@ public abstract class Request {
 
     /**
      * Request without JSON body
-     * @param service
+     * @param service target url
      */
     public Request(WebTarget service) {
         this.service = service;
@@ -26,7 +26,7 @@ public abstract class Request {
      * @param service
      * @param body JSON request body
      */
-    public Request(WebTarget service, Entity body) {
+    public Request(WebTarget service, Entity<?> body) {
         this(service);
         this.body = body;
     }
@@ -60,11 +60,11 @@ public abstract class Request {
      */
     public static class Builder {
         private WebTarget service;
-        private Entity body;
+        private Entity<?> body;
 
 
         /**
-         * @param service
+         * @param service target url
          */
         public Builder(WebTarget service) {
             this.service = service;
@@ -72,7 +72,7 @@ public abstract class Request {
 
         /**
          * Serialize a POJO into JSON
-         * @param body
+         * @param body JSON request body
          * @return this
          */
         public Builder withBody(Object body) {
@@ -99,6 +99,10 @@ public abstract class Request {
             return atEndPoint(path.toString());
         }
 
+        /**
+         * Send a GET request to the given endpoint
+         * @throws Exception
+         */
         public void get() throws Exception {
             new Get(service).send();
         }
@@ -115,6 +119,7 @@ public abstract class Request {
         /**
          * Send a GET request with a session header to the given endpoint
          * @param session
+         * @param T Desired return type
          * @return JSON response body
          * @throws Exception
          */
@@ -122,16 +127,26 @@ public abstract class Request {
             return new Get(service).send(session).readEntity(T);
         }
 
+        /**
+         * Send a POST request to the given endpoint
+         * @throws Exception
+         */
         public void post() throws Exception {
             new Post(service, body).send();
         }
 
+        /**
+         * Send a POST request to the given endpoint
+         * @param session session header
+         * @throws Exception
+         */
         public void post(String session) throws Exception {
             new Post(service, body).send(session);
         }
 
         /**
          * Send a POST request to the given endpoint.
+         * @param T Desired return type
          * @return JSON response body
          * @throws Exception
          */
@@ -149,16 +164,26 @@ public abstract class Request {
             return new Post(service, body).send(session).readEntity(T);
         }
 
+        /**
+         * Send a DELETE request to the given endpoint
+         * @throws Exception
+         */
         public void delete() throws Exception {
             new Delete(service).send();
         }
 
+        /**
+         * Send a DELETE request to the given endpoint
+         * @param session session header
+         * @throws Exception
+         */
         public void delete(String session) throws Exception {
             new Delete(service).send(session);
         }
 
         /**
          * Send a DELETE request to the given endpoint
+         * @param T desired return type
          * @return JSON response body
          * @throws Exception
          */
@@ -169,6 +194,7 @@ public abstract class Request {
         /**
          * Send a DELETE request with a session header to the given endpoint
          * @param session
+         * @param T desired return type
          * @return JSON response body
          * @throws Exception
          */
@@ -176,10 +202,22 @@ public abstract class Request {
             return new Delete(service).send(session).readEntity(T);
         }
 
+        /**
+         * Send a PATCH request to the desired endpoint
+         * @param session session header
+         * @throws Exception
+         */
         public void patch(String session) throws Exception {
             new Patch(service, body).send(session);
         }
 
+        /**
+         * Send a PATCh request to the desired enpoint
+         * @param session session header
+         * @param T desired return type
+         * @return JSON response body
+         * @throws Exception
+         */
         public Object patch(String session, Class<?> T) throws Exception {
             return new Patch(service, body).send(session).readEntity(T);
         }

@@ -11,6 +11,9 @@ import java.security.cert.*;
 import java.security.spec.*;
 import java.util.*;
 
+/**
+ * Sets the certificates required to establish an SSL connection
+ */
 public class CertProvider {
     public final TrustManager[] trustManagers;
     public final KeyManager[] keyManagers;

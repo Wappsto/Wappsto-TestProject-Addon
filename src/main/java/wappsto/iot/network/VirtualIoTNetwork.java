@@ -10,6 +10,9 @@ import java.util.*;
 
 import static wappsto.iot.rpc.Utils.*;
 
+/**
+ * Simulated IoT device. Keeps track of the internal state of the device
+ */
 public class VirtualIoTNetwork {
     public final NetworkSchema schema;
     public final IoTClient client;
@@ -19,6 +22,13 @@ public class VirtualIoTNetwork {
     private final List<UUID> reportStates;
     private boolean isRunning;
 
+    /**
+     * Instantiate the network
+     * @param schema internal data structure of the network containing devices
+     *               values and states
+     * @param client Client between the network and the conneciton
+     * @throws Exception
+     */
     public VirtualIoTNetwork(NetworkSchema schema, IoTClient client)
         throws Exception
     {
@@ -44,6 +54,12 @@ public class VirtualIoTNetwork {
         isRunning = true;
     }
 
+    /**
+     * Updates a report state via an incoming control state request from the
+     * server. This network is designed to be an echo network, so it simply sets
+     * the report state to the value of the control state
+     * @param request update request with a state UUID and the desired value
+     */
     public void updateControlState(StateData request) {
         request.state = controlAndReportStates.get(request.state);
         try {
@@ -53,6 +69,11 @@ public class VirtualIoTNetwork {
         }
     }
 
+    /**
+     * Update a report state directly
+     * @param request
+     * @throws Exception
+     */
     public void updateReportState(StateData request) throws Exception {
         if (!reportValues.containsKey(request.state)) {
             throw new Exception("Invalid report state");
@@ -65,19 +86,37 @@ public class VirtualIoTNetwork {
         client.send(toJson(new RpcRequest(report, Methods.PUT)));
     }
 
+    /**
+     * Return the UUID of a control state from a list
+     * @param index
+     * @return control state UUID
+     */
     public UUID getControlStateId(int index) {
         return controlStates.get(index);
     }
 
+    /**
+     * Return the UUID of a report state from a list
+     * @param index
+     * @return report state UUID
+     */
     public UUID getReportStateId(int index) {
         return reportStates.get(index);
     }
 
+    /**
+     * Stop the network
+     */
     public void stop() {
         client.stop();
         isRunning = false;
     }
 
+    /**
+     * Check the status of the network
+     * @return true: network is running
+     *         false: network is stopped
+     */
     public boolean isRunning() {
         return isRunning;
     }

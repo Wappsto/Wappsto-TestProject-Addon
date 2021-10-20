@@ -6,19 +6,34 @@ import wappsto.iot.*;
 
 import java.io.*;
 
+/**
+ * Stores and loads network instances with certs and schemas on the file system
+ */
 public class FileSystemJsonDataStore implements DataStore {
     private final String path;
     private static final String FILE_EXTENSION = "json";
 
+    /**
+     * Instantiates the data store with the default path
+     */
     public FileSystemJsonDataStore() {
         this("./saved_instance/");
     }
 
+    /**
+     * Instantiates the data store with a given path
+     * @param path relative path
+     */
     public FileSystemJsonDataStore(String path) {
         this.path = path;
         new File(path).mkdirs();
     }
 
+    /**
+     * Saves an instance in data store.
+     * @param identifier filename
+     * @param data saved data
+     */
     @Override
     public void save(String identifier, Object data) {
         File file = new File(
@@ -36,6 +51,13 @@ public class FileSystemJsonDataStore implements DataStore {
         }
     }
 
+    /**
+     * Loads an object from a JSON file on the file system
+     * @param identifier filename
+     * @param T Object type to deserialize the json into
+     * @return the loaded object
+     * @throws Exception
+     */
     @Override
     public Object load(String identifier, Class<?> T) throws Exception {
         File file = new File(
@@ -45,12 +67,12 @@ public class FileSystemJsonDataStore implements DataStore {
         return new ObjectMapper().readValue(data, T);
     }
 
-    private String pathToFile(String identifier) {
-        return path.concat(identifier).concat(".").concat(FILE_EXTENSION);
-    }
-
     public void delete(String identifier) {
         new File(pathToFile(identifier)).delete();
+    }
+
+    private String pathToFile(String identifier) {
+        return path.concat(identifier).concat(".").concat(FILE_EXTENSION);
     }
 
     private void clear(File file) throws IOException {

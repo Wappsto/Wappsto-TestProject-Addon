@@ -8,6 +8,9 @@ import wappsto.iot.rpc.model.schema.outgoing.*;
 
 import java.io.*;
 
+/**
+ * Parses JSON-RPC to objects and calls the given strategies
+ */
 public class RpcParser {
     private final ObjectMapper mapper;
     private final SuccessResponseStrategy successResponse;
@@ -15,6 +18,10 @@ public class RpcParser {
     private final UpdateStateStrategy updateState;
     private final DeleteStrategy deleteCommand;
 
+    /**
+     * Instantiate parser with a set of strategies
+     * @param rpcStrategies
+     */
     public RpcParser(RpcStrategies rpcStrategies) {
         this.result = rpcStrategies.result;
         this.updateState = rpcStrategies.updateState;
@@ -23,6 +30,10 @@ public class RpcParser {
         mapper = new ObjectMapper();
     }
 
+    /**
+     * Parses data into a JSON-objects and calls the associated strategy
+     * @param data
+     */
     public void parse(String data) {
         try {
             JsonNode node = mapper.readTree(data);

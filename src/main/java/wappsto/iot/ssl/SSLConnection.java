@@ -6,10 +6,20 @@ import wappsto.iot.ssl.model.*;
 import javax.net.ssl.*;
 import java.io.*;
 
+/**
+ * Adapter class for the SSL socket
+ */
 public class SSLConnection implements Connection {
     private final SSLSocket socket;
     public final OutputStream toServer;
 
+    /**
+     * Create a connection over SSL
+     * @param address socket address
+     * @param port socket port
+     * @param certs certificates to use with the connection
+     * @throws Exception
+     */
     public SSLConnection(
         String address,
         int port,
@@ -29,14 +39,28 @@ public class SSLConnection implements Connection {
         return sc;
     }
 
+    /**
+     * Check connection status
+     * @return is connected
+     */
     public boolean connected() {
         return socket.getSession().isValid();
     }
 
+    /**
+     * Close the connection
+     * @throws IOException
+     */
     public void disconnect() throws IOException {
         socket.close();
     }
 
+    /**
+     * Open the connection
+     * @param messageCallback message callback passed to the input reader
+     * @param errorCallback error callbakc passed to the input reader
+     * @throws Exception
+     */
     @Override
     public void start(Callback messageCallback, Callback errorCallback)
         throws Exception
@@ -61,8 +85,13 @@ public class SSLConnection implements Connection {
         }
     }
 
+    /**
+     * Sends a string message through the socket
+     * @param message message sent
+     * @throws IOException
+     */
     @Override
-    public void send(String s) throws IOException {
-        toServer.write(s.getBytes());
+    public void send(String message) throws IOException {
+        toServer.write(message.getBytes());
     }
 }
