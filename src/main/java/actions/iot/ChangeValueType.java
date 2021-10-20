@@ -127,10 +127,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
                 );
             }
 
-            Optional<ValueSchema> value = instance.schema.device.stream()
-                .flatMap( d -> d.value.stream())
-                .filter( v -> v.meta.id.toString().equals(valueId))
-                .findAny();
+            Optional<ValueSchema> value = findValue(instance);
 
             ValueSchema valueSchema;
             if (value.isPresent()) {
@@ -147,6 +144,19 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
                 ? valueSchema.type
                 : type;
 
+            updateValue(instance, valueSchema);
+            store.save(networkId, instance);
+            try {
+                new VirtualIoTNetwork(
+                    instance.schema, new RpcClient(connection)
+                );
+            } catch (Exception e) {
+                throw new FailureException("Failed to start client");
+            }
+            return valueSchema;
+        }
+
+        private void updateValue(NetworkInstance instance, ValueSchema valueSchema) {
             instance.schema.device.stream().filter(
                 d -> d.value.stream().anyMatch(
                     v -> v.meta.id.toString().equals(valueId)
@@ -158,15 +168,13 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
                         ? valueSchema
                         : v
                 );
-            store.save(networkId, instance);
-            try {
-                new VirtualIoTNetwork(
-                    instance.schema, new RpcClient(connection)
-                );
-            } catch (Exception e) {
-                throw new FailureException("Failed to start client");
-            }
-            return valueSchema;
+        }
+
+        private Optional<ValueSchema> findValue(NetworkInstance instance) {
+            return instance.schema.device.stream()
+                .flatMap( d -> d.value.stream())
+                .filter( v -> v.meta.id.toString().equals(valueId))
+                .findAny();
         }
     }
 }

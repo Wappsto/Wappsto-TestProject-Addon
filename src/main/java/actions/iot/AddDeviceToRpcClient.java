@@ -113,23 +113,19 @@ public class AddDeviceToRpcClient
         public String execute() throws FailureException {
             NetworkInstance instance;
             try {
-                instance =
-                    (NetworkInstance) store.load(
-                        networkId,
-                        NetworkInstance.class
-                    );
+                instance = (NetworkInstance) store.load(
+                    networkId,
+                    NetworkInstance.class
+                );
             } catch (Exception e) {
                 throw new FailureException(e.getMessage());
             }
-
-            NetworkSchema schema = instance.schema;
             DeviceSchema device = new DeviceSchema(name);
-            schema.device.add(device);
-            instance.schema = schema;
-            store.save(schema.meta.id.toString(), instance);
+            instance.schema.device.add(device);
+            store.save(instance.schema.meta.id.toString(), instance);
             try {
                 new VirtualIoTNetwork(
-                    schema,
+                    instance.schema,
                     new RpcClient(connection)
                 );
             } catch (Exception e) {
