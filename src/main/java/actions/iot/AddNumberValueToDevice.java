@@ -188,14 +188,19 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             addValueToDevice(value, schema);
 
             instance.schema = schema;
-            store.save(networkId, instance);
+            VirtualIoTNetwork network;
             try {
-                new VirtualIoTNetwork(schema, new RpcClient(connection));
+                network = new VirtualIoTNetwork(
+                    schema,
+                    new RpcClient(connection)
+                );
             } catch (Exception e) {
                 throw new FailureException(
                     "Failed to start network: " + e.getMessage()
                 );
             }
+            instance.schema = network.schema;
+            store.save(networkId, instance);
             return value;
         }
 

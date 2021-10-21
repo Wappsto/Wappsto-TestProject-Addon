@@ -122,9 +122,9 @@ public class AddDeviceToRpcClient
             }
             DeviceSchema device = new DeviceSchema(name);
             instance.schema.device.add(device);
-            store.save(instance.schema.meta.id.toString(), instance);
+            VirtualIoTNetwork network;
             try {
-                new VirtualIoTNetwork(
+                network = new VirtualIoTNetwork(
                     instance.schema,
                     new RpcClient(connection)
                 );
@@ -133,6 +133,8 @@ public class AddDeviceToRpcClient
                     "Failed to start network: " + e.getMessage()
                 );
             }
+            instance.schema = network.schema;
+            store.save(network.schema.meta.id.toString(), instance);
             return device.meta.id.toString();
         }
     }

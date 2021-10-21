@@ -1,7 +1,6 @@
 package actions.iot;
 
 import io.testproject.java.annotations.v2.*;
-import io.testproject.java.enums.*;
 import io.testproject.java.sdk.v2.addons.*;
 import io.testproject.java.sdk.v2.addons.helpers.*;
 import io.testproject.java.sdk.v2.enums.*;
@@ -31,18 +30,6 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
     @Parameter(description = "Type")
     public String type;
 
-    @Parameter(
-        description = "Report state UUID",
-        direction = ParameterDirection.OUTPUT
-    )
-    public String reportState;
-
-    @Parameter(
-        description = "Control state UUID",
-        direction = ParameterDirection.OUTPUT
-    )
-    public String controlState;
-
     @Override
     public ExecutionResult execute(WebAddonHelper helper) throws FailureException {
         Controller controller = new Controller(
@@ -53,22 +40,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             socketUrl,
             port
         );
-        ValueSchema valueSchema = controller.execute();
-        Optional<StateSchema> control = valueSchema.state.stream().filter(
-            s -> s.type.equals("Control")
-        ).findAny();
-
-        Optional<StateSchema> report = valueSchema.state.stream().filter(
-            s -> s.type.equals("Report")
-        ).findAny();
-
-        controlState = control.isPresent()
-            ? control.get().meta.id.toString()
-            : "";
-
-        reportState = report.isPresent()
-            ? report.get().meta.id.toString()
-            : "";
+        controller.execute();
 
         return ExecutionResult.PASSED;
     }
@@ -116,7 +88,7 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
             );
         }
 
-        public ValueSchema execute() throws FailureException {
+        public void execute() throws FailureException {
             NetworkInstance instance;
             try {
                 instance = (NetworkInstance) store
@@ -145,15 +117,16 @@ public class ChangeValueType extends ActionWithSSLSocket implements WebAction {
                 : type;
 
             updateValue(instance, valueSchema);
-            store.save(networkId, instance);
+            VirtualIoTNetwork network;
             try {
-                new VirtualIoTNetwork(
+                network = new VirtualIoTNetwork(
                     instance.schema, new RpcClient(connection)
                 );
             } catch (Exception e) {
                 throw new FailureException("Failed to start client");
             }
-            return valueSchema;
+            instance.schema = network.schema;
+            store.save(networkId, instance);
         }
 
         private void updateValue(NetworkInstance instance, ValueSchema valueSchema) {

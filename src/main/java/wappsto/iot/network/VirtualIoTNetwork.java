@@ -83,6 +83,14 @@ public class VirtualIoTNetwork {
             request.state,
             new ReportData(reportValues.get(request.state))
         );
+
+        schema.device.stream()
+            .flatMap( d -> d.value.stream() )
+            .flatMap( v -> v.state.stream() )
+            .filter( s -> s.meta.id.equals(request.state) )
+            .findAny()
+            .ifPresent( s -> s.data = request.data );
+
         client.send(toJson(new RpcRequest(report, Methods.PUT)));
     }
 
