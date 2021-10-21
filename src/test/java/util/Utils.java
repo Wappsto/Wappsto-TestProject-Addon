@@ -130,7 +130,7 @@ public class Utils {
         while (!Instant.now().isAfter(start.plus(timeout))) {
             try {
                 Object result = function.apply(argument);
-                if (result != null) return result;
+                if (!String.valueOf(result).isEmpty()) return result;
             } catch (Exception ignored) {
             }
         }

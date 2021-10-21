@@ -4,7 +4,6 @@ import actions.iot.*;
 import extensions.injectors.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
-import wappsto.api.network.*;
 import wappsto.api.network.model.*;
 import wappsto.api.rest.network.*;
 import wappsto.api.rest.request.exceptions.*;
@@ -19,7 +18,6 @@ import wappsto.iot.ssl.model.*;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static util.Env.*;
 import static util.Utils.*;
 
@@ -29,25 +27,29 @@ import static util.Utils.*;
 @ExtendWith(AdminInjector.class)
 public class ChangeReportStateTest {
 
-    @BeforeEach
-    public void setup(Admin admin) throws Exception {
+    private CreatorResponse creator;
+    private NetworkSchema schema;
+    private RestNetworkService service;
+
+    @BeforeAll
+    public static void cleanSlate(Admin admin) throws Exception {
         resetUser(admin);
     }
 
-    @Test
-    public void changes_report_state(
-        NetworkSchema schema,
+    @BeforeEach
+    public void setup(
         User user,
-        DataStore store
+        DataStore store,
+        NetworkSchema schema
     )
         throws Exception
     {
-        NetworkService service = new RestNetworkService((RestUser) user);
-        CreatorResponse creator = service.getCreator();
+        this.service = new RestNetworkService((RestUser) user);
+        this.creator = service.getCreator();
         schema.meta.id = UUID.fromString(creator.network.id);
         WappstoCerts certs = new WappstoCerts(creator);
         NetworkInstance instance = new NetworkInstance(certs, schema);
-        VirtualIoTNetwork network = new VirtualIoTNetwork(
+        new VirtualIoTNetwork(
             schema,
             new RpcClient(
                 new SSLConnection(
@@ -57,9 +59,15 @@ public class ChangeReportStateTest {
                 )
             )
         );
+        this.schema = schema;
         store.save(schema.meta.id.toString(), instance);
         service.claim(schema.meta.id.toString());
         logInBrowser(user.getId(), env().get(APP_URL));
+        Thread.sleep(1000);
+    }
+
+    @Test
+    public void changes_report_state() throws Exception {
 
         ChangeReportState action = new ChangeReportState();
         action.socketUrl = env().get(SOCKET_URL);
@@ -72,27 +80,18 @@ public class ChangeReportStateTest {
         action.reportState = reportState;
         action.value = "1";
         runner().run(action);
-        int attempts = 0;
-        String value = service.getState(UUID.fromString(reportState));
-        while (value.isEmpty() && attempts <= 10) {
-            value = service.getState(UUID.fromString(reportState));
-            attempts++;
-            Thread.sleep(1000);
-        }
-        assertEquals(
+
+        assertEventuallyEquals(
             "1",
-            service.getState(UUID.fromString(reportState))
+            id -> service.getState((UUID) id),
+            UUID.fromString(reportState)
         );
     }
 
     @AfterEach
-    public void reset() throws Exception {
-        resetRunner();
-    }
-
-    @AfterAll
-    public static void tearDown(Admin admin) throws Exception {
+    public void reset(Admin admin) throws Exception {
         resetUser(admin);
+        resetRunner();
     }
 
     private static void resetUser(Admin admin) throws Exception {

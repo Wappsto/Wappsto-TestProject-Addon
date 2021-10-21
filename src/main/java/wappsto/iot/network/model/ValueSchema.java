@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import wappsto.iot.rpc.model.schema.*;
 
 import java.util.*;
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ValueSchema {
     @JsonProperty public String name;
     @JsonProperty public String permission;
