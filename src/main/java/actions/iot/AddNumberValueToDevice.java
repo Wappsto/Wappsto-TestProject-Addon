@@ -103,7 +103,7 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
 
     private void setReportId(ValueSchema value) {
         value.state.stream()
-            .filter(s -> s.type.equals("Report"))
+            .filter( s -> s.type.equals("Report") )
             .findAny()
             .ifPresentOrElse(
                 s -> reportId = s.meta.id.toString(),
@@ -165,8 +165,6 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
                 createSSLConnection(networkId, socketUrl, port)
             );
         }
-
-
 
         public ValueSchema execute() throws FailureException {
             NetworkInstance instance;

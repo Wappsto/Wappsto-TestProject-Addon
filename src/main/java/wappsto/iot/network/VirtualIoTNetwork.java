@@ -124,22 +124,27 @@ public class VirtualIoTNetwork {
     private void addStatesAndValues(NetworkSchema schema) {
         for (DeviceSchema d : schema.device) {
             for (ValueSchema v : d.value) {
+
                 Optional<StateSchema> report = v.state.stream()
-                    .filter(s -> s.type.equals("Report")).findAny();
-                Optional<StateSchema> control = v.state.stream()
-                    .filter(s -> s.type.equals("Control")).findAny();
+                    .filter(s -> s.type.equals("Report"))
+                    .findAny();
 
                 report.ifPresent(s -> {
                     reportStates.add(s.meta.id);
                     reportValues.put(s.meta.id, s.data);
                 });
-                control.ifPresent(s -> {
-                    report.ifPresent(stateSchema -> controlAndReportStates.put(
-                        s.meta.id,
-                        stateSchema.meta.id
-                    ));
-                    controlStates.add(s.meta.id);
-                });
+
+                v.state.stream()
+                    .filter(s -> s.type.equals("Control"))
+                    .findAny()
+                    .ifPresent(s -> {
+                        report.ifPresent(
+                            stateSchema -> controlAndReportStates.put(
+                                s.meta.id,
+                                stateSchema.meta.id
+                            ));
+                        controlStates.add(s.meta.id);
+                    });
             }
         }
     }
