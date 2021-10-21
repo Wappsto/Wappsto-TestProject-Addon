@@ -201,7 +201,9 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
             return value;
         }
 
-        private void addValueToDevice(ValueSchema value, NetworkSchema schema) throws FailureException {
+        private void addValueToDevice(ValueSchema value, NetworkSchema schema)
+            throws FailureException
+        {
             schema.device.stream()
                 .filter(d -> d.meta.id.equals(UUID.fromString(deviceId)))
                 .findAny()
