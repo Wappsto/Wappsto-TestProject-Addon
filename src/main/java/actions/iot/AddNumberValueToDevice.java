@@ -83,23 +83,32 @@ public class AddNumberValueToDevice extends ActionWithSSLSocket implements WebAc
         );
         ValueSchema value = controller.execute();
         valueId = value.meta.id.toString();
-        StateSchema reportState = value.state.stream()
-            .filter(s -> s.type.equals("Report"))
-            .findAny()
-            .orElse(null);
-        reportId = (reportState != null)
-            ? reportState.meta.id.toString()
-            : "";
-        StateSchema controlState = value.state.stream()
-            .filter(s -> s.type.equals("Control"))
-            .findAny()
-            .orElse(null);
-        controlId = (controlState != null)
-            ? controlState.meta.id.toString()
-            : "";
+
+        setReportId(value);
+        setControlId(value);
 
         return ExecutionResult.PASSED;
 
+    }
+
+    private void setControlId(ValueSchema value) {
+        value.state.stream()
+            .filter( s -> s.type.equals("Control") )
+            .findAny()
+            .ifPresentOrElse(
+                s -> controlId = s.meta.id.toString(),
+                () -> controlId = ""
+            );
+    }
+
+    private void setReportId(ValueSchema value) {
+        value.state.stream()
+            .filter(s -> s.type.equals("Report"))
+            .findAny()
+            .ifPresentOrElse(
+                s -> reportId = s.meta.id.toString(),
+                () -> reportId = ""
+            );
     }
 
     public static class Controller {
