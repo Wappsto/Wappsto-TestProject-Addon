@@ -42,5 +42,5 @@ To compile the Addon and run the tests at the same time:
 mvn package
 ```
 
-# Docomentaion
+# Documentaion
 Documentation is available on the published GitHub pages [here](https://wappsto.github.io/Wappsto-TestProject-Addon/).
